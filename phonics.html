@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تعلم القراءة — كلماتي</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=El+Messiri:wght@600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: a "sound wall" study desk — lesson rail on the side, one rule at a time in the main column; highlighted letter patterns are the visual signature */
+:root{
+  --bg:#F3F6FA; --surface:#FFFFFF; --surface-2:#E9EFF6; --ink:#17233F; --ink-2:#45506A; --line:#D3DCE8;
+  --accent:#0E7C7B; --accent-ink:#FFFFFF; --accent-soft:#D5EFEE;
+  --mark:#FFE07A; --mark-ink:#17233F; --warn:#C2512F; --warn-soft:#FBE3DA; --ok:#2F8A55; --ok-soft:#DDF2E5;
+  --ar:'IBM Plex Sans Arabic',Tahoma,system-ui,sans-serif; --display:'El Messiri','IBM Plex Sans Arabic',Tahoma,serif;
+  --en:'Atkinson Hyperlegible','Segoe UI',Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1626; --surface:#18223A; --surface-2:#212D49; --ink:#EAF0FA; --ink-2:#AEB9CF; --line:#2F3C5C;
+  --accent:#4FC3C1; --accent-ink:#0C1A1A; --accent-soft:#173F44; --mark:#E8C44E; --mark-ink:#17233F;
+  --warn:#F08C6C; --warn-soft:#45261F; --ok:#6CCF92; --ok-soft:#1D3A2A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1626; --surface:#18223A; --surface-2:#212D49; --ink:#EAF0FA; --ink-2:#AEB9CF; --line:#2F3C5C;
+  --accent:#4FC3C1; --accent-ink:#0C1A1A; --accent-soft:#173F44; --mark:#E8C44E; --mark-ink:#17233F;
+  --warn:#F08C6C; --warn-soft:#45261F; --ok:#6CCF92; --ok-soft:#1D3A2A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--ar);font-size:17px;line-height:1.75;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.en{font-family:var(--en);direction:ltr;unicode-bidi:isolate}
+mark{background:var(--mark);color:var(--mark-ink);border-radius:4px;padding:0 2px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.3;margin:0}
+/* top bar */
+.top{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:14px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--en);font-weight:700;font-size:22px}
+.brand h1{font-size:26px}
+.brand p{margin:0;color:var(--ink-2);font-size:14px}
+.prog{display:flex;align-items:center;gap:10px;min-width:220px;flex:0 1 320px}
+.bar{flex:1;height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.prog span{font-size:14px;color:var(--ink-2);white-space:nowrap;font-variant-numeric:tabular-nums}
+/* layout */
+.grid{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+nav.rail{flex:1 1 250px;max-width:100%;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:14px}
+main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:18px}
+.part{font-size:13px;font-weight:700;color:var(--ink-2);letter-spacing:.3px;margin:12px 8px 4px}
+.part:first-child{margin-top:2px}
+.lnk{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:none;border:0;border-radius:12px;padding:8px 10px;min-height:44px;font-size:15.5px}
+.lnk:hover{background:var(--surface-2)}
+.lnk[aria-current="true"]{background:var(--accent-soft);font-weight:700}
+.dot{width:22px;height:22px;flex:0 0 auto;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:12px}
+.lnk.done .dot{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.final-btn{margin-top:12px;width:100%;border:0;border-radius:14px;padding:12px;background:var(--ink);color:var(--bg);font-weight:700;min-height:48px}
+/* cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px}
+.hero{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:13.5px;font-weight:700;color:var(--accent)}
+.hero h2{font-size:30px}
+.hero .lead{margin:0;max-width:68ch;color:var(--ink-2)}
+.rel{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:var(--surface-2);border-radius:99px;padding:3px 14px;font-size:14.5px;font-weight:600}
+.rel b{font-variant-numeric:tabular-nums}
+.rules{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.rule h3{font-size:18px}
+.snd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.ipa{font-family:var(--en);font-size:22px;font-weight:700;color:var(--accent)}
+.arsnd{background:var(--surface-2);border-radius:8px;padding:0 10px;font-weight:700}
+.rule p{margin:0;color:var(--ink-2);font-size:15.5px}
+.words{display:flex;flex-wrap:wrap;gap:8px;direction:ltr;justify-content:flex-end}
+.w{font-family:var(--en);font-size:19px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:4px 12px;min-height:44px;display:inline-flex;align-items:center;gap:6px}
+.w:hover{border-color:var(--accent)}
+.w svg{width:15px;height:15px;opacity:.55}
+.w.playing{background:var(--accent-soft);border-color:var(--accent)}
+.box{border-radius:16px;padding:14px 18px;display:flex;flex-direction:column;gap:8px}
+.box h3{font-size:17px}
+.box.warn{background:var(--warn-soft)}
+.box.warn h3{color:var(--warn)}
+.box.tip{background:var(--accent-soft)}
+.box p{margin:0}
+/* practice */
+.prac h3{font-size:21px}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--ink-2);font-size:14.5px;font-variant-numeric:tabular-nums}
+.q{font-size:20px;font-weight:600;margin:6px 0 4px}
+.qword{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 12px}
+.qword .big{font-family:var(--en);font-size:34px;font-weight:700;direction:ltr}
+.play{border:0;background:var(--accent);color:var(--accent-ink);border-radius:50%;width:52px;height:52px;display:grid;place-items:center}
+.play svg{width:24px;height:24px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.opt{border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 14px;min-height:54px;font-size:18px;font-weight:600}
+.opt.en{font-family:var(--en);font-size:20px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.wrong{background:var(--warn-soft);border-color:var(--warn)}
+.opt:disabled{cursor:default}
+.why{margin-top:12px;border-radius:14px;padding:12px 16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.why.ok{background:var(--ok-soft)} .why.no{background:var(--warn-soft)}
+.why p{margin:0;flex:1 1 260px}
+.btn{border:0;border-radius:12px;padding:8px 20px;min-height:46px;background:var(--ink);color:var(--bg);font-weight:700}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+.btn.acc{background:var(--accent);color:var(--accent-ink)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.result{text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.result .score{font-family:var(--en);font-size:48px;font-weight:700;font-variant-numeric:tabular-nums}
+.pager{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+/* tables (stress, plan) */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px}
+th,td{padding:10px 14px;text-align:right;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--surface-2);font-size:14.5px}
+tr:last-child td{border-bottom:0}
+.chk{width:24px;height:24px;accent-color:var(--accent)}
+.stress b{color:var(--accent)}
+.pairs{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.pair{display:flex;gap:8px;align-items:center;justify-content:center;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:8px;direction:ltr}
+.pair span{color:var(--ink-2)}
+/* tabs + voice */
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:6px 18px;min-height:48px;font-weight:700}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.voice{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:99px;padding:6px 16px;min-height:44px;background:var(--accent-soft);color:var(--ink);font-weight:700;font-size:15px}
+.voice svg{width:20px;height:20px}
+.voice.playing{background:var(--accent);color:var(--accent-ink)}
+.rule .voice{align-self:flex-start;min-height:40px;padding:4px 14px;font-size:14px}
+.how{background:var(--surface-2);border-radius:12px;padding:8px 12px;font-size:15px;margin:0}
+/* games */
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.gcard{text-align:right;border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-height:132px}
+.gcard:hover:not(:disabled){border-color:var(--accent)}
+.gcard:disabled{opacity:.5;cursor:default}
+.gtop{display:flex;justify-content:space-between;align-items:center;width:100%}
+.gnum{font-family:var(--en);font-weight:700;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2)}
+.gtag{font-size:12.5px;font-weight:700;border-radius:99px;padding:1px 10px}
+.t-listen{background:#E3DCFB;color:#3B2A80}.t-read{background:#D5EFEE;color:#0B5554}.t-spell{background:#FFEDB8;color:#6B4A00}.t-speak{background:#FFDCE6;color:#7E2142}.t-mem{background:#DDEBFB;color:#1D4A86}
+.gcard h4{margin:0;font-size:17.5px;font-family:var(--display)}
+.gcard p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.6}
+.stars{font-size:15px;letter-spacing:2px;color:#D9A520}
+.stars .off{color:var(--line)}
+.gbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.pill{background:var(--surface-2);border-radius:99px;padding:3px 14px;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.letters{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;direction:ltr}
+.lt{font-family:var(--en);font-size:28px;font-weight:700;min-width:50px;min-height:58px;border-radius:12px;border:2px solid var(--line);background:var(--surface)}
+.lt.on{background:var(--mark);color:var(--mark-ink);border-color:var(--mark)}
+.lt.right{background:var(--ok-soft);border-color:var(--ok)}.lt.wrong{background:var(--warn-soft);border-color:var(--warn)}
+.lt:disabled{cursor:default;opacity:.45}
+.slot{min-height:70px;border:2px dashed var(--line);border-radius:16px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;direction:ltr}
+.slot.right{border-color:var(--ok);background:var(--ok-soft)}.slot.wrong{border-color:var(--warn);background:var(--warn-soft)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.bucket{border:2px dashed var(--line);border-radius:16px;padding:10px;min-height:120px;display:flex;flex-direction:column;gap:6px;background:var(--surface);text-align:center}
+.bucket.target{border-color:var(--accent);background:var(--accent-soft)}
+.bucket h5{margin:0;font-size:16px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;direction:ltr}
+.chip{font-family:var(--en);font-size:18px;border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:4px 12px;min-height:44px}
+.chip.sel{background:var(--mark);color:var(--mark-ink);border-color:var(--mark)}
+.chip.right{background:var(--ok-soft);border-color:var(--ok)}.chip.wrong{background:var(--warn-soft);border-color:var(--warn)}
+.mgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mcol{display:flex;flex-direction:column;gap:8px}
+.memg{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.mem{min-height:96px;border-radius:16px;border:2px solid var(--line);background:var(--ink);color:var(--bg);font-weight:700;font-size:17px;padding:6px}
+.mem.up{background:var(--surface);color:var(--ink)}.mem.got{background:var(--ok-soft);color:var(--ink);border-color:var(--ok)}
+.mem .en{font-size:20px}
+.hunt{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.input{font-family:var(--en);font-size:28px;font-weight:700;padding:8px 14px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--ink);width:100%;max-width:420px;direction:ltr}
+.mic{border:0;border-radius:16px;padding:10px 22px;min-height:56px;font-weight:700;display:inline-flex;align-items:center;gap:8px;background:var(--warn-soft);color:var(--ink)}
+.mic.live{background:var(--warn);color:#fff}
+.mic svg,.btn svg{width:22px;height:22px}
+.note{font-size:14.5px;color:var(--ink-2);margin:0}
+.timer{font-family:var(--en);font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+.toast{position:fixed;inset:auto 0 0;margin:0 auto;max-width:520px;background:var(--ink);color:var(--bg);border-radius:16px 16px 0 0;padding:12px max(16px,env(safe-area-inset-left,0px)) calc(12px + env(safe-area-inset-bottom,0px));text-align:center;font-weight:600;z-index:20}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<nav dir="rtl" aria-label="التنقل في منصة كلماتي" style="max-width:1180px;margin:0 auto;padding:16px;box-sizing:border-box;font-family:var(--ar);"><a href="./" style="display:inline-flex;align-items:center;min-height:44px;padding:6px 18px;border:2px solid var(--accent);border-radius:12px;color:var(--accent);background:var(--surface);text-decoration:none;font-weight:700;">→ العودة إلى كلماتي</a></nav>
+
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">Ab</div>
+      <div>
+        <h1>مفتاح القراءة الإنجليزية</h1>
+        <p>قواعد الـ Phonics بالعربي · نطق بريطاني · اضغطي أي كلمة لتسمعيها</p>
+      </div>
+    </div>
+    <div class="prog" aria-label="تقدّمك">
+      <div class="bar"><i id="progBar" style="width:0%"></i></div>
+      <span id="progTxt">0 / 0 درس</span>
+    </div>
+  </header>
+  <div class="grid">
+    <nav class="rail" id="rail" aria-label="الدروس"></nav>
+    <main id="main"></main>
+  </div>
+</div>
+
+<script>
+const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 010 6"/><path d="M18.5 6.5a7.5 7.5 0 010 11"/></svg>';
+
+/* ---------- content: from the guide ---------- */
+const PARTS=[
+ {id:'start',ar:'البداية'},
+ {id:'cons',ar:'الحروف الساكنة'},
+ {id:'vow',ar:'حروف العلة'},
+ {id:'long',ar:'الكلمات الطويلة'},
+ {id:'me',ar:'لكِ أنتِ'}
+];
+const L=[
+{id:'key',part:'start',ar:'مفتاح الأصوات',en:'The sound key',
+ lead:'قبل القواعد: هذه الأصوات الإنجليزية التي لا توجد في العربية أو تختلف عنها. اضغطي كل كلمة واسمعيها، وكرّريها بصوت عالٍ. التقريب العربي للمساعدة فقط، والمرجع هو الأذن.',
+ rules:[
+  {t:'p — باء مهموسة',ipa:'/p/',ar:'پ',d:'نفخة هواء بلا اهتزاز. ضعي ورقة أمام فمك: تتحرك مع p ولا تتحرك مع b.',w:['[p]en','[p]ig','cu[p]','a[pp]le']},
+  {t:'v — فاء مجهورة',ipa:'/v/',ar:'ڤ',d:'الأسنان العليا على الشفة السفلى مع اهتزاز في الحلق.',w:['[v]an','[v]ery','fi[v]e','lo[v]e']},
+  {t:'g الصلبة',ipa:'/g/',ar:'گ',d:'مثل القاف الخليجية في «گال».',w:['[g]o','ba[g]','[g]ate','[g]reen']},
+  {t:'ch — تش',ipa:'/tʃ/',ar:'تش',d:'تاء وشين معًا بسرعة.',w:['[ch]air','lun[ch]','ca[tch]','pic[t]ure']},
+  {t:'ng — نون أنفية',ipa:'/ŋ/',ar:'نْ',d:'تنتهي الكلمة بالنون من الأنف، بلا گ بعدها: sing ليست «سينگ».',w:['si[ng]','lo[ng]','thi[n]k','ki[ng]']},
+  {t:'th — ث أو ذ',ipa:'/θ/ /ð/',ar:'ث / ذ',d:'موجودان في العربية، فهذا سهل عليكِ.',w:['[th]ink','[th]ree','[th]is','mo[th]er']},
+  {t:'s في vision',ipa:'/ʒ/',ar:'ژ',d:'جيم شامية ناعمة.',w:['vi[s]ion','televi[s]ion','u[s]ually']},
+  {t:'schwa — أكثر صوت شيوعًا',ipa:'/ə/',ar:'ـَ خفيفة',d:'صوت قصير ضعيف بين الفتحة والكسرة، في المقاطع غير المنبورة.',w:['[a]bout','banan[a]','doct[or]','lem[o]n']}
+ ],
+ tip:'افتحي Cambridge Dictionary لأي كلمة: فيه زر النطق البريطاني UK ورموز IPA.',
+ quiz:[
+  {q:'أي حرف إنجليزي يُنطق «پ» بنفخة هواء؟',opts:['p','b'],a:0,why:'p مهموسة بنفخة، وb مجهورة بلا نفخة.'},
+  {q:'كيف تنتهي كلمة sing؟',say:'sing',opts:['بنون أنفية فقط /ŋ/','بـ «نگ» /ŋg/'],a:0,why:'ng في آخر الكلمة نون أنفية بلا صوت g.'},
+  {q:'أي صوت عربي يقابل th في think؟',say:'think',opts:['ث','ذ','س','ت'],a:0,why:'think /θɪŋk/ بالثاء، أما this فبالذال.'},
+  {q:'ما أكثر صوت علة شيوعًا في الإنجليزية؟',opts:['schwa /ə/','/iː/ إي','/æ/'],a:0,why:'الـ schwa صوت المقاطع الضعيفة، مثل a في about.'}
+ ]},
+
+{id:'cg',part:'cons',ar:'متى c = س ومتى ك؟ وكذلك g',en:'Soft & hard C / G',rel:'c: 96–98% · g: 64%',
+ lead:'القاعدة الذهبية: إذا جاء بعد c أو g أحد الحروف e أو i أو y صار الصوت «ليّنًا». أي حرف آخر، أو نهاية الكلمة، يبقي الصوت «صلبًا».',
+ rules:[
+  {t:'c + a, o, u أو ساكن',ipa:'/k/',ar:'ك',d:'الصوت الصلب.',w:['[c]at','[c]ot','[c]ut','[c]lap','pi[c]ture']},
+  {t:'c + e, i, y',ipa:'/s/',ar:'س',d:'الصوت الليّن.',w:['[c]ent','[c]ity','[c]ycle','i[c]e','[c]ir[c]le']},
+  {t:'‎-ce في آخر الكلمة',ipa:'/s/',ar:'س',d:'e الأخيرة تليّن c.',w:['fa[ce]','dan[ce]','ri[ce]','prin[ce]']},
+  {t:'g + a, o, u أو ساكن',ipa:'/g/',ar:'گ',d:'الصوت الصلب.',w:['[g]o','[g]ate','[g]um','[g]lad','le[g]']},
+  {t:'g + e, i, y (غالبًا)',ipa:'/dʒ/',ar:'ج',d:'الصوت الليّن، لكن القاعدة أضعف.',w:['[g]em','[g]iant','[g]ym','hu[ge]']},
+  {t:'‎-ge و‎-dge في الآخر',ipa:'/dʒ/',ar:'ج',d:'‎-dge بعد صوت قصير مباشرة، و‎-ge بعد صوت طويل أو ساكن.',w:['ca[ge]','hu[ge]','e[dge]','bri[dge]','ba[dge]']},
+  {t:'gu + e, i',ipa:'/g/',ar:'گ',d:'u صامتة، وظيفتها تحمي g من التليين.',w:['[gu]est','[gu]ess','[gu]ide','[gu]itar']}
+ ],
+ exc:{t:'كلمات g صلبة رغم e أو i بعدها — احفظيها مجموعة',w:['[g]et','[g]ive','[g]irl','[g]ift','be[g]in','ti[g]er']},
+ tip:'c أم k في أول الكلمة؟ k قبل e/i/y و c قبل a/o/u. جملة الحفظ: Keep the kite in the sky. وcc قبل e/i تُنطق /ks/: accept، success.',
+ quiz:[
+  {q:'كيف تُنطق c في هذه الكلمة؟',say:'city',word:'[c]ity',opts:['س /s/','ك /k/'],a:0,why:'بعد c جاء i، فيصير الصوت ليّنًا.'},
+  {q:'كيف تُنطق c في هذه الكلمة؟',say:'cup',word:'[c]up',opts:['س /s/','ك /k/'],a:1,why:'بعد c جاء u، فيبقى الصوت صلبًا.'},
+  {q:'كيف تُنطق g في هذه الكلمة؟',say:'giraffe',word:'[g]iraffe',opts:['ج /dʒ/','گ /g/'],a:0,why:'g + i غالبًا ليّنة.'},
+  {q:'كلمة get: كيف تُنطق g؟',say:'get',word:'[g]et',opts:['ج /dʒ/','گ /g/'],a:1,why:'get من الاستثناءات المشهورة، مثل give وgirl.'},
+  {q:'كيف تُكتب الكلمة: «بْرِج» (جسر)؟',say:'bridge',opts:['bridge','brige','bridj'],a:0,why:'بعد صوت قصير مباشرة نكتب ‎-dge، ولا تنتهي كلمة إنجليزية بـ j.'},
+  {q:'لماذا توجد u في guitar؟',say:'guitar',opts:['لتحمي g من صوت ج','لأنها تُنطق «و»'],a:0,why:'u صامتة، تبقي g صلبة قبل i.'}
+ ]},
+
+{id:'dig',part:'cons',ar:'حرفان بصوت واحد (Digraphs)',en:'sh · ch · th · ph · wh · ck · ng',rel:'ck, kn, wr, ght: 100%',
+ lead:'الـ digraph حرفان يصنعان صوتًا واحدًا جديدًا. معظمها ثابت جدًّا. الفخاخ ثلاثة: ch لها ثلاثة أصوات، وth لها صوتان، وgh صامتة أحيانًا وتُنطق ف أحيانًا.',
+ rules:[
+  {t:'sh',ipa:'/ʃ/',ar:'ش',d:'ثابت.',w:['[sh]ip','fi[sh]','[sh]op']},
+  {t:'ch (الأساسي)',ipa:'/tʃ/',ar:'تش',d:'الصوت الأشهر.',w:['[ch]air','[ch]in','lun[ch]','tea[ch]']},
+  {t:'ch يونانية = ك',ipa:'/k/',ar:'ك',d:'في كلمات أصلها يوناني.',w:['s[ch]ool','[Ch]ristmas','[ch]aracter','a[ch]e']},
+  {t:'ch فرنسية = ش',ipa:'/ʃ/',ar:'ش',d:'في كلمات أصلها فرنسي.',w:['[ch]ef','ma[ch]ine']},
+  {t:'tch',ipa:'/tʃ/',ar:'تش',d:'بعد صوت قصير. الاستثناءات: much، such، rich، which.',w:['ca[tch]','ma[tch]','ki[tch]en']},
+  {t:'th مهموسة',ipa:'/θ/',ar:'ث',d:'غالبًا في كلمات المعنى.',w:['[th]ink','[th]ank','[th]ree','ba[th]']},
+  {t:'th مجهورة',ipa:'/ð/',ar:'ذ',d:'غالبًا في الكلمات الصغيرة الشائعة.',w:['[th]e','[th]is','[th]ey','wi[th]','mo[th]er']},
+  {t:'ph',ipa:'/f/',ar:'ف',d:'كلمات يونانية الأصل.',w:['[ph]one','[ph]oto','ele[ph]ant']},
+  {t:'wh',ipa:'/w/',ar:'و',d:'لكن قبل o تصير /h/: who، whole.',w:['[wh]at','[wh]en','[wh]y','[wh]o']},
+  {t:'ck',ipa:'/k/',ar:'ك',d:'بعد صوت قصير، ولا تبدأ بها كلمة أبدًا.',w:['ba[ck]','du[ck]','chi[ck]en']},
+  {t:'ng / nk',ipa:'/ŋ/ /ŋk/',ar:'نْ / نْك',d:'نون أنفية.',w:['si[ng]','lo[ng]','thi[nk]','ba[nk]']},
+  {t:'qu',ipa:'/kw/',ar:'كو',d:'q لا تأتي تقريبًا إلا مع u.',w:['[qu]een','[qu]ick','[qu]iet']},
+  {t:'gh',ipa:'صامتة / /f/',ar:'— / ف',d:'ght دائمًا صامتة. وأحيانًا ف في آخر الكلمة.',w:['ni[gh]t','dau[gh]ter','lau[gh]','enou[gh]']}
+ ],
+ tip:'th: الكلمات الصغيرة كثيرة الاستعمال (the, this, that, they, there, with) غالبًا بالذال، وكلمات المعنى (think, thank, three) غالبًا بالثاء. هذا نمط مفيد وليس قاعدة إحصائية.',
+ quiz:[
+  {q:'كيف تُنطق ch هنا؟',say:'school',word:'s[ch]ool',opts:['ك','تش','ش'],a:0,why:'school يونانية الأصل، فـ ch = ك.'},
+  {q:'كيف تُنطق ch هنا؟',say:'chef',word:'[ch]ef',opts:['ك','تش','ش'],a:2,why:'chef فرنسية الأصل، فـ ch = ش.'},
+  {q:'th في this: ث أم ذ؟',say:'this',word:'[th]is',opts:['ث','ذ'],a:1,why:'this من الكلمات الصغيرة الشائعة، بالذال.'},
+  {q:'كيف تُنطق ph؟',say:'phone',word:'[ph]one',opts:['ف','پ','ب'],a:0,why:'ph = /f/ دائمًا تقريبًا.'},
+  {q:'gh في night:',say:'night',word:'ni[gh]t',opts:['صامتة','ف','گ'],a:0,why:'ght: الـ gh صامتة دائمًا.'},
+  {q:'أي تهجئة صحيحة لـ «تْشِك» (فحص)؟',say:'check',opts:['check','chek','cheque'],a:0,why:'بعد صوت قصير في آخر الكلمة نكتب ck. (cheque شيك بنكي بالبريطانية)'}
+ ]},
+
+{id:'silent',part:'cons',ar:'الحروف الصامتة',en:'Silent letters',rel:'kn, wr, ght: 100%',
+ lead:'الحرف الصامت يبدو عشوائيًا، لكنه يظهر غالبًا في مواقع ثابتة من الكلمة. في دراسة عُمانية كانت الحروف الصامتة مشكلة لدى 76.8% من المتعلمين، فهذا الدرس مهم.',
+ rules:[
+  {t:'kn- في أول الكلمة',ipa:'k صامتة',ar:'ن',d:'100%.',w:['[k]nife','[k]nee','[k]now','[k]nock']},
+  {t:'wr- في أول الكلمة',ipa:'w صامتة',ar:'ر',d:'100%.',w:['[w]rite','[w]rong','[w]rist','[w]rap']},
+  {t:'‎-ght',ipa:'gh صامتة',ar:'ت',d:'100%.',w:['ni[gh]t','li[gh]t','bou[gh]t']},
+  {t:'gn',ipa:'g صامتة',ar:'ن',d:'في الأول والآخر.',w:['[g]nome','si[g]n','desi[g]n','forei[g]n']},
+  {t:'‎-mb في الآخر',ipa:'b صامتة',ar:'م',d:'لكن b تُنطق داخل الكلمة: number.',w:['lam[b]','com[b]','clim[b]','thum[b]']},
+  {t:'‎-alk / -alf / -alm / -ould',ipa:'l صامتة',ar:'—',d:'',w:['ta[l]k','wa[l]k','ha[l]f','ca[l]m','cou[l]d']},
+  {t:'‎-stle / -sten',ipa:'t صامتة',ar:'س',d:'',w:['cas[t]le','lis[t]en','fas[t]en']},
+  {t:'h في كلمات معيّنة',ipa:'h صامتة',ar:'—',d:'احفظيها قائمة.',w:['[h]our','[h]onest','[h]onour']},
+  {t:'‎-mn و‎-bt',ipa:'n / b صامتة',ar:'—',d:'',w:['autum[n]','colum[n]','de[b]t','dou[b]t']},
+  {t:'كلمات فردية',ipa:'s / w / c',ar:'—',d:'',w:['i[s]land','ans[w]er','t[w]o','mus[c]le']}
+ ],
+ tip:'الحرف الصامت يُنطق أحيانًا في كلمة من العائلة نفسها: sign ← signal، bomb ← bombard، autumn ← autumnal. تذكّري الثانية تتذكّري الأولى.',
+ quiz:[
+  {q:'ما الحرف الصامت في knife؟',say:'knife',opts:['k','n','f','e فقط'],a:0,why:'kn- في أول الكلمة: k صامتة.'},
+  {q:'ما الحرف الصامت في lamb؟',say:'lamb',opts:['b','m','l'],a:0,why:'‎-mb في آخر الكلمة: b صامتة.'},
+  {q:'اسمعي واختاري التهجئة الصحيحة',say:'write',listen:true,opts:['write','rite','wrigt'],a:0,why:'wr- في أوله: w صامتة.'},
+  {q:'هل تُنطق t في listen؟',say:'listen',opts:['لا','نعم'],a:0,why:'‎-sten: t صامتة.'},
+  {q:'أي كلمة تساعدك تتذكّرين g في sign؟',opts:['signal','sing','sigh'],a:0,why:'في signal تُنطق g.'}
+ ]},
+
+{id:'blend',part:'cons',ar:'التجمّعات (Blends)',en:'bl · cr · st · str · spl',
+ lead:'في الـ blend يحتفظ كل حرف بصوته، وننطقها متتابعة بسرعة، بلا حركة بينها. العربية لا تبدأ الكلمة بساكنين، لذلك يضيف المتعلم العربي حركة: street تصير «إسْتريت» أو «سِتريت». هذا خطأ موثّق في الأبحاث.',
+ rules:[
+  {t:'مجموعة l',ipa:'bl cl fl gl pl sl',ar:'',d:'',w:['[bl]ack','[cl]ap','[fl]ag','[gl]ad','[pl]an','[sl]ip']},
+  {t:'مجموعة r',ipa:'br cr dr fr gr tr',ar:'',d:'',w:['[br]own','[cr]ab','[dr]um','[fr]og','[gr]een','[tr]ee']},
+  {t:'مجموعة s',ipa:'sk sm sn sp st sw',ar:'',d:'',w:['[sk]ip','[sm]ile','[sn]ake','[sp]oon','[st]op','[sw]im']},
+  {t:'ثلاثية',ipa:'spl spr str scr',ar:'',d:'الأصعب على العربي.',w:['[spl]ash','[spr]ing','[str]eet','[scr]eam']},
+  {t:'في آخر الكلمة',ipa:'nd nt mp st sk lt',ar:'',d:'أسهل من أولها.',w:['ha[nd]','te[nt]','ju[mp]','fa[st]','de[sk]']}
+ ],
+ tip:'ابني الكلمة من آخرها: eet ← reet ← treet ← street. هكذا لا تضيفين حركة في أولها.',
+ quiz:[
+  {q:'اسمعي: كم حركة قبل حرف s في street؟',say:'street',opts:['ولا حركة: str مباشرة','حركة «إ» قبلها','حركة بين s وt'],a:0,why:'str تُنطق متتابعة بلا أي حركة.'},
+  {q:'sh في ship: blend أم digraph؟',opts:['digraph — صوت واحد جديد','blend — صوتان'],a:0,why:'s + h صنعا صوت ش الجديد.'},
+  {q:'st في stop: blend أم digraph؟',opts:['blend — كل حرف بصوته','digraph — صوت واحد'],a:0,why:'نسمع س ثم ت.'},
+  {q:'اسمعي واختاري التهجئة',say:'split',listen:true,opts:['split','siplit','esplit'],a:0,why:'spl ثلاثية بلا حركات بينها.'}
+ ]},
+
+{id:'end',part:'cons',ar:'نهايات ‎-s و‎-ed',en:'Plural -s and past -ed',
+ lead:'نطق النهاية يتبع آخر صوت في الكلمة، لا آخر حرف مكتوب. صوت مهموس قبلها ← نهاية مهموسة. صوت مجهور أو حرف علة ← نهاية مجهورة. وتُضاف حركة كاملة في حالتين فقط.',
+ rules:[
+  {t:'‎-ed بعد t أو d',ipa:'/ɪd/',ar:'ـِد',d:'مقطع إضافي.',w:['want[ed]','end[ed]','need[ed]']},
+  {t:'‎-ed بعد صوت مهموس',ipa:'/t/',ar:'ت',d:'بعد p, k, f, s, sh, ch.',w:['jump[ed]','kiss[ed]','watch[ed]','laugh[ed]']},
+  {t:'‎-ed بعد مجهور أو علة',ipa:'/d/',ar:'د',d:'',w:['play[ed]','liv[ed]','call[ed]','clean[ed]']},
+  {t:'‎-s بعد أصوات الصفير',ipa:'/ɪz/',ar:'ـِز',d:'بعد s, z, sh, ch, j/ge.',w:['bus[es]','dish[es]','watch[es]','pag[es]']},
+  {t:'‎-s بعد صوت مهموس',ipa:'/s/',ar:'س',d:'بعد p, t, k, f.',w:['cat[s]','cup[s]','book[s]']},
+  {t:'‎-s بعد مجهور أو علة',ipa:'/z/',ar:'ز',d:'',w:['dog[s]','tree[s]','play[s]','bag[s]']}
+ ],
+ exc:{t:'الخطأ الأشهر عند العرب',d:'نطق كل ‎-ed مقطعًا مستقلًا: jumped «جَمْپِد». الصحيح «جَمْپْت».',w:['jumped','walked','helped']},
+ quiz:[
+  {q:'كيف تنتهي jumped؟',say:'jumped',opts:['/t/ ت','/d/ د','/ɪd/ ـِد'],a:0,why:'قبلها p مهموسة ← /t/.'},
+  {q:'كيف تنتهي wanted؟',say:'wanted',opts:['/t/ ت','/d/ د','/ɪd/ ـِد'],a:2,why:'بعد t ← /ɪd/ مقطع إضافي.'},
+  {q:'كيف تنتهي played؟',say:'played',opts:['/t/ ت','/d/ د','/ɪd/ ـِد'],a:1,why:'قبلها حرف علة ← /d/.'},
+  {q:'dogs تنتهي بـ:',say:'dogs',opts:['/s/ س','/z/ ز','/ɪz/'],a:1,why:'g مجهورة ← /z/.'},
+  {q:'buses تنتهي بـ:',say:'buses',opts:['/s/','/z/','/ɪz/ مقطع إضافي'],a:2,why:'بعد صوت s ← /ɪz/.'},
+  {q:'books تنتهي بـ:',say:'books',opts:['/s/ س','/z/ ز','/ɪz/'],a:0,why:'k مهموسة ← /s/.'}
+ ]},
+
+{id:'xy',part:'cons',ar:'x وy ونهايات «شَن»',en:'x · y · -tion · -sion · -ture',
+ lead:'x غالبًا «كس». y في أول الكلمة ساكنة مثل الياء، وفي غير ذلك تعمل كحرف علة. ونهايات -tion و-sion و-cian كلها تقريبًا «شَن».',
+ rules:[
+  {t:'x',ipa:'/ks/ — /gz/',ar:'كس — گز',d:'/gz/ في ex- قبل حرف علة منبور.',w:['bo[x]','si[x]','e[x]am','e[x]ample']},
+  {t:'y ساكنة (أول الكلمة)',ipa:'/j/',ar:'ي',d:'',w:['[y]es','[y]ellow','[y]ear']},
+  {t:'y آخر كلمة قصيرة',ipa:'/aɪ/',ar:'آي',d:'',w:['m[y]','fl[y]','sk[y]','wh[y]']},
+  {t:'y آخر كلمة طويلة',ipa:'/i/',ar:'ي قصيرة',d:'',w:['happ[y]','bab[y]','cit[y]']},
+  {t:'y في الوسط',ipa:'/ɪ/',ar:'ـِ',d:'كلمات يونانية.',w:['g[y]m','m[y]th','s[y]stem']},
+  {t:'‎-tion / -ssion / -cian',ipa:'/ʃən/',ar:'شَن',d:'',w:['ac[tion]','sta[tion]','discu[ssion]','musi[cian]']},
+  {t:'‎-sion بعد حرف علة',ipa:'/ʒən/',ar:'ژَن',d:'',w:['vi[sion]','deci[sion]','televi[sion]']},
+  {t:'‎-ture',ipa:'/tʃə/',ar:'تشَ',d:'الأمريكية /tʃər/.',w:['pic[ture]','na[ture]','fu[ture]']},
+  {t:'ci / ti قبل حرف علة',ipa:'/ʃ/',ar:'ش',d:'',w:['spe[ci]al','pa[ti]ent','o[c]ean']}
+ ],
+ quiz:[
+  {q:'كيف تُنطق y هنا؟',say:'sky',word:'sk[y]',opts:['آي','ي قصيرة','ي ساكنة'],a:0,why:'آخر كلمة من مقطع واحد ← /aɪ/.'},
+  {q:'كيف تُنطق y هنا؟',say:'happy',word:'happ[y]',opts:['آي','ي قصيرة /i/'],a:1,why:'آخر كلمة أطول ← /i/.'},
+  {q:'نهاية station:',say:'station',opts:['شَن','تيون','سيون'],a:0,why:'-tion = /ʃən/.'},
+  {q:'نهاية decision:',say:'decision',opts:['ژَن /ʒən/','شَن /ʃən/'],a:0,why:'-sion بعد حرف علة ← /ʒən/.'},
+  {q:'x في exam:',say:'exam',opts:['گز /gz/','كس /ks/'],a:0,why:'ex- قبل حرف علة منبور ← /gz/.'}
+ ]},
+
+{id:'floss',part:'cons',ar:'المضاعفة (FLOSS)',en:'ff · ll · ss · zz · ck · tch · dge',
+ lead:'بعد صوت علة قصير في كلمة من مقطع واحد، تُضاعف f وl وs وz في آخر الكلمة. والحرف المضاعف علامة على أن حرف العلة قبله قصير.',
+ rules:[
+  {t:'FLOSS',ipa:'ff ll ss zz',ar:'',d:'بعد صوت قصير في كلمة من مقطع واحد.',w:['cli[ff]','be[ll]','ki[ss]','bu[zz]']},
+  {t:'المضاعف يحمي الصوت القصير',ipa:'hopping ≠ hoping',ar:'',d:'pp: الصوت قبلها قصير. p واحدة: الصوت طويل.',w:['ho[pp]ing','ho[p]ing','ba[tt]ed']},
+  {t:'حرفان متماثلان = صوت واحد',ipa:'97%',ar:'',d:'',w:['ra[bb]it','be[ll]','ki[ss]']}
+ ],
+ exc:{t:'استثناءات FLOSS الشائعة',d:'وis وhas وwas تنتهي بـ s واحدة تُنطق /z/.',w:['if','bus','gas','yes','this','us','quiz']},
+ quiz:[
+  {q:'اكتبي «بِل» (جرس): أي تهجئة؟',say:'bell',opts:['bell','bel','belle'],a:0,why:'FLOSS: l تُضاعف بعد صوت قصير.'},
+  {q:'hopping أم hoping: أيهما صوته «هوپ» الطويل؟',opts:['hoping','hopping'],a:0,why:'p واحدة ← الصوت قبلها طويل (من hope).'},
+  {q:'أي كلمة استثناء من FLOSS؟',opts:['bus','kiss','cliff'],a:0,why:'bus بـ s واحدة رغم الصوت القصير.'}
+ ]},
+
+{id:'short',part:'vow',ar:'حروف العلة القصيرة',en:'Short vowels · closed syllable',rel:'أكثر من 90%',
+ lead:'حرف علة واحد وبعده ساكن في المقطع نفسه (cat) = صوت قصير. هذه من أقوى القواعد. المشكلة أن العربية فيها ثلاث حركات قصيرة، والإنجليزية فيها سبعة تقريبًا، فتختلط الأزواج.',
+ rules:[
+  {t:'a',ipa:'/æ/',ar:'فتحة مفتوحة مرققة',d:'زوج الخلط: bad ↔ bed',w:['c[a]t','m[a]p','b[a]g','h[a]nd']},
+  {t:'e',ipa:'/e/',ar:'كسرة مفتوحة «إِ»',d:'زوج الخلط: pen ↔ pin',w:['b[e]d','p[e]n','r[e]d','t[e]n']},
+  {t:'i',ipa:'/ɪ/',ar:'كسرة قصيرة',d:'زوج الخلط: ship ↔ sheep',w:['s[i]t','p[i]g','f[i]sh','m[i]lk']},
+  {t:'o',ipa:'/ɒ/',ar:'ضمة مفتوحة قصيرة',d:'زوج الخلط: hot ↔ hut',w:['h[o]t','d[o]g','b[o]x','st[o]p']},
+  {t:'u',ipa:'/ʌ/',ar:'فتحة قصيرة مركزية',d:'زوج الخلط: cat ↔ cut',w:['c[u]p','s[u]n','b[u]s','d[u]ck']}
+ ],
+ exc:{t:'u = «أُ» قصيرة /ʊ/ في كلمات قليلة',w:['p[u]t','p[u]sh','p[u]ll','f[u]ll']},
+ pairs:[['ship','sheep'],['pen','pin'],['hot','hut'],['cat','cut'],['bad','bed'],['full','fool']],
+ quiz:[
+  {q:'اسمعي واختاري',say:'pen',listen:true,opts:['pen','pin'],a:0,why:'pen /e/ كسرة مفتوحة، pin /ɪ/ كسرة قصيرة.'},
+  {q:'اسمعي واختاري',say:'hut',listen:true,opts:['hot','hut'],a:1,why:'hut /ʌ/ أقرب للفتحة.'},
+  {q:'اسمعي واختاري',say:'ship',listen:true,opts:['ship','sheep'],a:0,why:'ship قصيرة /ɪ/، sheep طويلة /iː/.'},
+  {q:'اسمعي واختاري',say:'cat',listen:true,opts:['cat','cut'],a:0,why:'cat /æ/ مفتوحة مرققة.'},
+  {q:'حرف العلة في dog قصير أم طويل؟',say:'dog',opts:['قصير — بعده ساكن','طويل'],a:0,why:'مقطع مغلق ← قصير.'}
+ ]},
+
+{id:'magic',part:'vow',ar:'المقطع المفتوح و magic e',en:'Open syllables & silent e',rel:'i_e 97% · o_e 95% · a_e 68%',
+ lead:'الصوت «الطويل» = اسم الحرف نفسه: a «إيْ»، e «إي»، i «آي»، o «أو»، u «يو». يأتي في حالتين: إذا انتهى المقطع بحرف العلة (go)، أو إذا جاءت e صامتة بعد ساكن (cake).',
+ rules:[
+  {t:'مقطع مفتوح',ipa:'طويل',ar:'',d:'ينتهي المقطع بحرف العلة. 74%.',w:['g[o]','m[e]','h[i]','b[a]by','t[i]ger','m[u]sic']},
+  {t:'a_e',ipa:'/eɪ/',ar:'إيْ',d:'cap ← cape',w:['c[a]p[e]','c[a]k[e]','n[a]m[e]']},
+  {t:'i_e',ipa:'/aɪ/',ar:'آي',d:'kit ← kite',w:['k[i]t[e]','b[i]k[e]','f[i]v[e]']},
+  {t:'o_e',ipa:'/əʊ/',ar:'أو',d:'hop ← hope',w:['h[o]p[e]','h[o]m[e]','n[o]s[e]']},
+  {t:'u_e',ipa:'/juː/ أو /uː/',ar:'يو / و',d:'/uː/ بعد r وl وj.',w:['c[u]b[e]','c[u]t[e]','r[u]l[e]','J[u]n[e]']},
+  {t:'e_e',ipa:'/iː/',ar:'إي',d:'نادرة.',w:['th[e]s[e]','P[e]t[e]','compl[e]t[e]']}
+ ],
+ exc:{t:'استثناءات احفظيها عائلات',d:'o_e = «أَ»: come, some, done, love, one. وhave وgive وlive قصيرة لأن كلمة إنجليزية لا تنتهي بـ v. وmove وlose = «و» طويلة.',w:['come','some','love','have','give','move']},
+ quiz:[
+  {q:'اسمعي: أي كلمة سمعتِ؟',say:'kite',listen:true,opts:['kit','kite'],a:1,why:'e صامتة ← i تقول اسمها «آي».'},
+  {q:'اسمعي: أي كلمة سمعتِ؟',say:'hop',listen:true,opts:['hop','hope'],a:0,why:'بلا e ← o قصيرة.'},
+  {q:'كيف تُنطق o في home؟',say:'home',opts:['أو /əʊ/','أُ قصيرة /ɒ/'],a:0,why:'o_e ← طويلة.'},
+  {q:'أي كلمة لا تتبع قاعدة magic e؟',opts:['come','note','bone'],a:0,why:'come تُنطق «كَم» /kʌm/.'},
+  {q:'الحرف e في cake:',say:'cake',opts:['صامت','يُنطق «إي»'],a:0,why:'e الأخيرة صامتة، وتجعل a طويلة.'}
+ ]},
+
+{id:'team',part:'vow',ar:'حرفا علة معًا (Vowel teams)',en:'ai · ay · ee · ea · oa · ow · oo · ou …',rel:'two vowels go walking: 45% فقط',
+ lead:'قاعدة «إذا مشى حرفا علة معًا تكلّم الأول» لا تصدق إلا في 45% من الكلمات. البديل: تعلّمي كل فريق لوحده. قسّمي الفرق ثلاث فئات: ثابتة، لها صوت غالب، وفرق «جرّبي الصوت الأول ثم الثاني».',
+ rules:[
+  {t:'ثابتة: oi / oy',ipa:'/ɔɪ/',ar:'أوي',d:'100%. oi في الوسط، oy في الآخر.',w:['c[oi]n','[oi]l','b[oy]','t[oy]']},
+  {t:'ثابتة: aw / au',ipa:'/ɔː/',ar:'أو طويلة',d:'aw 100%.',w:['s[aw]','dr[aw]','P[au]l','[Au]gust']},
+  {t:'غالبة: ee',ipa:'/iː/',ar:'إي',d:'95–98%.',w:['s[ee]','tr[ee]','gr[ee]n','sl[ee]p']},
+  {t:'غالبة: ay / ai',ipa:'/eɪ/',ar:'إيْ',d:'ai داخل الكلمة، ay في آخرها. استثناء: said.',w:['d[ay]','pl[ay]','r[ai]n','tr[ai]n']},
+  {t:'غالبة: oa',ipa:'/əʊ/',ar:'أو',d:'95%.',w:['b[oa]t','c[oa]t','r[oa]d']},
+  {t:'ثابتة جدًّا: igh',ipa:'/aɪ/',ar:'آي',d:'',w:['h[igh]','n[igh]t','l[igh]t']},
+  {t:'متقلبة: ea',ipa:'/iː/ /e/ /eɪ/',ar:'إي / إِ / إيْ',d:'جرّبي «إي» أولًا.',w:['[ea]t','s[ea]','br[ea]d','h[ea]d','gr[ea]t']},
+  {t:'متقلبة: ow',ipa:'/aʊ/ أو /əʊ/',ar:'آو / أو',d:'تقريبًا 50 / 50.',w:['c[ow]','n[ow]','sn[ow]','sl[ow]']},
+  {t:'متقلبة: oo',ipa:'/uː/ أو /ʊ/',ar:'و طويلة / أُ قصيرة',d:'/ʊ/ غالبًا قبل k وd.',w:['m[oo]n','f[oo]d','b[oo]k','g[oo]d']},
+  {t:'الأكثر تقلبًا: ou',ipa:'/aʊ/ …',ar:'آو',d:'وأيضًا soup و، touch أَ، could أُ، four أو.',w:['[ou]t','h[ou]se','s[ou]p','t[ou]ch']},
+  {t:'ew / ue',ipa:'/juː/ /uː/',ar:'يو / و',d:'84–88%.',w:['n[ew]','f[ew]','bl[ue]','tr[ue]']},
+  {t:'ie / ei / ey',ipa:'/iː/ /aɪ/ /eɪ/',ar:'',d:'',w:['f[ie]ld','p[ie]','[ei]ght','th[ey]','k[ey]']}
+ ],
+ tip:'للصف الرابع: اجمعي الفرق في «عائلة صوت». صوت /eɪ/ يُكتب a_e أو ai أو ay: cake، rain، day.',
+ quiz:[
+  {q:'كيف تُنطق ea هنا؟',say:'bread',word:'br[ea]d',opts:['إِ /e/','إي /iː/','إيْ /eɪ/'],a:0,why:'bread من مجموعة ea = /e/ مثل head.'},
+  {q:'كيف تُنطق ow هنا؟',say:'snow',word:'sn[ow]',opts:['أو /əʊ/','آو /aʊ/'],a:0,why:'snow /snəʊ/، أما cow فـ /aʊ/.'},
+  {q:'oo في book:',say:'book',word:'b[oo]k',opts:['أُ قصيرة /ʊ/','و طويلة /uː/'],a:0,why:'oo قبل k غالبًا قصيرة.'},
+  {q:'آخر الكلمة: ai أم ay؟ «پْليْ»',say:'play',opts:['play','plai'],a:0,why:'ay في آخر الكلمة، ai في وسطها.'},
+  {q:'كم تصدق قاعدة two vowels go walking؟',opts:['تقريبًا 45%','تقريبًا 95%'],a:0,why:'لذلك تعلّمي كل فريق لوحده.'},
+  {q:'اسمعي: أي تهجئة؟',say:'coin',listen:true,opts:['coin','coyn','koin'],a:0,why:'oi في وسط الكلمة.'}
+ ]},
+
+{id:'rctl',part:'vow',ar:'حرف علة بعده r',en:'ar · or · er · ir · ur · air · ear',
+ lead:'r بعد حرف العلة تغيّر صوته. وفي النطق البريطاني لا تُنطق الـ r إلا إذا جاء بعدها حرف علة: car تُنطق «كا». لهذا قد لا تسمعين الـ r في الآيلتس فتنسينها في الكتابة. الصوت الطويل «آ» أو «أو» يدلّك أن هناك r مكتوبة.',
+ rules:[
+  {t:'ar',ipa:'/ɑː/',ar:'آ طويلة مفخمة',d:'',w:['c[ar]','st[ar]','p[ar]k','g[ar]den']},
+  {t:'or / ore / oor / our / oar',ipa:'/ɔː/',ar:'أو طويلة مفتوحة',d:'',w:['f[or]k','m[ore]','d[oor]','f[our]','b[oar]d']},
+  {t:'er / ir / ur — صوت واحد',ipa:'/ɜː/',ar:'لا مقابل عربي',d:'ثلاث تهجئات لصوت واحد: احفظي القوائم.',w:['h[er]','b[ir]d','g[ir]l','t[ur]n','n[ur]se']},
+  {t:'air / are / ear',ipa:'/eə/',ar:'إيَ',d:'',w:['h[air]','ch[air]','c[are]','b[ear]']},
+  {t:'ear / eer',ipa:'/ɪə/',ar:'إيَ بكسرة',d:'',w:['h[ear]','n[ear]','y[ear]','d[eer]']},
+  {t:'war / wor',ipa:'/wɔː/ — /wɜː/',ar:'',d:'',w:['[war]m','[war]','[wor]k','[wor]ld']},
+  {t:'غير منبورة = schwa',ipa:'/ə/',ar:'ـَ خفيفة',d:'',w:['teach[er]','doct[or]','sug[ar]']}
+ ],
+ quiz:[
+  {q:'اسمعي (نطق بريطاني): هل تُنطق r في car؟',say:'car',opts:['لا — «كا»','نعم — «كار»'],a:0,why:'البريطانية لا تنطق r في آخر الكلمة.'},
+  {q:'bird و turn و her: صوت واحد أم ثلاثة؟',opts:['صوت واحد /ɜː/','ثلاثة أصوات'],a:0,why:'er وir وur صوت واحد بثلاث تهجئات.'},
+  {q:'اسمعي واكتبي: أي تهجئة؟',say:'nurse',listen:true,opts:['nurse','nerse','nirse'],a:0,why:'لا قاعدة هنا — احفظي الكلمة.'},
+  {q:'r في teacher:',say:'teacher',opts:['schwa ضعيفة','آ طويلة'],a:0,why:'مقطع غير منبور ← /ə/.'}
+ ]},
+
+{id:'fam',part:'vow',ar:'عائلات الاستثناء',en:'wa · al · old · ost · ind · ild',
+ lead:'كثير مما يبدو استثناءً هو قاعدة صغيرة ثابتة. احفظيها عائلات بدل كلمات متفرقة.',
+ rules:[
+  {t:'wa / qua',ipa:'/wɒ/',ar:'وُ',d:'95%. استثناء: water.',w:['[wa]s','[wa]nt','[wa]sh','[wa]tch','[qua]lity']},
+  {t:'all / alk / al',ipa:'/ɔːl/ /ɔːk/',ar:'أول / أوك',d:'',w:['[all]','b[all]','t[alk]','w[alk]','s[al]t']},
+  {t:'alf / alm',ipa:'/ɑː/',ar:'آ',d:'',w:['h[alf]','c[alm]','p[alm]']},
+  {t:'old / oll',ipa:'/əʊ/',ar:'أو',d:'',w:['[old]','c[old]','t[old]','r[oll]']},
+  {t:'ost',ipa:'/əʊst/',ar:'أوست',d:'لكن cost وlost قصيرة.',w:['m[ost]','p[ost]','gh[ost]']},
+  {t:'ind / ild',ipa:'/aɪ/',ar:'آي',d:'استثناء: wind (الريح)، children.',w:['f[ind]','k[ind]','w[ild]','ch[ild]']},
+  {t:'o قبل th / m / n / v',ipa:'/ʌ/',ar:'أَ',d:'',w:['m[o]ther','s[o]n','M[o]nday','l[o]ve']}
+ ],
+ quiz:[
+  {q:'a في want:',say:'want',opts:['/ɒ/ «وُنت»','/æ/ «وانت»'],a:0,why:'عائلة wa.'},
+  {q:'i في find:',say:'find',opts:['آي /aɪ/','ـِ قصيرة'],a:0,why:'عائلة ind.'},
+  {q:'o في cold:',say:'cold',opts:['أو /əʊ/','أُ قصيرة'],a:0,why:'عائلة old.'},
+  {q:'o في mother:',say:'mother',opts:['أَ /ʌ/','أو /əʊ/'],a:0,why:'o قبل th ← /ʌ/.'}
+ ]},
+
+{id:'schwa',part:'vow',ar:'الـ schwa وكلمات القلب',en:'Schwa /ə/ & heart words',
+ lead:'الـ schwa صوت خفيف قصير في المقاطع غير المنبورة، ويُكتب بأي حرف علة. العربي يعطي كل مقطع حركة كاملة، فينطق banana «با-نا-نا» بدل «بَ-ناا-نَ». وكلمات القلب كلمات شائعة فيها جزء غير منتظم تحفظينه «by heart».',
+ rules:[
+  {t:'schwa بأي حرف',ipa:'/ə/',ar:'ـَ خفيفة',d:'',w:['[a]bout','banan[a]','trav[e]l','penc[i]l','lem[o]n','s[u]pport']},
+  {t:'كلمات صغيرة ضعيفة',ipa:'/ə/',ar:'',d:'في الكلام المتصل.',w:['[a]','th[e]','[o]f','t[o]','[a]nd','c[a]n']},
+  {t:'لا تدل على الحرف',ipa:'',ar:'',d:'لذلك «اكتب كما تسمع» تفشل هنا.',w:['doct[or]','teach[er]','chocol[a]te']},
+  {t:'♥ said / says',ipa:'/sed/',ar:'',d:'ai = /e/',w:['s[ai]d','s[ay]s']},
+  {t:'♥ was / what / want',ipa:'/wɒ/',ar:'',d:'a = /ɒ/',w:['w[a]s','wh[a]t','w[a]nt']},
+  {t:'♥ one / once',ipa:'/wʌn/',ar:'',d:'صوت w غير مكتوب',w:['[o]ne','[o]nce']},
+  {t:'♥ two / to / do / who',ipa:'/uː/',ar:'',d:'',w:['t[wo]','t[o]','d[o]','wh[o]']},
+  {t:'♥ of / does / friend',ipa:'',ar:'',d:'f = /v/ · o = /ʌ/ · ie = /e/',w:['o[f]','d[oe]s','fr[ie]nd','p[eo]ple']},
+  {t:'♥ could / would / should',ipa:'/ʊd/',ar:'',d:'l صامتة',w:['c[oul]d','w[oul]d','sh[oul]d']},
+  {t:'♥ any / many / busy / women',ipa:'',ar:'',d:'',w:['[a]ny','m[a]ny','b[u]sy','w[o]men']}
+ ],
+ tip:'طريقة Heart Word: اقرئي الحروف المنتظمة بالقواعد، وارسمي قلبًا فوق الحرف غير المتوقع فقط. 2–3 كلمات في كل حصة.',
+ quiz:[
+  {q:'أي مقطع في banana منبور؟',say:'banana',opts:['الثاني: ba-NA-na','الأول: BA-na-na'],a:0,why:'والمقطعان الآخران schwa.'},
+  {q:'كيف تُنطق said؟',say:'said',opts:['«سِد» /sed/','«سيْد» /seɪd/'],a:0,why:'كلمة قلب: ai = /e/.'},
+  {q:'f في of تُنطق:',say:'of',opts:['ڤ /v/','ف /f/'],a:0,why:'of /ɒv/.'},
+  {q:'اسمعي واكتبي',say:'doctor',listen:true,opts:['doctor','docter','doctar'],a:0,why:'النهاية schwa — احفظي التهجئة.'}
+ ]},
+
+{id:'syl',part:'long',ar:'المقاطع: فكّ الكلمة الطويلة',en:'Six syllable types',
+ lead:'كل كلمة طويلة مبنية من مقاطع، وكل مقطع من ستة أنواع. إذا عرفتِ نوع المقطع عرفتِ نطق حرف العلة فيه.',
+ rules:[
+  {t:'مغلق Closed',ipa:'قصير',ar:'',d:'ينتهي بساكن.',w:['[sun]-set','[rab]-bit','cat']},
+  {t:'مفتوح Open',ipa:'طويل',ar:'',d:'ينتهي بحرف علة.',w:['[ro]-bot','[ti]-ger','go']},
+  {t:'VCe',ipa:'طويل',ar:'',d:'علة + ساكن + e.',w:['make','bike','com-[pete]']},
+  {t:'Vowel team',ipa:'حسب الفريق',ar:'',d:'',w:['rain','boat','feet']},
+  {t:'R-controlled',ipa:'صوت خاص',ar:'',d:'',w:['car','her','bird','fork']},
+  {t:'Consonant-le',ipa:'/əl/',ar:'',d:'في آخر الكلمة.',w:['ta-[ble]','lit-[tle]','pur-[ple]']}
+ ],
+ steps:['ضعي خطًّا تحت حروف العلة — هذا علاج «عمى حروف العلة».','عدّي أصوات العلة لتعرفي عدد المقاطع.','قسّمي: بين ساكنين (sun/set). ساكن واحد: جرّبي قبله (ro/bot) ثم بعده (sev/en). لا تفصلي الـ blend (com/plex).','اقرئي كل مقطع حسب نوعه.','ادمجي المقاطع وحدّدي النبر.'],
+ quiz:[
+  {q:'قسّمي rabbit:',say:'rabbit',opts:['rab-bit','ra-bbit','rabb-it'],a:0,why:'ساكنان بين حرفي علة ← نقسم بينهما.'},
+  {q:'قسّمي tiger:',say:'tiger',opts:['ti-ger','tig-er'],a:0,why:'ساكن واحد ← نجرّب قبله، فيصير ti مفتوحًا طويلًا.'},
+  {q:'قسّمي seven:',say:'seven',opts:['sev-en','se-ven'],a:0,why:'«سيْ-ڤن» ليست كلمة، فنقسم بعد الساكن ويصير قصيرًا.'},
+  {q:'نوع المقطع الأخير في table:',say:'table',opts:['Consonant-le','مغلق','مفتوح'],a:0,why:'ble في آخر الكلمة = /bəl/.'}
+ ]},
+
+{id:'stress',part:'long',ar:'النبر واللواحق',en:'Word stress & suffix rules',
+ lead:'لكل كلمة نبر رئيسي واحد. المقطع غير المنبور ينكمش إلى schwa، فالنبر يغيّر الأصوات نفسها. صفّقي للمقاطع: تصفيقة قوية للمنبور وخفيفة لغيره.',
+ table:{head:['القاعدة','أمثلة (المنبور بالأحرف الكبيرة)'],rows:[
+  ['الأسماء والصفات ذات المقطعين: النبر على الأول','PREsent · EXport · OBject · TAble'],
+  ['الأفعال ذات المقطعين: النبر على الثاني','preSENT · exPORT · obJECT · reCORD'],
+  ['‎-ic و‎-tion و‎-sion: النبر على المقطع الذي قبلها','GRAPHic · eduCAtion · teleVIsion'],
+  ['‎-cy و‎-ty و‎-phy و‎-gy و‎-al: الثالث من الآخر','deMOcracy · phoTOgraphy · CRItical'],
+  ['الأسماء المركبة: الجزء الأول','BLACKbird · CLASSroom'],
+  ['الأفعال والصفات المركبة: الجزء الثاني','underSTAND · bad-TEMpered']]},
+ rules:[
+  {t:'احذفي e الصامتة',ipa:'قبل لاحقة تبدأ بحرف علة',ar:'',d:'تبقى قبل لاحقة تبدأ بساكن: timely.',w:['make → making','page → paging']},
+  {t:'ضاعفي الساكن الأخير',ipa:'إذا النبر على المقطع الأخير',ar:'',d:'beGIN ← beginning، لكن DEvelop ← developing.',w:['get → getting','shop → shopped','begin → beginning']},
+  {t:'y تصير i',ipa:'بعد ساكن',ar:'',d:'تبقى y قبل ‎-ing وبعد حرف علة.',w:['baby → babies','lazy → lazier','play → played']}
+ ],
+ quiz:[
+  {q:'record (اسم = تسجيل): أين النبر؟',say:'record',opts:['REcord','reCORD'],a:0,why:'الاسم ذو المقطعين ← على الأول.'},
+  {q:'education: أين النبر؟',say:'education',opts:['eduCAtion','EDucation'],a:0,why:'‎-tion ← على المقطع الذي قبلها.'},
+  {q:'begin + ing:',opts:['beginning','begining'],a:0,why:'النبر على gin ← نضاعف n.'},
+  {q:'baby بالجمع:',opts:['babies','babys'],a:0,why:'y بعد ساكن ← ies.'},
+  {q:'photography: أين النبر؟',say:'photography',opts:['phoTOgraphy','PHOtography'],a:0,why:'‎-phy ← الثالث من الآخر.'}
+ ]},
+
+{id:'arab',part:'me',ar:'صعوبات المتعلم العربي',en:'Five documented problems',
+ lead:'هذه مشكلات مثبتة في أبحاث على متعلمين عرب، وبعضها في عُمان تحديدًا. اعرفيها لنفسك ولطالباتك.',
+ rules:[
+  {t:'1. عمى حروف العلة',ipa:'vowel blindness',ar:'',d:'نقرأ الكلمة من حروفها الساكنة كما في العربية، فنخلط decimal وdismal. العلاج: خط تحت حروف العلة قبل القراءة.',w:['decimal','dismal','rider','order']},
+  {t:'2. p/b و f/v',ipa:'',ar:'',d:'ورقة أمام الفم لـ p. والأسنان على الشفة مع اهتزاز لـ v.',w:['pick','big','van','fan']},
+  {t:'3. حركة داخل التجمّع',ipa:'',ar:'',d:'street «إستريت». ابني الكلمة من آخرها.',w:['street','split','spring']},
+  {t:'4. الحروف الصامتة',ipa:'76.8%',ar:'',d:'احفظي أنماطها واستعيني بكلمة العائلة.',w:['knife','ghost','sign']},
+  {t:'5. القصيرة والـ schwa',ipa:'',ar:'',d:'تدريب يومي قصير على الأزواج المتقاربة.',w:['ship','sheep','pen','pin']}
+ ],
+ pairs:[['pick','big'],['pen','ben'],['van','fan'],['very','ferry'],['ship','sheep'],['hot','hut'],['full','fool'],['cot','cut']],
+ tip:'ميزتك الخليجية: صوت g الصلبة موجود في نطقك للقاف «گال»، وث وذ وش موجودة في العربية.',
+ quizPairs:true},
+
+{id:'plan',part:'me',ar:'خطتك 12 أسبوعًا',en:'Study plan · IELTS',
+ lead:'25 دقيقة يوميًّا، 4–5 أيام في الأسبوع. أشّري على الأسبوع حين تخلصينه. (الخطة مكيّفة من منهج Letters and Sounds لمتعلمة بالغة، وهي اقتراح وليست دراسة منشورة.)',
+ plan:[
+  ['1','الأصوات الـ 44 وIPA، مع p/b وf/v وg وŋ','key'],
+  ['2','حروف العلة القصيرة + المقطع المغلق + الأزواج','short'],
+  ['3','c/g والـ digraphs','cg'],
+  ['4','الـ blends + نهايات ‎-s و‎-ed','blend'],
+  ['5','magic e والمقطع المفتوح + كلمات القلب','magic'],
+  ['6','الـ vowel teams: الثابتة ثم المتقلبة','team'],
+  ['7','حروف العلة مع r + العائلات','rctl'],
+  ['8','الحروف الصامتة + x وy و‎-tion','silent'],
+  ['9–10','المقاطع الستة + اللواحق','syl'],
+  ['11–12','النبر والـ schwa والكلام المتصل','stress']],
+ daily:[['5 د','مراجعة قاعدة الأمس: اقرئي 10 كلمات بصوت عالٍ'],['5 د','القاعدة الجديدة: اقرئيها هنا واسمعي كل مثال'],['5 د','أزواج متقاربة أو تدريب صعوبات العربي'],['5 د','إملاء ذاتي: 10 كلمات تسمعينها وتكتبينها وتصحّحينها'],['5 د','نص قصير: لوّني فيه أنماط اليوم']],
+ ielts:'في Listening يُحسب الجواب خطأً إذا كانت تهجئته خاطئة. الفخاخ في المقاطع غير المنبورة: environment، government، library، separate، necessary، accommodation. قسّميها: environ+ment، govern+ment.',
+ ieltsWords:['environment','government','library','separate','necessary','accommodation']}
+];
+
+/* ---------- state ---------- */
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let S={cur:store.get('ph_cur','key'),done:store.get('ph_done',{}),plan:store.get('ph_plan',{}),gst:store.get('ph_gst',{}),view:'learn',quiz:null,final:null,game:null};
+
+/* ---------- voices: English model + Arabic explainer ---------- */
+let enV=null,arV=null;
+function pickVoices(){try{const vs=speechSynthesis.getVoices();enV=vs.find(v=>v.lang==='en-GB')||vs.find(v=>/^en[-_]GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;arV=vs.find(v=>/^ar/i.test(v.lang))||null}catch(e){}}
+try{pickVoices();speechSynthesis.onvoiceschanged=pickVoices}catch(e){}
+let playingEl=null;
+function speakSeq(parts,el){
+  try{
+    pickVoices();speechSynthesis.cancel();
+    if(playingEl)playingEl.classList.remove('playing');
+    playingEl=el||null;if(el)el.classList.add('playing');
+    parts.forEach((p,i)=>{const u=new SpeechSynthesisUtterance(p.t);u.lang=p.ar?'ar-SA':'en-GB';const v=p.ar?arV:enV;if(v)u.voice=v;u.rate=p.ar?.95:.8;
+      if(i===parts.length-1)u.onend=u.onerror=()=>{if(el)el.classList.remove('playing')};speechSynthesis.speak(u)});
+    if(parts.some(p=>p.ar)&&!arV)toast('ما لقيت صوتًا عربيًّا في جهازك، فقد يُقرأ الشرح بلكنة غريبة. أضيفي صوتًا عربيًّا من إعدادات الجهاز (اللغة والكلام).');
+  }catch(e){toast('المتصفح هذا لا يدعم النطق الصوتي.')}
+}
+const say=(t,el)=>speakSeq([{t}],el);
+let toastT=null;
+function toast(msg){let t=document.querySelector('.toast');if(!t){t=document.createElement('div');t.className='toast';t.setAttribute('role','status');document.body.appendChild(t)}t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true},5000)}
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const mk=s=>esc(s).replace(/\[([^\]]+)\]/g,'<mark>$1</mark>');
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const uniq=a=>[...new Set(a)];
+const lessonById=id=>L.find(x=>x.id===id);
+const MIC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/></svg>';
+const AR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/><path d="M8.5 11h7M8.5 14h4"/></svg>';
+
+/* parse "[c]ity" -> plain word + marked letter positions */
+function parse(raw){
+  const s=raw.replace(/\s*→.*$/,'');let p='',marks=[],pat='',inM=false;
+  for(const ch of s){if(ch==='['){inM=true;continue}if(ch===']'){inM=false;continue}if(ch==='-')continue;if(inM){marks.push(p.length);pat+=ch}p+=ch}
+  return {p:p.trim(),marks,pat};
+}
+function mkp(q,hide){let h='';for(let i=0;i<q.p.length;i++){const c=esc(q.p[i]);h+=q.marks.includes(i)?(hide?'<mark>_</mark>':'<mark>'+c+'</mark>'):c}return h.replace(/<\/mark><mark>/g,'')}
+function labOf(r){if(r.ipa&&/^\/[^/]+\/$/.test(r.ipa.trim()))return (r.ar&&r.ar.length<=6?r.ar:r.t)+'  '+r.ipa;return r.t}
+function wordBtn(w){const p=parse(w).p;return `<button class="w" data-say="${esc(p)}" aria-label="استمعي: ${esc(p)}">${mk(w)}${SPK}</button>`}
+function pool(l){const out=[],seen={};(l.rules||[]).forEach((r,gi)=>{const lab=labOf(r);r.w.forEach(w=>{const q=parse(w);if(seen[q.p.toLowerCase()])return;seen[q.p.toLowerCase()]=1;q.raw=w;q.g=gi;q.lab=lab;q.r=r;q.word=/^[A-Za-z']+$/.test(q.p);out.push(q)})});return out}
+function ruleSpeech(r){
+  const parts=[{t:r.t.replace(/[‎\-]/g,' ')+'.',ar:1}];
+  if(r.ar&&r.ar.length<=8)parts.push({t:'ويُنطق تقريبًا مثل: '+r.ar+'.',ar:1});
+  if(r.d)parts.push({t:r.d,ar:1});
+  parts.push({t:'أمثلة:',ar:1});
+  r.w.forEach(w=>parts.push({t:parse(w).p}));
+  return parts;
+}
+function howLine(r){
+  if(r.ar&&r.ar.length<=8&&/^\//.test((r.ipa||'').trim()))return `كيف تقرئينها: الجزء الملوّن في كل مثال يُنطق «${esc(r.ar)}» ورمزه <span class="en">${esc(r.ipa)}</span>.`;
+  return '';
+}
+
+/* ---------- rail ---------- */
+function renderRail(){
+  let h='';
+  PARTS.forEach(p=>{
+    h+=`<div class="part">${p.ar}</div>`;
+    L.filter(l=>l.part===p.id).forEach(l=>{h+=`<button class="lnk${S.done[l.id]?' done':''}" data-go="${l.id}" aria-current="${S.cur===l.id&&!S.final}"><span class="dot">${S.done[l.id]?'✓':''}</span>${esc(l.ar)}</button>`});
+  });
+  h+=`<button class="final-btn" data-final="1">الاختبار الشامل</button>`;
+  $('#rail').innerHTML=h;
+  const n=L.filter(l=>S.done[l.id]).length;
+  $('#progBar').style.width=Math.round(n/L.length*100)+'%';
+  $('#progTxt').textContent=n+' / '+L.length+' درس';
+}
+
+/* ---------- lesson quiz (kept from v1) ---------- */
+function buildQuiz(l){
+  let qs;
+  if(l.quizPairs){qs=shuffle(l.pairs).slice(0,6).map(p=>{const k=Math.random()<.5?0:1;return{q:'اسمعي واختاري الكلمة',say:p[k],listen:true,opts:p.slice(),a:k,why:p[0]+' ≠ '+p[1]+'. كرّري الاثنتين بصوت عالٍ.'}})}
+  else qs=l.quiz.slice();
+  return {lid:l.id,qs:qs.map(q=>Object.assign({},q,{order:shuffle(q.opts.map((o,i)=>i))})),i:0,picked:null,score:0,done:false};
+}
+function quizHTML(Q,final){
+  if(Q.done){
+    const pct=Q.score/Q.qs.length;const msg=pct>=.9?'ممتاز! أتقنتِ هذا الدرس.':pct>=.6?'جيد جدًّا. راجعي الأمثلة وأعيدي للدرجة الكاملة.':'ارجعي للشرح واسمعي الأمثلة، ثم جرّبي مرة ثانية.';
+    return `<div class="result"><div class="score">${Q.score} / ${Q.qs.length}</div><p>${msg}</p><div class="row"><button class="btn ghost" data-act="retry">أعيدي</button>${!final&&nextLesson()?`<button class="btn acc" data-go="${nextLesson().id}">الدرس التالي</button>`:''}</div></div>`;
+  }
+  const q=Q.qs[Q.i];const isEn=q.opts.every(o=>/^[A-Za-z' -]+$/.test(o));
+  let h=`<div class="qhead"><span>سؤال ${Q.i+1} من ${Q.qs.length}${final&&q.from?' · '+esc(q.from):''}</span><span>الصحيحة: ${Q.score}</span></div><p class="q">${esc(q.q)}</p>`;
+  if(q.say||q.word)h+=`<div class="qword">${q.say?`<button class="play" data-say="${esc(q.say)}" aria-label="استمعي">${SPK}</button>`:''}${q.word&&!q.listen?`<span class="big">${mk(q.word)}</span>`:''}${!q.word&&q.say&&!q.listen?`<span class="big">${esc(q.say)}</span>`:''}</div>`;
+  h+=`<div class="opts">`;
+  q.order.forEach(oi=>{let cls='opt'+(isEn?' en':'');if(Q.picked!==null){if(oi===q.a)cls+=' right';else if(oi===Q.picked)cls+=' wrong'}h+=`<button class="${cls}" data-pick="${oi}" ${Q.picked!==null?'disabled':''} ${isEn?'dir="ltr"':''}>${esc(q.opts[oi])}</button>`});
+  h+=`</div>`;
+  if(Q.picked!==null){const ok=Q.picked===q.a;h+=`<div class="why ${ok?'ok':'no'}"><p><b>${ok?'صح!':'الإجابة الصحيحة: '+esc(q.opts[q.a])}</b> ${esc(q.why||'')}</p><button class="btn" data-act="qnext">${Q.i+1>=Q.qs.length?'النتيجة':'التالي'}</button></div>`}
+  return h;
+}
+function nextLesson(){const i=L.findIndex(l=>l.id===S.cur);return L[i+1]||null}
+
+/* ---------- 15 games ---------- */
+const GAMES=[
+ {id:'listen',ar:'استمعي واختاري',tag:['listen','استماع'],how:'تسمعين كلمة، وتختارين المكتوبة منها.'},
+ {id:'sound',ar:'صوت الجزء الملوّن',tag:['read','قراءة'],how:'تشوفين كلمة فيها حروف ملوّنة: كيف تُنطق؟'},
+ {id:'sort',ar:'صنّفي الكلمات',tag:['read','قراءة'],how:'وزّعي الكلمات على سلال القواعد.'},
+ {id:'tf',ar:'صح أو خطأ',tag:['read','قراءة'],how:'هل القاعدة المكتوبة تنطبق على الكلمة؟'},
+ {id:'missing',ar:'أكملي الناقص',tag:['spell','تهجئة'],how:'الحروف الملوّنة اختفت: اختاري ما يكملها.'},
+ {id:'tap',ar:'المسي الحروف',tag:['read','قراءة'],how:'المسي الحروف اللي تصنع صوت القاعدة.'},
+ {id:'odd',ar:'الكلمة الدخيلة',tag:['read','قراءة'],how:'ثلاث كلمات من قاعدة واحدة وواحدة دخيلة.'},
+ {id:'match',ar:'التوصيل',tag:['mem','ذاكرة'],how:'وصّلي كل كلمة بصوتها أو قاعدتها.'},
+ {id:'memory',ar:'بطاقات الذاكرة',tag:['mem','ذاكرة'],how:'اقلبي بطاقتين: كلمة وقاعدتها.'},
+ {id:'scramble',ar:'رتّبي الحروف',tag:['spell','تهجئة'],how:'اسمعي الكلمة ورتّبي حروفها.'},
+ {id:'dict',ar:'اكتبي ما تسمعين',tag:['listen','استماع'],how:'إملاء: اسمعي واكتبي الكلمة.'},
+ {id:'spell',ar:'التهجئة الصحيحة',tag:['spell','تهجئة'],how:'كلمة وحدة مكتوبة صح، لقيها.'},
+ {id:'hunt',ar:'صيد الكلمات',tag:['read','قراءة'],how:'اصطادي كل الكلمات اللي تتبع القاعدة المطلوبة.'},
+ {id:'speed',ar:'تحدي ٤٥ ثانية',tag:['mem','ذاكرة'],how:'أكبر عدد من الإجابات الصحيحة قبل نهاية الوقت.'},
+ {id:'speak',ar:'انطقي وصحّحي',tag:['speak','نطق'],how:'اسمعي النطق، انطقي الكلمة، وشوفي إذا نطقك صح.'}
+];
+const gIdx=id=>GAMES.findIndex(g=>g.id===id);
+
+function misspell(w){
+  const res={};const vowels='aeiou';let guard=0;
+  while(Object.keys(res).length<3&&guard<200){guard++;
+    const a=w.split('');const t=Math.floor(Math.random()*4);const i=1+Math.floor(Math.random()*(a.length-1));
+    if(t===0&&i<a.length-1){[a[i],a[i+1]]=[a[i+1],a[i]]}else if(t===1&&a.length>3){a.splice(i,1)}else if(t===2){a.splice(i,0,a[i])}
+    else{const ix=[];for(let k=1;k<a.length;k++)if(vowels.includes(a[k]))ix.push(k);if(ix.length){const p=pick(ix);const nv=vowels.replace(a[p],'');a[p]=pick(nv.split(''))}}
+    const v=a.join('');if(v.toLowerCase()!==w.toLowerCase())res[v]=1}
+  return Object.keys(res).slice(0,3);
+}
+function labsWith(P,min){const c={};P.forEach(q=>{c[q.lab]=(c[q.lab]||0)+1});return Object.keys(c).filter(k=>c[k]>=min)}
+function distinctByLab(P,n){const by={};shuffle(P).forEach(q=>{if(!by[q.lab])by[q.lab]=q});return shuffle(Object.values(by)).slice(0,n)}
+function choiceRound(o){return Object.assign({kind:'choice'},o)}
+
+function buildGame(gid,l){
+  const P=pool(l);const W=P.filter(q=>q.word);const M=P.filter(q=>q.marks.length&&q.pat.length<q.p.length);const labs=uniq(P.map(q=>q.lab));
+  const n=k=>Math.min(k,6);
+  switch(gid){
+  case 'listen':{if(W.length<3)return null;return shuffle(W).slice(0,n(W.length)).map(q=>choiceRound({prompt:'اسمعي، ثم اختاري الكلمة اللي سمعتيها',say:q.p,q,opts:shuffle([q,...shuffle(W.filter(x=>x!==q)).slice(0,3)]).map(x=>({label:x.p,val:x.p,en:1})),ans:q.p}))}
+  case 'sound':{const Mm=P.filter(q=>q.marks.length);if(labs.length<2||Mm.length<3)return null;return shuffle(Mm).slice(0,6).map(q=>choiceRound({prompt:'كيف يُنطق الجزء الملوّن؟ (أو: أي قاعدة تنطبق؟)',show:mkp(q),say:q.p,q,opts:shuffle(uniq([q.lab,...shuffle(labs.filter(x=>x!==q.lab)).slice(0,3)])).map(x=>({label:x,val:x})),ans:q.lab}))}
+  case 'tf':{if(labs.length<2)return null;return shuffle(P).slice(0,6).map(q=>{const t=Math.random()<.5;const lab=t?q.lab:pick(labs.filter(x=>x!==q.lab));return choiceRound({prompt:'هل هذه القاعدة تنطبق على الكلمة؟',show:mkp(q),say:q.p,claim:lab,q,opts:[{label:'صح',val:'T'},{label:'خطأ',val:'F'}],ans:t?'T':'F'})})}
+  case 'missing':{const pats=uniq(M.filter(q=>q.word).map(q=>q.pat.toLowerCase()));const Mw=M.filter(q=>q.word);if(Mw.length<3||pats.length<2)return null;return shuffle(Mw).slice(0,6).map(q=>{const others=shuffle(pats.filter(x=>x!==q.pat.toLowerCase())).slice(0,3);while(others.length<3){const f=pick('aeiou').repeat(q.pat.length);if(f!==q.pat&&!others.includes(f))others.push(f);else break}return choiceRound({prompt:'أي حروف تكمّل الكلمة؟ اسمعيها لو احتجتي',show:mkp(q,true),say:q.p,q,opts:shuffle([q.pat.toLowerCase(),...others]).map(x=>({label:x,val:x,en:1})),ans:q.pat.toLowerCase()})})}
+  case 'tap':{const T=M.filter(q=>q.word&&q.p.length<=11);if(T.length<3)return null;return shuffle(T).slice(0,5).map(q=>({kind:'tap',q,sel:[]}))}
+  case 'odd':{const big=labsWith(P,3);if(!big.length||labs.length<2)return null;const rs=[];for(let k=0;k<5;k++){const lab=pick(big);const same=shuffle(P.filter(q=>q.lab===lab)).slice(0,3);const odd=pick(P.filter(q=>q.lab!==lab));rs.push(choiceRound({prompt:'أي كلمة لا تتبع نفس قاعدة الباقي؟',say:null,q:odd,group:lab,opts:shuffle([...same,odd]).map(x=>({label:x.p,val:x.p,en:1,html:mkp(x)})),ans:odd.p}))}return rs}
+  case 'match':{const items=distinctByLab(P,5);if(items.length<3)return null;return [{kind:'match',items,left:shuffle(items.map((x,i)=>i)),right:shuffle(items.map((x,i)=>i)),sl:null,got:[],bad:null,miss:0}]}
+  case 'memory':{const items=distinctByLab(P,6);if(items.length<3)return null;const cards=[];items.forEach((q,i)=>{cards.push({i,f:'w'});cards.push({i,f:'l'})});return [{kind:'memory',items,cards:shuffle(cards),up:[],got:[],moves:0,lock:false}]}
+  case 'sort':{const ls=shuffle(labsWith(P,2)).slice(0,3);if(ls.length<2)return null;const items=shuffle(ls.flatMap(lb=>shuffle(P.filter(q=>q.lab===lb)).slice(0,3)));return [{kind:'sort',labs:ls,items,place:items.map(()=>null),sel:null,checked:false}]}
+  case 'scramble':{const S2=W.filter(q=>q.p.length>=3&&q.p.length<=10);if(S2.length<3)return null;return shuffle(S2).slice(0,5).map(q=>{const L2=q.p.toLowerCase().split('');let t=shuffle(L2),g=0;while(t.join('')===L2.join('')&&g++<10)t=shuffle(L2);return {kind:'build',q,tiles:t,built:[]}})}
+  case 'dict':{if(W.length<3)return null;return shuffle(W).slice(0,5).map(q=>({kind:'type',q}))}
+  case 'spell':{const S3=W.filter(q=>q.p.length>=4);if(S3.length<3)return null;return shuffle(S3).slice(0,5).map(q=>choiceRound({prompt:'اسمعي، ثم اختاري التهجئة الصحيحة',say:q.p,q,opts:shuffle([q.p,...misspell(q.p)]).map(x=>({label:x,val:x,en:1})),ans:q.p}))}
+  case 'hunt':{const big=labsWith(P,2);if(!big.length||labs.length<2)return null;const rs=[];shuffle(big).slice(0,3).forEach(lab=>{const yes=P.filter(q=>q.lab===lab).slice(0,4);const no=shuffle(P.filter(q=>q.lab!==lab)).slice(0,Math.max(4,9-yes.length));rs.push({kind:'hunt',lab,r:yes[0].r,grid:shuffle([...yes,...no]),sel:[],checked:false})});return rs}
+  case 'speed':{if(labs.length<2)return null;return 'speed'}
+  case 'speak':{if(!W.length)return null;return shuffle(W).slice(0,5).map(q=>({kind:'speak',q,status:'idle',heard:''}))}
+  }
+  return null;
+}
+function speedRound(l){const P=pool(l);const labs=uniq(P.map(q=>q.lab));const q=pick(P);return choiceRound({prompt:'أي قاعدة؟',show:mkp(q),say:null,q,opts:shuffle(uniq([q.lab,...shuffle(labs.filter(x=>x!==q.lab)).slice(0,3)])).map(x=>({label:x,val:x})),ans:q.lab})}
+function startGame(gid){
+  stopTimer();const l=lessonById(S.cur);let rounds=buildGame(gid,l);if(!rounds)return;
+  const g={id:gid,i:0,score:0,max:0,res:null,picked:null,done:null};
+  if(rounds==='speed'){g.speed=true;g.left=45;g.rounds=[speedRound(l)];timer=setInterval(()=>{const G=S.game;if(!G||!G.speed||G.done){stopTimer();return}G.left--;const t=$('#timer');if(t)t.textContent=G.left;if(G.left<=0){stopTimer();finishGame(G.score>=14?3:G.score>=8?2:G.score>0?1:0,G.score+' إجابة صحيحة');drawGame()}},1000)}
+  else g.rounds=rounds;
+  S.game=g;S.view='games';render();scrollToTop();
+}
+let timer=null;function stopTimer(){if(timer){clearInterval(timer);timer=null}}
+function finishGame(st,txt){const g=S.game;const k=S.cur+':'+g.id;S.gst[k]=Math.max(S.gst[k]||0,st);store.set('ph_gst',S.gst);g.done={st,txt}}
+function resolveRound(ok,gain,max){const g=S.game;g.res=ok;g.score+=gain===undefined?(ok?1:0):gain;g.max+=max===undefined?1:max;const r=g.rounds[g.i];if(ok&&r.q&&!g.speed)say(r.q.p)}
+function nextRound(){
+  const g=S.game;if(!g||g.done)return;
+  if(g.speed){g.rounds.push(speedRound(lessonById(S.cur)));g.i++;g.res=null;g.picked=null;drawGame();return}
+  if(g.i+1>=g.rounds.length){const pct=g.max?g.score/g.max:0;finishGame(pct>=.9?3:pct>=.6?2:g.score>0?1:0,Math.round(g.score)+' / '+g.max);drawGame();return}
+  g.i++;g.res=null;g.picked=null;drawGame();
+}
+function stars(n){return `<span class="stars" aria-label="${n} من 3 نجوم">${[0,1,2].map(i=>i<n?'★':'<span class="off">★</span>').join('')}</span>`}
+function ruleBox(r,ok,extra){
+  if(!r)return '';
+  return `<div class="why ${ok?'ok':'no'}"><p><b>${ok?'صح!':'ولا يهمك.'}</b> ${extra||''} <br>القاعدة: <b>${esc(r.t)}</b>${r.ipa?' <span class="en">'+esc(r.ipa)+'</span>':''}${r.d?' — '+esc(r.d):''}</p><div class="row"><button class="voice" data-rule-say="1">${AR}اشرحيها لي</button><button class="btn" data-act="gnext">${S.game.speed?'التالي':(S.game.i+1>=S.game.rounds.length?'النتيجة':'التالي')}</button></div></div>`;
+}
+function gameBody(){
+  const g=S.game;const G=GAMES[gIdx(g.id)];
+  if(g.done){const nxt=GAMES[(gIdx(g.id)+1)%GAMES.length];return `<div class="result">${stars(g.done.st).replace('stars','stars" style="font-size:44px')}<div class="score">${esc(g.done.txt)}</div><p>${g.done.st===3?'ممتاز! أتقنتِ القاعدة.':g.done.st===2?'شغل حلو! جرّبي مرة ثانية للنجمة الثالثة.':'ارجعي للشرح واسمعي الأمثلة، ثم جرّبي من جديد.'}</p><div class="row"><button class="btn ghost" data-act="replay">العبي مرة ثانية</button><button class="btn acc" data-game="${nxt.id}">اللعبة التالية: ${esc(nxt.ar)}</button><button class="btn" data-act="games">كل الألعاب</button></div></div>`}
+  const r=g.rounds[g.i];let h='';
+  if(r.kind==='choice'){
+    h+=`<p class="q">${esc(r.prompt)}</p>`;
+    if(r.claim)h+=`<p style="margin:0 0 8px" class="pill">القاعدة: ${esc(r.claim)}</p>`;
+    h+=`<div class="qword">${r.say?`<button class="play" data-say="${esc(r.say)}" aria-label="استمعي">${SPK}</button>`:''}${r.show?`<span class="big">${r.show}</span>`:''}</div>`;
+    h+=`<div class="opts">${r.opts.map((o,k)=>{let c='opt'+(o.en?' en':'');if(g.picked!==null){if(o.val===r.ans)c+=' right';else if(o.val===g.picked)c+=' wrong'}return `<button class="${c}" data-ch="${k}" ${g.picked!==null?'disabled':''} ${o.en?'dir="ltr"':''}>${o.html||esc(o.label)}</button>`}).join('')}</div>`;
+    if(g.res!==null&&!g.speed){let extra='';if(g.id==='odd')extra=`الكلمات الثلاث تتبع: «${esc(r.group)}»، و<span class="en">${esc(r.q.p)}</span> تتبع قاعدة ثانية.`;else extra=`<span class="en">${mkp(r.q)}</span>`;h+=ruleBox(r.q.r,g.res,extra)}
+  }
+  else if(r.kind==='tap'){
+    const done=g.res!==null;
+    h+=`<p class="q">المسي الحروف اللي تصنع صوت القاعدة في هذه الكلمة</p><div class="qword"><button class="play" data-say="${esc(r.q.p)}" aria-label="استمعي">${SPK}</button><span class="pill">${esc(r.q.lab)}</span></div><div class="letters">${r.q.p.split('').map((c,i)=>{let cls='lt';if(done){cls+=r.q.marks.includes(i)?' right':(r.sel.includes(i)?' wrong':'')}else if(r.sel.includes(i))cls+=' on';return `<button class="${cls}" data-lt="${i}" ${done?'disabled':''}>${esc(c)}</button>`}).join('')}</div>`;
+    if(!done)h+=`<div class="row" style="justify-content:center;margin-top:12px"><button class="btn acc" data-act="tapcheck" ${r.sel.length?'':'disabled'}>تحقّقي</button></div>`;
+    else h+=ruleBox(r.q.r,g.res,`<span class="en">${mkp(r.q)}</span>`);
+  }
+  else if(r.kind==='build'){
+    const done=g.res!==null;
+    h+=`<p class="q">اسمعي الكلمة ورتّبي حروفها</p><div class="qword"><button class="play" data-say="${esc(r.q.p)}" aria-label="استمعي">${SPK}</button></div><div class="slot ${done?(g.res?'right':'wrong'):''}">${r.built.map((t,pos)=>`<button class="lt" data-unb="${pos}" ${done?'disabled':''}>${esc(r.tiles[t])}</button>`).join('')}</div><div class="letters" style="margin-top:10px">${r.tiles.map((c,k)=>`<button class="lt" data-tile="${k}" ${r.built.includes(k)||done?'disabled':''}>${esc(c)}</button>`).join('')}</div>`;
+    if(done)h+=ruleBox(r.q.r,g.res,`الكلمة: <span class="en">${mkp(r.q)}</span>`);
+  }
+  else if(r.kind==='type'){
+    const done=g.res!==null;
+    h+=`<p class="q">اسمعي واكتبي الكلمة</p><div class="qword"><button class="play" data-say="${esc(r.q.p)}" aria-label="استمعي">${SPK}</button><span class="pill">القاعدة: ${esc(r.q.lab)}</span></div><label for="dictIn" class="note">اكتبي هنا</label><div class="row"><input id="dictIn" class="input" autocomplete="off" spellcheck="false" ${done?'disabled':''} value="${esc(r.typed||'')}"><button class="btn acc" data-act="typecheck" ${done?'disabled':''}>تحقّقي</button></div>`;
+    if(done)h+=ruleBox(r.q.r,g.res,`التهجئة: <span class="en">${mkp(r.q)}</span>`);
+  }
+  else if(r.kind==='speak'){
+    const done=g.res!==null;
+    const st={idle:'اسمعي النطق، ثم اضغطي «انطقي الآن» وقولي الكلمة بوضوح.',live:'أسمعك الحين… تكلّمي',no:'ما طابق النطق. '+(r.heard?'سمعت: «'+r.heard+'». ':'')+'اسمعي مرة ثانية وجرّبي.',blocked:'الميكروفون غير متاح هنا، فالتصحيح التلقائي لا يعمل في هذه النافذة. قولي الكلمة بصوت عالٍ، ثم اسمعي النطق الصحيح وقارني بنفسك:'}[r.status];
+    h+=`<p class="q">انطقي الكلمة</p><div class="qword"><span class="big">${mkp(r.q)}</span></div><div class="row"><button class="voice" data-say="${esc(r.q.p)}">${SPK}اسمعي النطق</button>${done?'':`<button class="mic${r.status==='live'?' live':''}" data-act="mic">${MIC}انطقي الآن</button>`}</div><p class="note" style="margin-top:10px" role="status">${esc(st)}</p>`;
+    if(!done&&(r.status==='blocked'||r.status==='no'))h+=`<div class="row" style="margin-top:8px"><button class="btn acc" data-act="selfok">نطقي مطابق</button><button class="btn ghost" data-act="selfno">أحتاج تدريب — التالي</button></div>`;
+    if(done)h+=ruleBox(r.q.r,g.res,r.status==='ok'?'نطقك مطابق!':'');
+  }
+  else if(r.kind==='sort'){
+    h+=`<p class="q">اختاري كلمة، ثم اضغطي السلة اللي تناسبها</p><div class="chips" style="margin-bottom:12px">${r.items.map((q,k)=>r.place[k]===null?`<button class="chip${r.sel===k?' sel':''}" data-si="${k}">${mkp(q)}</button>`:'').join('')}</div><div class="buckets">${r.labs.map((lb,b)=>`<button class="bucket${r.sel!==null&&!r.checked?' target':''}" data-bk="${b}"><h5>${esc(lb)}</h5><span class="chips">${r.items.map((q,k)=>r.place[k]===b?`<span class="chip${r.checked?(q.lab===lb?' right':' wrong'):''}">${mkp(q)}</span>`:'').join('')}</span></button>`).join('')}</div>`;
+    if(!r.checked&&r.place.every(x=>x!==null))h+=`<div class="row" style="justify-content:center;margin-top:12px"><button class="btn acc" data-act="sortcheck">تحقّقي</button></div>`;
+    if(r.checked){const ok=r.items.filter((q,k)=>r.labs[r.place[k]]===q.lab).length;h+=`<div class="why ${ok===r.items.length?'ok':'no'}"><p><b>${ok} من ${r.items.length} صح.</b> الكلمات الحمراء في السلة الخطأ — شوفي الحرف الملوّن فيها وارجعي لقاعدته.</p><button class="btn" data-act="gnext">النتيجة</button></div>`}
+  }
+  else if(r.kind==='match'){
+    h+=`<p class="q">اختاري كلمة، ثم القاعدة اللي تناسبها</p><div class="mgrid"><div class="mcol">${r.left.map(i=>{const q=r.items[i];const got=r.got.includes(i);return `<button class="chip${got?' right':r.sl===i?' sel':''}${r.bad&&r.bad[0]===i?' wrong':''}" data-ml="${i}" ${got?'disabled':''}>${mkp(q)}</button>`}).join('')}</div><div class="mcol">${r.right.map(i=>{const got=r.got.includes(i);return `<button class="opt${got?' right':''}${r.bad&&r.bad[1]===i?' wrong':''}" data-mr="${i}" ${got?'disabled':''} style="font-size:16px;min-height:44px">${esc(r.items[i].lab)}</button>`}).join('')}</div></div><p class="note" style="margin-top:8px">الأخطاء: ${r.miss}</p>`;
+  }
+  else if(r.kind==='memory'){
+    h+=`<p class="q">اقلبي بطاقتين: كلمة وقاعدتها · المحاولات: ${r.moves}</p><div class="memg">${r.cards.map((c,k)=>{const q=r.items[c.i];const got=r.got.includes(c.i);const up=got||r.up.includes(k);return `<button class="mem${got?' got':up?' up':''}" data-mem="${k}" ${got?'disabled':''} aria-label="${up?esc(c.f==='w'?q.p:q.lab):'بطاقة مقلوبة'}">${up?(c.f==='w'?`<span class="en">${mkp(q)}</span>`:esc(q.lab)):'؟'}</button>`}).join('')}</div>`;
+  }
+  else if(r.kind==='hunt'){
+    h+=`<p class="q">اصطادي كل الكلمات اللي تتبع: <span class="pill">${esc(r.lab)}</span></p><div class="hunt">${r.grid.map((q,k)=>{let c='chip';if(r.checked){const yes=q.lab===r.lab;c+=yes?(r.sel.includes(k)?' right':' wrong'):(r.sel.includes(k)?' wrong':'')}else if(r.sel.includes(k))c+=' sel';return `<button class="${c}" data-hu="${k}" ${r.checked?'disabled':''}>${mkp(q)}</button>`}).join('')}</div>`;
+    if(!r.checked)h+=`<div class="row" style="justify-content:center;margin-top:12px"><button class="btn acc" data-act="huntcheck" ${r.sel.length?'':'disabled'}>تحقّقي</button></div>`;
+    else h+=ruleBox(r.r,g.res,g.res?'صدتيها كلها.':'الحمراء: إما نسيتيها وهي من القاعدة، أو اخترتيها وهي ليست منها.');
+  }
+  return h;
+}
+function gameView(){
+  const g=S.game;const G=GAMES[gIdx(g.id)];
+  return `<section class="card" style="display:flex;flex-direction:column;gap:12px"><div class="gbar"><div><span class="gtag t-${G.tag[0]}">${G.tag[1]}</span><h3 style="font-size:24px;margin-top:4px">لعبة ${gIdx(g.id)+1}: ${esc(G.ar)}</h3><p class="note">${esc(G.how)}</p></div><div class="row">${g.speed?`<span class="pill">الوقت: <span id="timer" class="timer">${g.left}</span></span>`:`<span class="pill">جولة ${Math.min(g.i+1,g.rounds.length)} / ${g.rounds.length}</span>`}<span class="pill">النقاط: ${Math.round(g.score)}</span><button class="btn ghost" data-act="games">كل الألعاب</button></div></div><div id="gbox">${gameBody()}</div></section>`;
+}
+function drawGame(){const b=$('#gbox');if(b){b.parentElement.outerHTML=gameView()}else render()}
+
+/* ---------- speech recognition ---------- */
+function listen(){
+  const g=S.game;const r=g.rounds[g.i];const R=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!R){r.status='blocked';drawGame();return}
+  try{
+    const rec=new R();rec.lang='en-GB';rec.interimResults=false;rec.maxAlternatives=5;r.status='live';drawGame();
+    const norm=s=>s.toLowerCase().replace(/[^a-z' ]/g,' ').replace(/\s+/g,' ').trim();
+    rec.onresult=ev=>{const alts=[];for(let k=0;k<ev.results[0].length;k++)alts.push(norm(ev.results[0][k].transcript));const t=norm(r.q.p);const ok=alts.some(a=>a===t||(' '+a+' ').includes(' '+t+' '));r.heard=alts[0]||'';if(ok){r.status='ok';resolveRound(true)}else r.status='no';drawGame()};
+    rec.onerror=e=>{r.status=(e.error==='no-speech')?'no':'blocked';drawGame()};
+    rec.onend=()=>{if(r.status==='live'){r.status='no';drawGame()}};
+    rec.start();
+  }catch(e){r.status='blocked';drawGame()}
+}
+
+/* ---------- lesson page ---------- */
+function learnView(l){
+  const P=PARTS.find(p=>p.id===l.part);
+  let h=`<section class="card hero"><span class="eyebrow">${P.ar} · <span class="en">${esc(l.en)}</span></span><h2>${esc(l.ar)}</h2><p class="lead">${esc(l.lead)}</p><div class="row">${l.rel?`<span class="rel">مدى صدق القاعدة: <b class="en">${esc(l.rel)}</b></span>`:''}<button class="voice" data-lesson-say="1">${AR}اسمعي شرح الدرس بالعربي</button></div></section>`;
+  if(l.table)h+=`<div class="tbl"><table><thead><tr>${l.table.head.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${l.table.rows.map(r=>`<tr><td>${esc(r[0])}</td><td class="en stress">${r[1].split(' · ').map(w=>`<button class="w" data-say="${esc(w.toLowerCase())}">${esc(w).replace(/([A-Z]{2,})/g,'<b>$1</b>')}</button>`).join(' ')}</td></tr>`).join('')}</tbody></table></div>`;
+  if(l.rules)h+=`<section class="rules">${l.rules.map((r,ri)=>`<article class="rule"><h3>${esc(r.t)}</h3>${(r.ipa||r.ar)?`<div class="snd">${r.ipa?`<span class="ipa">${esc(r.ipa)}</span>`:''}${r.ar?`<span class="arsnd">${esc(r.ar)}</span>`:''}</div>`:''}${r.d?`<p>${esc(r.d)}</p>`:''}${howLine(r)?`<p class="how">${howLine(r)}</p>`:''}<div class="words">${r.w.map(wordBtn).join('')}</div><button class="voice" data-rsay="${ri}">${AR}اشرحي لي هذا الصوت</button></article>`).join('')}</section>`;
+  if(l.steps)h+=`<section class="box tip"><h3>روتين فكّ الكلمة الطويلة</h3><ol style="margin:0;padding-inline-start:22px">${l.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol></section>`;
+  if(l.exc)h+=`<section class="box warn"><h3>${esc(l.exc.t)}</h3>${l.exc.d?`<p>${esc(l.exc.d)}</p>`:''}<div class="words">${l.exc.w.map(wordBtn).join('')}</div></section>`;
+  if(l.pairs)h+=`<section class="card" style="display:flex;flex-direction:column;gap:10px"><h3>أزواج متقاربة — اسمعي الفرق</h3><div class="pairs">${l.pairs.map(p=>`<div class="pair">${wordBtn(p[0])}<span>/</span>${wordBtn(p[1])}</div>`).join('')}</div></section>`;
+  if(l.tip)h+=`<section class="box tip"><h3>نصيحة</h3><p>${esc(l.tip)}</p></section>`;
+  if(l.plan){
+    h+=`<div class="tbl"><table><thead><tr><th>تم</th><th>الأسبوع</th><th>الموضوع</th><th>الدرس</th></tr></thead><tbody>${l.plan.map((r,i)=>`<tr><td><input type="checkbox" class="chk" id="wk${i}" data-wk="${i}" ${S.plan[i]?'checked':''} aria-label="الأسبوع ${r[0]}"></td><td class="en">${r[0]}</td><td>${esc(r[1])}</td><td><button class="btn ghost" style="min-height:40px;padding:4px 14px" data-go="${r[2]}">افتحي</button></td></tr>`).join('')}</tbody></table></div>`;
+    h+=`<div class="tbl"><table><thead><tr><th>المدة</th><th>الحصة اليومية</th></tr></thead><tbody>${l.daily.map(r=>`<tr><td>${r[0]}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div>`;
+    h+=`<section class="box warn"><h3>الربط بالآيلتس</h3><p>${esc(l.ielts)}</p><div class="words">${l.ieltsWords.map(wordBtn).join('')}</div></section>`;
+  }
+  if(l.rules)h+=`<div class="row" style="justify-content:center"><button class="btn acc" data-view="games">فهمت — يلا نلعب ١٥ لعبة</button></div>`;
+  return h;
+}
+function gamesView(l){
+  const total=GAMES.reduce((s,g)=>s+(S.gst[l.id+':'+g.id]||0),0);
+  return `<section class="card hero"><span class="eyebrow">${esc(l.ar)}</span><h2>١٥ لعبة على هذا الدرس</h2><p class="lead">كل لعبة تدرّبك على القاعدة من زاوية مختلفة: استماع، قراءة، تهجئة، نطق، وذاكرة. بعد كل جواب يظهر شرح القاعدة، وتقدرين تسمعينه بالعربي.</p><span class="rel">نجومك في هذا الدرس: <b>${total} / 45</b></span></section><section class="ggrid">${GAMES.map((G,k)=>{const ok=!!buildGame(G.id,l);return `<button class="gcard" data-game="${G.id}" ${ok?'':'disabled'}><span class="gtop"><span class="gnum">${k+1}</span><span class="gtag t-${G.tag[0]}">${G.tag[1]}</span></span><h4>${esc(G.ar)}</h4><p>${ok?esc(G.how):'ما تناسب أمثلة هذا الدرس'}</p>${ok?stars(S.gst[l.id+':'+G.id]||0):''}</button>`}).join('')}</section>`;
+}
+function renderLesson(){
+  const l=lessonById(S.cur)||L[0];
+  if(!l.rules&&S.view==='games')S.view='learn';
+  if(!(l.quiz||l.quizPairs)&&S.view==='quiz')S.view='learn';
+  const tabs=[['learn','الشرح']];if(l.rules)tabs.push(['games','الألعاب (١٥)']);if(l.quiz||l.quizPairs)tabs.push(['quiz','تمرين الدرس']);
+  let h=`<div class="tabs" role="tablist">${tabs.map(t=>`<button class="tab" role="tab" aria-selected="${S.view===t[0]}" data-view="${t[0]}">${t[1]}</button>`).join('')}</div>`;
+  if(S.view==='learn')h+=learnView(l);
+  else if(S.view==='games')h+=S.game?gameView():gamesView(l);
+  else{if(!S.quiz||S.quiz.lid!==l.id)S.quiz=buildQuiz(l);h+=`<section class="card prac"><h3 style="margin-bottom:8px">تمرين الدرس</h3><div id="qbox">${quizHTML(S.quiz)}</div></section>`}
+  const i=L.findIndex(x=>x.id===l.id);
+  h+=`<div class="pager">${i>0?`<button class="btn ghost" data-go="${L[i-1].id}">→ ${esc(L[i-1].ar)}</button>`:'<span></span>'}<div class="row"><button class="btn${S.done[l.id]?' ghost':' acc'}" data-act="toggleDone">${S.done[l.id]?'إلغاء «أنهيته»':'أنهيت هذا الدرس ✓'}</button>${L[i+1]?`<button class="btn" data-go="${L[i+1].id}">${esc(L[i+1].ar)} ←</button>`:''}</div></div>`;
+  $('#main').innerHTML=h;
+}
+
+/* ---------- final test ---------- */
+function buildFinal(){let pool2=[];L.forEach(l=>{if(l.quiz)l.quiz.forEach(q=>pool2.push(Object.assign({from:l.ar},q)))});return {lid:'final',qs:shuffle(pool2).slice(0,15).map(q=>Object.assign({},q,{order:shuffle(q.opts.map((o,i)=>i))})),i:0,picked:null,score:0,done:false}}
+function renderFinal(){$('#main').innerHTML=`<section class="card hero"><span class="eyebrow">مراجعة</span><h2>الاختبار الشامل</h2><p class="lead">15 سؤالًا عشوائيًّا من كل الدروس. بعد كل سؤال يظهر الدرس الذي جاء منه.</p></section><section class="card prac"><div id="qbox">${quizHTML(S.final,true)}</div></section>`}
+function render(){renderRail();if(S.final)renderFinal();else renderLesson()}
+function scrollToTop(){try{window.scrollTo({top:0,behavior:'smooth'})}catch(e){}}
+
+/* ---------- events ---------- */
+document.addEventListener('input',e=>{if(e.target.id==='dictIn'&&S.game){S.game.rounds[S.game.i].typed=e.target.value}});
+document.addEventListener('keydown',e=>{if(e.target.id==='dictIn'&&e.key==='Enter'){e.preventDefault();const b=document.querySelector('[data-act="typecheck"]');if(b)b.click()}});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button,input');if(!b)return;const d=b.dataset;
+  if(d.say){say(d.say,b.classList.contains('w')||b.classList.contains('voice')?b:null);return}
+  if(d.rsay!==undefined){const r=lessonById(S.cur).rules[+d.rsay];speakSeq(ruleSpeech(r),b);return}
+  if(d.lessonSay){const l=lessonById(S.cur);speakSeq([{t:l.ar+'.',ar:1},{t:l.lead,ar:1}].concat(l.tip?[{t:'نصيحة: '+l.tip,ar:1}]:[]),b);return}
+  if(d.ruleSay){const g=S.game;const r=g.rounds[g.i];const rule=r.q?r.q.r:r.r;if(rule)speakSeq(ruleSpeech(rule),b);return}
+  if(d.go){stopTimer();S.cur=d.go;S.final=null;S.quiz=null;S.game=null;S.view='learn';store.set('ph_cur',S.cur);render();scrollToTop();return}
+  if(d.final){stopTimer();S.game=null;S.final=buildFinal();render();scrollToTop();return}
+  if(d.view){stopTimer();S.view=d.view;S.game=null;render();return}
+  if(d.game){startGame(d.game);return}
+  if(d.wk!==undefined){S.plan[d.wk]=b.checked;store.set('ph_plan',S.plan);return}
+  const g=S.game;const r=g&&!g.done?g.rounds[g.i]:null;
+  if(d.ch!==undefined&&r&&g.picked===null){const o=r.opts[+d.ch];g.picked=o.val;resolveRound(o.val===r.ans);if(g.speed){drawGame();setTimeout(nextRound,450)}else drawGame();return}
+  if(d.lt!==undefined&&r){const i=+d.lt;r.sel=r.sel.includes(i)?r.sel.filter(x=>x!==i):r.sel.concat(i);drawGame();return}
+  if(d.tile!==undefined&&r){r.built.push(+d.tile);if(r.built.length===r.tiles.length){resolveRound(r.built.map(t=>r.tiles[t]).join('')===r.q.p.toLowerCase())}drawGame();return}
+  if(d.unb!==undefined&&r){r.built.splice(+d.unb,1);drawGame();return}
+  if(d.si!==undefined&&r){r.sel=+d.si;drawGame();return}
+  if(d.bk!==undefined&&r&&r.sel!==null&&!r.checked){r.place[r.sel]=+d.bk;r.sel=null;drawGame();return}
+  if(d.ml!==undefined&&r){r.sl=+d.ml;r.bad=null;drawGame();return}
+  if(d.mr!==undefined&&r&&r.sl!==null){const i=+d.mr;if(r.items[i].lab===r.items[r.sl].lab){r.got.push(r.sl);if(i!==r.sl)r.got.push(i);say(r.items[r.sl].p);r.sl=null;r.bad=null;if(r.got.length>=r.items.length){const n=r.items.length;resolveRound(true,Math.max(0,n-r.miss),n);nextRound();return}}else{r.miss++;r.bad=[r.sl,i];r.sl=null}drawGame();return}
+  if(d.mem!==undefined&&r&&!r.lock){const k=+d.mem;if(r.up.includes(k))return;r.up.push(k);const c=r.cards[k];if(c.f==='w')say(r.items[c.i].p);if(r.up.length===2){r.moves++;const[a,b2]=r.up.map(x=>r.cards[x]);if(a.i===b2.i){r.got.push(a.i);r.up=[];if(r.got.length===r.items.length){const n=r.items.length;resolveRound(true,n,Math.max(n,r.moves));nextRound();return}}else{r.lock=true;setTimeout(()=>{r.up=[];r.lock=false;drawGame()},1000)}}drawGame();return}
+  if(d.hu!==undefined&&r){const k=+d.hu;r.sel=r.sel.includes(k)?r.sel.filter(x=>x!==k):r.sel.concat(k);drawGame();return}
+  const act=d.act;
+  if(act==='tapcheck'&&r){const a=r.sel.slice().sort((x,y)=>x-y).join(),t=r.q.marks.slice().sort((x,y)=>x-y).join();resolveRound(a===t);drawGame();return}
+  if(act==='typecheck'&&r){const v=(document.getElementById('dictIn')||{}).value||'';r.typed=v;resolveRound(v.trim().toLowerCase()===r.q.p.toLowerCase());drawGame();return}
+  if(act==='sortcheck'&&r){r.checked=true;const ok=r.items.filter((q,k)=>r.labs[r.place[k]]===q.lab).length;resolveRound(ok===r.items.length,ok,r.items.length);drawGame();return}
+  if(act==='huntcheck'&&r){r.checked=true;const want=r.grid.map((q,k)=>q.lab===r.lab?k:-1).filter(k=>k>=0).join();resolveRound(r.sel.slice().sort((x,y)=>x-y).join()===want);drawGame();return}
+  if(act==='mic'&&r){listen();return}
+  if(act==='selfok'&&r){r.status='self';resolveRound(true);drawGame();return}
+  if(act==='selfno'&&r){r.status='self';resolveRound(false);drawGame();return}
+  if(act==='gnext'){nextRound();return}
+  if(act==='replay'&&g){startGame(g.id);return}
+  if(act==='games'){stopTimer();S.game=null;S.view='games';render();return}
+  const Q=S.final||S.quiz;
+  if(d.pick!==undefined&&Q&&Q.picked===null){const k=+d.pick;Q.picked=k;const q=Q.qs[Q.i];if(k===q.a){Q.score++;if(q.say)say(q.say)}redrawQuiz();return}
+  if(act==='qnext'&&Q){if(Q.i+1>=Q.qs.length){Q.done=true;if(!S.final&&Q.score/Q.qs.length>=.6){S.done[S.cur]=true;store.set('ph_done',S.done);renderRail()}}else{Q.i++;Q.picked=null}redrawQuiz();return}
+  if(act==='retry'){if(S.final)S.final=buildFinal();else S.quiz=buildQuiz(lessonById(S.cur));redrawQuiz();return}
+  if(act==='toggleDone'){S.done[S.cur]=!S.done[S.cur];store.set('ph_done',S.done);render();return}
+});
+function redrawQuiz(){const box=$('#qbox');if(box)box.innerHTML=quizHTML(S.final||S.quiz,!!S.final)}
+render();
+</script>
+
+</body>
+</html>
