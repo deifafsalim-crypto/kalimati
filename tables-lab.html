@@ -1,0 +1,953 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><nav aria-label="التنقل" style="max-width:1120px;margin:16px auto"><a href="./index.html" style="color:var(--accent);font-weight:700;text-decoration:underline">← العودة إلى كلماتي</a></nav>
+<title>مختبر الجداول</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap">
+<style>
+/* Layout: a data lab. Graph-paper ground, bright data colours, white report sheets; each table is a mission. */
+:root{
+ --bg:#F3F6FB; --surface:#FFFFFF; --sheet:#FAFCFF; --ink:#1C2340; --muted:#5E6684; --line:#E2E7F2;
+ --accent:#11808F; --accent-ink:#FFFFFF; --accent-soft:#DDF3F3; --sky:#E6F1FF; --sky-ink:#1F5FA8;
+ --mark:#FFE58A; --mark-ink:#5B4300; --ok:#1FA971; --ok-soft:#DDF7EA; --bad:#E5533D; --bad-soft:#FFE6E1; --gold:#F2A900;
+ --coral:#FF6F61; --sun:#FFB938; --mint:#2EC4A0; --skyc:#4D9CFF; --grape:#8C6CF0; --rose:#F25C9A;
+ --hero1:#0D6E7D; --hero2:#1E9E9A; --hero3:#55C6A9;
+ --shadow:rgba(28,35,64,.08);
+ --ui:"Readex Pro","Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;
+ --read:"Literata",Georgia,"Times New Roman",serif;
+ --r:18px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+ --bg:#10162A; --surface:#182037; --sheet:#1B2440; --ink:#E9ECF7; --muted:#A3ABC6; --line:#2A3452;
+ --accent:#4FD1C5; --accent-ink:#06201F; --accent-soft:#173A40; --sky:#182D4A; --sky-ink:#A9CBFF;
+ --mark:#6B5612; --mark-ink:#FFE9A6; --ok:#4FD69A; --ok-soft:#14352A; --bad:#FF8A76; --bad-soft:#3F211D; --gold:#FFC94D;
+ --coral:#FF8A7E; --sun:#FFC85C; --mint:#4FD8B6; --skyc:#73B2FF; --grape:#A994FF; --rose:#FF7DB2;
+ --hero1:#0B4E5A; --hero2:#137A78; --hero3:#2E9C86;
+ --shadow:rgba(0,0,0,.4); color-scheme:dark}}
+:root[data-theme="dark"]{
+ --bg:#10162A; --surface:#182037; --sheet:#1B2440; --ink:#E9ECF7; --muted:#A3ABC6; --line:#2A3452;
+ --accent:#4FD1C5; --accent-ink:#06201F; --accent-soft:#173A40; --sky:#182D4A; --sky-ink:#A9CBFF;
+ --mark:#6B5612; --mark-ink:#FFE9A6; --ok:#4FD69A; --ok-soft:#14352A; --bad:#FF8A76; --bad-soft:#3F211D; --gold:#FFC94D;
+ --coral:#FF8A7E; --sun:#FFC85C; --mint:#4FD8B6; --skyc:#73B2FF; --grape:#A994FF; --rose:#FF7DB2;
+ --hero1:#0B4E5A; --hero2:#137A78; --hero3:#2E9C86;
+ --shadow:rgba(0,0,0,.4); color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{direction:rtl;background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:16px;line-height:1.7;margin:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3,h4{margin:0;line-height:1.35;text-wrap:balance}
+p{margin:0}
+.en{direction:ltr;unicode-bidi:isolate;text-align:left}
+.muted{color:var(--muted)}
+.small{font-size:13.5px}
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:14px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:40px;height:40px;border-radius:11px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:700;font-size:15px;letter-spacing:.5px}
+.brand h1{font-size:19px;font-weight:600}
+.brand p{font-size:12.5px;color:var(--muted)}
+.hud{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13.5px;white-space:nowrap}
+.chip b{font-variant-numeric:tabular-nums}
+.tabs{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px;align-self:flex-start;max-width:100%}
+.tab{flex:0 0 auto;border:0;background:none;border-radius:999px;padding:7px 16px;font-size:14.5px;color:var(--muted)}
+.tab[aria-current="true"]{background:var(--accent);color:var(--accent-ink);font-weight:500}
+/* generic */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:0 4px 14px var(--shadow)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.stack{display:flex;flex-direction:column;gap:12px}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:8px 16px;font-size:14.5px;font-weight:500}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.soft{background:var(--accent-soft);border-color:transparent;color:var(--ink)}
+.btn.sm{padding:5px 11px;font-size:13.5px;border-radius:8px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.icon-btn{border:1px solid var(--line);background:var(--sheet);border-radius:8px;padding:3px 9px;font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:5px}
+.icon-btn svg{width:15px;height:15px}
+.btn svg{width:16px;height:16px;vertical-align:-3px;margin-inline-end:4px}
+.pill{display:inline-block;border-radius:999px;padding:1px 10px;font-size:12.5px;background:var(--accent-soft);color:var(--ink)}
+.eyebrow{font-size:12.5px;letter-spacing:.6px;color:var(--accent);font-weight:600}
+/* plan */
+.hero{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:18px}
+.hero .today h2{font-size:24px}
+.today .meta{display:flex;gap:8px;flex-wrap:wrap}
+.meter{height:10px;border-radius:6px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent);border-radius:6px}
+.steps5{display:flex;gap:6px;flex-wrap:wrap}
+.steps5 span{font-size:12.5px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.steps5 span.done{background:var(--ok-soft);border-color:transparent;color:var(--ok)}
+.week{display:flex;flex-direction:column;gap:8px}
+.week h3{font-size:15px;color:var(--muted);font-weight:500}
+.days{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:10px}
+.dtile{text-align:start;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0;position:relative}
+.dtile:hover{border-color:var(--accent)}
+.dtile .n{font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.dtile .t{font-family:var(--read);font-size:15px;direction:ltr;text-align:left;line-height:1.35;min-height:2.7em}
+.dtile.cur{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.dots{display:flex;gap:4px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--ok)}
+.star{color:var(--gold);font-size:15px}
+/* day */
+.dayhead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.dayhead h2{font-family:var(--read);font-size:27px;font-weight:600;direction:ltr;text-align:left}
+.stepbar{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.stepbtn{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 13px;font-size:14px;display:flex;gap:7px;align-items:center}
+.stepbtn .k{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--line);font-size:12px;font-variant-numeric:tabular-nums}
+.stepbtn.done .k{background:var(--ok);color:#fff}
+.stepbtn[aria-current="true"]{border-color:var(--accent);background:var(--accent-soft)}
+/* words */
+.wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.wcard{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--sheet);display:flex;flex-direction:column;gap:6px;min-width:0}
+.wcard .w{font-family:var(--read);font-size:19px;font-weight:600;direction:ltr;text-align:left}
+.wcard .ar{font-size:16px;font-weight:500;color:var(--accent)}
+.wcard .def,.wcard .ex{font-family:var(--read);font-size:14.5px;direction:ltr;text-align:left}
+.wcard .ex{color:var(--muted);font-style:italic}
+.wcard.known{border-color:var(--ok);background:var(--ok-soft)}
+/* reader */
+.reader{background:var(--sheet);border:1px solid var(--line);border-radius:var(--r);padding:22px clamp(16px,4vw,40px);font-family:var(--read);direction:ltr;text-align:left;font-size:var(--fs,18px);line-height:1.8}
+.reader h3{font-family:var(--read);font-size:1.35em;text-align:center;margin-bottom:6px}
+.reader .intro{font-style:italic;color:var(--muted);text-align:center;margin-bottom:14px}
+.para{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;margin-bottom:16px}
+.para .lab{font-family:var(--ui);font-weight:700;color:var(--accent);font-size:15px;padding-top:4px}
+.para .ptools{display:flex;gap:6px;margin-top:6px;font-family:var(--ui);direction:rtl;justify-content:flex-end}
+.para .tr{font-family:var(--ui);direction:rtl;text-align:right;background:var(--sky);color:var(--ink);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:15px;line-height:1.8}
+.foot{font-size:.8em;color:var(--muted)}
+.w{cursor:pointer;border-radius:3px}
+.w:hover{background:var(--accent-soft)}
+.w.wl{border-bottom:2px solid var(--accent)}
+.hl{background:var(--mark);color:var(--mark-ink);border-radius:3px;box-shadow:0 0 0 2px var(--mark)}
+.fsz{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.fsz button{border:0;background:var(--sheet);padding:3px 10px;font-size:13px}
+/* test */
+.testgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+.testgrid .reader{position:sticky;top:calc(env(safe-area-inset-top,0px) + 10px);max-height:calc(100vh - 30px);overflow:auto;font-size:16px}
+.pane-switch{display:none}
+.qgroup{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px}
+.qhead{font-weight:600;font-size:15px}
+.instr{font-family:var(--read);direction:ltr;text-align:left;font-size:14.5px;color:var(--muted);font-style:italic}
+.hint{font-size:13.5px;background:var(--sky);color:var(--sky-ink);border-radius:10px;padding:8px 12px}
+.optbox{border:1px dashed var(--line);border-radius:10px;padding:10px 12px;background:var(--sheet)}
+.optbox h5{margin:0 0 6px;font-size:13px;color:var(--muted);font-weight:500}
+.optbox ol{list-style:none;margin:0;padding:0;direction:ltr;text-align:left;font-family:var(--read);font-size:14.5px;display:grid;gap:3px}
+.optbox li b{display:inline-block;min-width:34px;color:var(--accent);font-family:var(--ui)}
+.optbox.cols ol{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.qitem{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:start;padding:8px 0;border-top:1px solid var(--line)}
+.qitem:first-of-type{border-top:0}
+.qn{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--ink);display:grid;place-items:center;font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums;background:var(--sheet)}
+.qn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.qn.no{background:var(--bad);border-color:var(--bad);color:#fff}
+.qt{font-family:var(--read);direction:ltr;text-align:left;font-size:15.5px}
+.choices{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;direction:ltr}
+.choice{border:1.5px solid var(--line);background:var(--sheet);border-radius:9px;padding:4px 11px;font-size:14px;text-align:left}
+.choice.on{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+.choice.right{border-color:var(--ok);background:var(--ok-soft)}
+.choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.choices.col{flex-direction:column;align-items:stretch}
+.choices.col .choice{font-family:var(--read);font-size:14.5px}
+.choice b{font-family:var(--ui);color:var(--accent);margin-right:6px}
+.gapin{font:inherit;font-family:var(--ui);font-size:14.5px;border:0;border-bottom:2px solid var(--accent);background:var(--accent-soft);border-radius:6px 6px 0 0;padding:1px 6px;width:9.5em;max-width:100%;color:var(--ink);direction:ltr}
+.gapin.ok{border-color:var(--ok);background:var(--ok-soft)}
+.gapin.no{border-color:var(--bad);background:var(--bad-soft)}
+.gapsel{font:inherit;font-size:14px;border:1.5px solid var(--accent);border-radius:7px;background:var(--accent-soft);color:var(--ink);padding:1px 4px;max-width:100%}
+.gnum{font-family:var(--ui);font-weight:700;font-size:12px;background:var(--ink);color:var(--surface);border-radius:5px;padding:0 5px;margin-right:4px}
+.ctx{font-family:var(--read);direction:ltr;text-align:left;font-size:15.5px;line-height:2.1}
+.ctitle{font-family:var(--read);font-weight:600;text-align:center;direction:ltr}
+.flow{display:flex;flex-direction:column;align-items:center;gap:0}
+.flow .box{border:1.5px solid var(--ink);border-radius:8px;padding:6px 12px;background:var(--sheet);max-width:560px;width:100%;text-align:center;font-family:var(--read);direction:ltr;font-size:15px;line-height:2}
+.flow .arr{height:20px;width:2px;background:var(--ink);position:relative;margin-bottom:6px}
+.flow .arr::after{content:"";position:absolute;bottom:-6px;left:-5px;border:6px solid transparent;border-top-color:var(--ink)}
+.notes{display:flex;flex-direction:column;gap:4px;font-family:var(--read);direction:ltr;text-align:left;font-size:15px;line-height:2}
+.tablewrap{overflow-x:auto}
+table.qt2{border-collapse:collapse;direction:ltr;font-family:var(--read);font-size:14.5px;min-width:520px;width:100%}
+table.qt2 th,table.qt2 td{border:1px solid var(--line);padding:6px 8px;vertical-align:top;text-align:left;line-height:2}
+table.qt2 th{background:var(--accent-soft)}
+.diagram{max-width:100%;border-radius:10px;border:1px solid var(--line);background:#fff}
+.verdict{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13.5px;margin-top:6px}
+.verdict .ans{font-family:var(--read);direction:ltr}
+.expl{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:6px;font-size:14px;display:flex;flex-direction:column;gap:6px}
+.expl .src{font-family:var(--read);direction:ltr;text-align:left;font-size:14px}
+.expl .k{font-weight:600;color:var(--accent);font-size:12.5px}
+.ai{background:var(--sky);border-radius:10px;padding:10px 12px;font-size:14.5px;line-height:1.9}
+.score{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.score .big{font-size:40px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.band{border:2px solid var(--accent);border-radius:12px;padding:4px 14px;text-align:center}
+.band b{display:block;font-size:24px;line-height:1.2}
+.timer{font-variant-numeric:tabular-nums;font-weight:600}
+.sheetbar{display:flex;flex-wrap:wrap;gap:4px}
+.sheetbar span{width:28px;height:28px;border-radius:6px;border:1.5px solid var(--line);display:grid;place-items:center;font-size:12px;font-variant-numeric:tabular-nums}
+.sheetbar span.f{border-color:var(--accent);background:var(--accent-soft)}
+.sheetbar span.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.sheetbar span.no{background:var(--bad);border-color:var(--bad);color:#fff}
+/* games */
+.games{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.game{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px;text-align:start;display:flex;flex-direction:column;gap:4px;min-width:0}
+.game:hover{border-color:var(--accent)}
+.game h4{font-size:15.5px}
+.game p{font-size:13px;color:var(--muted);line-height:1.6}
+.game .gb{display:flex;justify-content:space-between;align-items:center;font-size:12.5px}
+.game .best{color:var(--ok);font-weight:600}
+.play{display:flex;flex-direction:column;gap:14px}
+.prompt{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:16px}
+.prompt .big{font-family:var(--read);font-size:26px;font-weight:600;direction:ltr;text-align:center}
+.prompt .sent{font-family:var(--read);direction:ltr;text-align:left;font-size:17px;line-height:1.9}
+.blank{display:inline-block;min-width:80px;border-bottom:2px solid var(--accent)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.opt{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;font-size:15px;text-align:center;min-width:0}
+.opt.en{font-family:var(--read);direction:ltr}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.fb{border-radius:10px;padding:10px 12px;font-size:14.5px}
+.fb.ok{background:var(--ok-soft)}
+.fb.no{background:var(--bad-soft)}
+.flip{min-height:150px;display:grid;place-items:center;text-align:center;cursor:pointer}
+.tiles{display:flex;flex-wrap:wrap;gap:6px;direction:ltr}
+.tile{border:1.5px solid var(--line);background:var(--sheet);border-radius:8px;padding:4px 10px;font-family:var(--read);font-size:15.5px}
+.tile:disabled{opacity:.3}
+.slot{min-height:46px;border:1.5px dashed var(--line);border-radius:10px;padding:6px;display:flex;flex-wrap:wrap;gap:6px;direction:ltr}
+.order{display:flex;flex-direction:column;gap:6px}
+.order button{text-align:left;direction:ltr;font-family:var(--read);font-size:14.5px;border:1.5px solid var(--line);background:var(--sheet);border-radius:10px;padding:8px 10px;display:flex;gap:8px}
+.order button .o{font-family:var(--ui);min-width:22px;height:22px;border-radius:50%;background:var(--line);display:grid;place-items:center;font-size:12px}
+.order button.picked .o{background:var(--accent);color:var(--accent-ink)}
+.input{font:inherit;font-size:16px;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--sheet);color:var(--ink);width:100%}
+.input.en{font-family:var(--read)}
+.diff span{border-radius:4px;padding:0 2px}
+.ldiff .miss{color:var(--bad);text-decoration:underline 3px;background:none}
+.ldiff .okw{color:var(--ok)}
+.diff .miss{background:var(--bad-soft);color:var(--bad)}
+.diff .okw{background:var(--ok-soft)}
+/* mastery */
+.mbadge{display:flex;gap:12px;align-items:center}
+.mbadge .medal{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:24px;font-weight:700;background:var(--accent-soft);color:var(--accent);border:2px solid var(--accent)}
+.mbadge .medal.gold{background:var(--mark);color:var(--mark-ink);border-color:var(--gold)}
+/* sheet popup */
+.wsheet{position:fixed;inset:auto 0 0 0;z-index:30;display:flex;justify-content:center;padding:0 max(12px,env(safe-area-inset-right,0px)) 0 max(12px,env(safe-area-inset-left,0px))}
+.wsheet>div{width:100%;max-width:600px;background:var(--surface);border:1px solid var(--line);border-bottom:0;border-radius:18px 18px 0 0;box-shadow:0 -10px 30px var(--shadow);padding:16px 18px calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:9px;max-height:75vh;overflow:auto}
+.wsheet .ww{font-family:var(--read);font-size:26px;font-weight:600;direction:ltr}
+.wsheet .war{font-size:20px;font-weight:600;color:var(--accent)}
+.wsheet .ctxs{font-family:var(--read);direction:ltr;text-align:left;font-size:15px;background:var(--sheet);border-radius:10px;padding:8px 10px}
+.wsheet mark{background:var(--mark);color:var(--mark-ink);border-radius:3px}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:9px 18px;border-radius:999px;font-size:14px;z-index:50;max-width:calc(100% - 32px)}
+/* strategy */
+.strat{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.strat .card h3{font-size:17px}
+.strat ol{margin:0;padding-inline-start:20px;display:flex;flex-direction:column;gap:4px;font-size:14.5px}
+.trap{font-size:13.5px;background:var(--bad-soft);border-radius:8px;padding:6px 10px}
+@media (max-width:860px){
+ .hero{grid-template-columns:1fr}
+ .testgrid{grid-template-columns:1fr}
+ .testgrid .reader{position:static;max-height:none}
+ .pane-switch{display:flex}
+ .testgrid[data-pane="q"] .reader{display:none}
+ .testgrid[data-pane="p"] .qcol{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ===== v2: bright study-quest look ===== */
+#main{display:flex;flex-direction:column;gap:18px;min-width:0}
+.days{grid-template-columns:repeat(6,minmax(0,1fr))}
+@media (max-width:1000px){.days{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:560px){.days{grid-template-columns:repeat(2,minmax(0,1fr))}}
+body{background:radial-gradient(900px 500px at 100% -10%,color-mix(in srgb,var(--sun) 18%,transparent),transparent 60%),radial-gradient(800px 500px at -10% 20%,color-mix(in srgb,var(--skyc) 14%,transparent),transparent 60%),var(--bg);background-attachment:fixed}
+.logo{background:linear-gradient(135deg,var(--coral),var(--sun));color:#fff;border-radius:14px;box-shadow:0 6px 14px color-mix(in srgb,var(--coral) 35%,transparent)}
+.chip{border:0;box-shadow:0 3px 10px var(--shadow);font-weight:500}
+.chip.c1{background:color-mix(in srgb,var(--coral) 16%,var(--surface))}
+.chip.c2{background:color-mix(in srgb,var(--sun) 22%,var(--surface))}
+.chip.c3{background:color-mix(in srgb,var(--grape) 16%,var(--surface))}
+.tabs{border:0;box-shadow:0 4px 14px var(--shadow)}
+.tab[aria-current="true"]{background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff}
+.card{border:0;box-shadow:0 8px 24px var(--shadow)}
+.btn{border:0;box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 30%,transparent);transition:transform .15s}
+.btn:hover:not(:disabled){transform:translateY(-2px)}
+.btn.ghost{border:1.5px solid var(--accent);box-shadow:none}
+.btn.sun{background:var(--sun);color:#2B1D00;box-shadow:0 6px 16px color-mix(in srgb,var(--sun) 45%,transparent);font-weight:700;font-size:16.5px;padding:12px 24px;border-radius:14px}
+/* hero */
+.hero2{position:relative;overflow:hidden;border-radius:26px;padding:28px clamp(18px,4vw,36px);color:#fff;background:linear-gradient(135deg,var(--hero1),var(--hero2) 55%,var(--hero3));box-shadow:0 18px 40px color-mix(in srgb,var(--hero1) 35%,transparent);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:22px;align-items:center}
+.hero2 .bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,.09);pointer-events:none}
+.hero2 .eyebrow{color:var(--sun);letter-spacing:.8px}
+.hero2 h2{font-size:clamp(24px,4vw,34px);font-weight:700}
+.hero2 .ttl{font-family:var(--read);font-size:clamp(20px,3vw,26px);direction:ltr;text-align:right;opacity:.95}
+.hero2 .sp{display:flex;gap:6px;flex-wrap:wrap}
+.hero2 .sp span{font-size:13px;padding:3px 11px;border-radius:999px;background:rgba(255,255,255,.14)}
+.hero2 .sp span.done{background:var(--sun);color:#2B1D00;font-weight:600}
+.ring{position:relative;width:150px;height:150px;flex:0 0 auto}
+.ring svg{width:150px;height:150px;transform:rotate(-90deg)}
+.ring .in{position:absolute;inset:0;display:grid;place-items:center;text-align:center;line-height:1.2}
+.ring .in b{font-size:34px;display:block}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stat{border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:center;background:var(--surface);box-shadow:0 8px 20px var(--shadow)}
+.stat .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:0 0 auto}
+.stat .ic svg{width:24px;height:24px}
+.stat b{font-size:22px;display:block;line-height:1.2;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+/* journey */
+.week{background:var(--surface);border-radius:22px;padding:16px;box-shadow:0 8px 22px var(--shadow);border-top:5px solid var(--wk)}
+.week h3{display:flex;align-items:center;gap:10px;color:var(--ink);font-size:16.5px;font-weight:600}
+.week h3 .wn{width:30px;height:30px;border-radius:10px;background:var(--wk);color:#fff;display:grid;place-items:center;font-size:14px}
+.week h3 small{color:var(--muted);font-weight:400;font-size:13px}
+.dtile{border:0;background:color-mix(in srgb,var(--wk) 9%,var(--sheet));border-radius:16px;padding:12px;transition:transform .15s,box-shadow .15s}
+.dtile:hover{transform:translateY(-3px);box-shadow:0 10px 20px var(--shadow)}
+.dtile .num{width:38px;height:38px;border-radius:50%;background:var(--wk);color:#fff;display:grid;place-items:center;font-weight:700;font-size:16px}
+.dtile.cur{box-shadow:0 0 0 3px var(--wk),0 10px 22px var(--shadow)}
+.dtile.cur .num{animation:pulse 1.8s ease-in-out infinite}
+.dtile.star{background:linear-gradient(135deg,color-mix(in srgb,var(--sun) 30%,var(--sheet)),var(--sheet))}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--wk) 50%,transparent)}50%{box-shadow:0 0 0 8px transparent}}
+.dots i.on{background:var(--wk)}
+/* day banner */
+.banner{position:relative;overflow:hidden;border-radius:24px;padding:22px clamp(18px,4vw,30px);color:#fff;background:linear-gradient(135deg,var(--wk),color-mix(in srgb,var(--wk) 55%,var(--hero1)));box-shadow:0 14px 32px color-mix(in srgb,var(--wk) 35%,transparent);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end}
+.banner h2{font-family:var(--read);font-size:clamp(24px,4vw,32px);direction:ltr;text-align:left;font-weight:600}
+.banner .eyebrow{color:#fff;opacity:.9}
+.banner .icon-btn{background:rgba(255,255,255,.18);border:0;color:#fff}
+.banner .bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,.1);pointer-events:none}
+.banner .medal{background:var(--sun);color:#2B1D00;border-color:#fff}
+.bprog{min-width:180px;display:flex;flex-direction:column;gap:6px}
+.bprog .meter{background:rgba(255,255,255,.25)}
+.bprog .meter i{background:var(--sun)}
+.stepbtn{border:0;background:var(--surface);box-shadow:0 4px 12px var(--shadow);border-radius:14px;padding:8px 14px}
+.stepbtn .k{background:var(--sc);color:#fff}
+.stepbtn[aria-current="true"]{background:var(--sc);color:#fff}
+.stepbtn[aria-current="true"] .k{background:#fff;color:var(--sc)}
+.stepbtn.done .k{background:var(--ok);color:#fff}
+/* games */
+.game{border:0;border-radius:18px;padding:14px;background:color-mix(in srgb,var(--gc) 11%,var(--surface));box-shadow:0 6px 16px var(--shadow);transition:transform .15s}
+.game:hover{transform:translateY(-3px) rotate(-.4deg)}
+.game .gi{width:42px;height:42px;border-radius:13px;background:var(--gc);color:#fff;display:grid;place-items:center;font-weight:700}
+.game .gi svg{width:22px;height:22px}
+.game .best{background:var(--ok);color:#fff;padding:1px 8px;border-radius:999px}
+.play .meter i{background:linear-gradient(90deg,var(--mint),var(--skyc))}
+.opt{border-radius:14px;border-width:2px;transition:transform .12s}
+.opt:hover:not(:disabled){transform:translateY(-2px)}
+.wcard{border:0;border-radius:16px;background:var(--surface);box-shadow:0 6px 16px var(--shadow);border-top:4px solid var(--wc)}
+.wcard.known{border-top-color:var(--ok)}
+.wcard .ar{color:var(--wc)}
+.qgroup{border:0;box-shadow:0 8px 22px var(--shadow);border-top:4px solid var(--accent)}
+.reader{border:0;box-shadow:0 8px 22px var(--shadow)}
+.strat .card{border-top:5px solid var(--sc)}
+@media (max-width:860px){.hero2{grid-template-columns:1fr}.ring{justify-self:center}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (prefers-reduced-motion:reduce){.dtile.cur .num{animation:none}}
+
+/* ===== table lab ===== */
+body{background-image:linear-gradient(color-mix(in srgb,var(--skyc) 7%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--skyc) 7%,transparent) 1px,transparent 1px),radial-gradient(900px 500px at 100% -10%,color-mix(in srgb,var(--sun) 18%,transparent),transparent 60%);background-size:24px 24px,24px 24px,auto;background-color:var(--bg)}
+.mgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+@media (max-width:1000px){.mgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:560px){.mgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.mtile{border:0;text-align:start;border-radius:18px;padding:14px;background:var(--surface);box-shadow:0 8px 20px var(--shadow);display:flex;flex-direction:column;gap:8px;min-width:0;border-top:5px solid var(--mc);transition:transform .15s}
+.mtile:hover{transform:translateY(-3px)}
+.mtile .mn{width:36px;height:36px;border-radius:12px;background:var(--mc);color:#fff;display:grid;place-items:center;font-weight:700}
+.mtile h4{font-size:15px;line-height:1.5}
+.mtile .tp{font-size:12px;color:var(--muted)}
+.stars{color:var(--line);font-size:18px;letter-spacing:2px}
+.stars .on{color:var(--gold)}
+.mtile.cur{box-shadow:0 0 0 3px var(--mc),0 10px 22px var(--shadow)}
+.dtable-wrap{overflow-x:auto;border-radius:14px;border:1px solid var(--line);background:var(--sheet)}
+table.dt{border-collapse:collapse;direction:ltr;width:100%;font-size:14.5px;font-variant-numeric:tabular-nums}
+table.dt caption{caption-side:top;text-align:left;font-weight:600;padding:10px 12px;font-size:15px}
+table.dt th,table.dt td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.dt th{background:color-mix(in srgb,var(--skyc) 14%,var(--sheet));font-weight:600;cursor:pointer}
+table.dt th.rh{text-align:left;white-space:normal;min-width:120px}
+table.dt td{cursor:pointer;transition:background .12s}
+table.dt td:hover,table.dt th:hover{background:color-mix(in srgb,var(--sun) 25%,var(--sheet))}
+table.dt td.hlr,table.dt th.hlr{background:color-mix(in srgb,var(--mint) 18%,var(--sheet))}
+table.dt td.hlc{background:color-mix(in srgb,var(--grape) 14%,var(--sheet))}
+table.dt td.ok{background:var(--ok);color:#fff}
+table.dt td.no{background:var(--bad);color:#fff}
+table.dt td.na{color:var(--muted)}
+.chart{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:12px}
+.chart svg{width:100%;height:auto;max-height:320px;display:block;direction:ltr}
+.chart text{fill:var(--ink);font-family:var(--ui)}
+.mission{border-radius:14px;padding:12px 14px;background:color-mix(in srgb,var(--sun) 16%,var(--surface));display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.mission b{font-size:15px}
+.mission .mi{width:34px;height:34px;border-radius:50%;background:var(--sun);color:#2B1D00;display:grid;place-items:center;font-weight:700;flex:0 0 auto}
+.para-lab{font-family:var(--read);direction:ltr;text-align:left;font-size:16px;line-height:1.85;padding:12px 14px;border-radius:12px;background:var(--sheet);border-left:5px solid var(--pc)}
+.para-lab .pl{display:block;font-family:var(--ui);direction:rtl;text-align:right;font-size:12.5px;font-weight:600;color:var(--pc);margin-bottom:4px}
+mark.lg{background:color-mix(in srgb,var(--sun) 40%,transparent);color:inherit;border-radius:3px;padding:0 2px;cursor:help}
+.errcard{border-radius:14px;padding:12px 14px;background:var(--sheet);border:1px solid var(--line)}
+.errcard .wrongq{font-family:var(--read);direction:ltr;text-align:left;font-size:16px;text-decoration:underline wavy var(--bad);text-underline-offset:4px}
+.check{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px}
+.check span{font-size:13.5px;padding:6px 10px;border-radius:10px;background:var(--sheet);border:1px solid var(--line)}
+.check span.on{background:var(--ok-soft);border-color:transparent;color:var(--ok);font-weight:600}
+textarea.report{font-family:var(--read);font-size:16px;line-height:1.8;direction:ltr;text-align:left;min-height:300px;resize:vertical}
+.starters{display:flex;flex-wrap:wrap;gap:6px;direction:ltr}
+.starters button{font-family:var(--read);font-size:13.5px;border:1px dashed var(--accent);background:var(--sheet);border-radius:999px;padding:3px 10px}
+.gridsleep td{width:44px;text-align:center}
+.gridsleep td.z{background:var(--coral)}
+.langgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.lrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;padding:8px 0;border-top:1px solid var(--line)}
+.lrow:first-of-type{border-top:0}
+.lrow .le{font-family:var(--read);direction:ltr;font-weight:600}
+.lrow .lx{grid-column:1/-1;font-family:var(--read);direction:ltr;text-align:left;font-size:13.5px;color:var(--muted);font-style:italic}
+.band9{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.band9 div{border-radius:12px;padding:8px;text-align:center;background:var(--sheet);border:1px solid var(--line)}
+.band9 b{display:block;font-size:24px}
+@media (max-width:560px){.band9{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<div class="wrap">
+ <header class="top">
+  <div class="brand"><div class="logo" aria-hidden="true">T1</div><div><h1>مختبر الجداول</h1><p>IELTS Writing Task 1 · 20 جدول من كتابك</p></div></div>
+  <div class="hud" id="hud"></div>
+ </header>
+ <nav class="tabs" id="tabs" aria-label="الأقسام"></nav>
+ <main id="main"></main>
+</div>
+
+<script>
+/* ================= the 20 tables from the book + model answers + error hunts ================= */
+const T=(caption,cols,rows,unit)=>({caption,cols,rows:rows.map(r=>({name:r[0],vals:r.slice(1)})),unit:unit||''});
+const TASKS=[
+{id:1,ar:'مترو الأنفاق في ٦ مدن',topic:'مواصلات',kind:'compare',
+ prompt:'The table below gives information about the underground railway systems in six cities.',
+ tables:[T('Underground Railway Systems',['Date opened','Kilometres of route','Passengers per year (millions)'],[['London',1863,394,775],['Paris',1900,199,1191],['Tokyo',1927,155,1927],['Washington DC',1976,126,144],['Kyoto',1981,11,45],['Los Angeles',2001,28,50]])],
+ ov:['Overall, the older systems in London, Paris and Tokyo are far larger and busier than the newer ones, with Tokyo carrying the most passengers despite not having the longest network.','Overall, London opened in 1863 with 394 km and 775 million passengers, while Paris opened in 1900 with 199 km.','Overall, the newest underground systems carry the most passengers every year.'],
+ model:['The table compares six underground railway systems in terms of when they opened, the length of their routes and the number of passengers they carry each year.',
+ 'Overall, the three oldest networks, in London, Paris and Tokyo, are considerably larger and busier than the three more recent ones. Interestingly, the busiest system is not the longest one.',
+ 'London has the oldest underground, opened in 1863, and it also has by far the longest route, at 394 kilometres. However, it carries 775 million passengers a year, which is fewer than Paris (1,191 million) and Tokyo, which serves an impressive 1,927 million people annually on only 155 kilometres of track.',
+ 'By contrast, the systems built in the second half of the twentieth century are much smaller. Washington DC’s network, opened in 1976, has 126 kilometres of route but only 144 million passengers. Kyoto (1981) and Los Angeles (2001) are tiny in comparison, with just 11 and 28 kilometres respectively and around 45–50 million users a year.'],
+ err:[['consists the largest number of travellers (1927 passengers)','has the largest number of passengers (1,927 million)','الفعل consist يحتاج of، والرقم بالملايين مو 1927 شخص بس.'],['while I is Kyoto that consists of the least','while Kyoto has the fewest','جملة مكسورة: "I is" خطأ مطبعي، و fewest مع الأشياء المعدودة.'],['it is Paris and Tokyo that has a large number','it is Paris and Tokyo that have a large number','الفاعل جمع (Paris and Tokyo) فالفعل have.']]},
+{id:2,ar:'مبيعات مطعم خلال أسبوع',topic:'فلوس',kind:'time',
+ prompt:'The table below shows the sales at a small restaurant in a downtown business district.',
+ tables:[T('Sales: week of October 7–13 ($)',['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],[['Lunch',2400,2450,2595,2375,2500,1950,1550],['Dinner',3623,3850,3445,3800,4350,2900,2450]],'$')],
+ ov:['Overall, dinner earned the restaurant more than lunch every day of the week, and sales of both meals were noticeably lower at the weekend.','Overall, lunch sales were $2,400 on Monday and $2,450 on Tuesday.','Overall, the restaurant made more money from lunch than from dinner.'],
+ model:['The table shows how much a small downtown restaurant earned from lunch and dinner on each day of one week in October.',
+ 'Overall, dinner was consistently more profitable than lunch, and takings for both meals fell considerably at the weekend, which is probably because the restaurant is in a business district.',
+ 'From Monday to Friday, lunch sales were fairly stable, ranging between $2,375 on Thursday and a peak of $2,595 on Wednesday. Dinner sales were much higher, at between $3,445 and $3,850, and they reached the highest figure of the week on Friday, at $4,350.',
+ 'At the weekend, however, both figures dropped sharply. Lunch sales fell to $1,950 on Saturday and to only $1,550 on Sunday, while dinner takings declined to $2,900 and then $2,450. In total, dinner brought in roughly $24,000 over the week, compared with around $15,800 from lunch.'],
+ err:[['In Monday, the beginning of the week','On Monday, at the beginning of the week','مع أيام الأسبوع نستخدم on مو in.'],['the restaurant sells lunch of 24 hundred dollar','lunch sales were $2,400','الجدول عن الماضي (أسبوع محدد) فنستخدم الماضي، واكتبي الرقم كامل مع $.'],['The sell of dinner','Dinner sales','sell فعل، والاسم sales.']]},
+{id:3,ar:'الأجهزة المنزلية في بريطانيا',topic:'حياة يومية',kind:'time',
+ prompt:'The table below shows the consumer durables (telephone, refrigerator, etc.) owned in Britain from 1972 to 1983.',
+ tables:[T('Percentage of households owning consumer durables',['1972','1974','1976','1978','1979','1981','1982','1983'],[['Central heating',33,43,48,52,55,59,60,64],['Television',93,95,96,96,97,97,97,98],['Video',null,null,null,null,null,null,null,18],['Vacuum cleaner',87,89,92,92,93,94,95,null],['Refrigerator',73,81,88,91,92,93,93,94],['Washing machine',73,81,88,91,92,93,93,94],['Dishwasher',null,null,null,3,3,4,4,5],['Telephone',42,50,54,60,67,75,76,77]],'%')],
+ ov:['Overall, ownership of almost every consumer durable rose over the period, with televisions remaining the most common item and dishwashers the least common.','Overall, 33% of households had central heating in 1972 and 43% in 1974.','Overall, the number of households owning televisions fell sharply between 1972 and 1983.'],
+ model:['The table illustrates the percentage of British households that owned various consumer durables between 1972 and 1983.',
+ 'Overall, the ownership of nearly all the appliances increased over the period. Televisions were the most widespread item throughout, whereas dishwashers remained rare.',
+ 'Televisions and vacuum cleaners were already owned by the vast majority of households in 1972 (93% and 87% respectively), and both figures rose slightly to the mid-to-high nineties. Refrigerators and washing machines followed an identical pattern, climbing from 73% to 94%.',
+ 'The most dramatic changes were seen in central heating and telephones. The proportion of homes with central heating almost doubled, from 33% to 64%, while telephone ownership rose from 42% to 77%. By contrast, dishwashers only appeared in the data in 1978 and reached just 5% by 1983, and videos were recorded only in the final year, at 18%.'],
+ err:[['This ration reached to 98 percent','This proportion reached 98 percent','ration معناها حصة أكل، والصح proportion. و reach بدون to.'],['dishwasher was very less popular','dishwashers were much less popular','ما نقول very less، نقول much less.'],['the percentage increased each year and reached to 64%','the percentage increased steadily, reaching 64%','reach فعل متعدٍّ بدون to.']]},
+{id:4,ar:'مؤشرات اقتصادية لـ٤ دول',topic:'مجتمع',kind:'compare',
+ prompt:'The table below shows social and economic indicators for four countries in 1994, according to United Nations statistics.',
+ tables:[T('Indicators, 1994',['Canada','Japan','Peru','Zaire'],[['Annual income per person ($US)',11100,15760,160,130],['Life expectancy at birth',76,78,51,47],['Daily calorie supply per person',3326,2846,1927,1749],['Adult literacy rate (%)',99,99,68,34]])],
+ ov:['Overall, Canada and Japan were far better off than Peru and Zaire on every indicator, which suggests a huge gap in living standards between developed and developing countries.','Overall, Japan had an income of $15,760 and Canada $11,100.','Overall, the four countries had similar living standards in 1994.'],
+ model:['The table compares four countries in 1994 according to four social and economic indicators: income, life expectancy, calorie supply and adult literacy.',
+ 'Overall, the two developed countries, Canada and Japan, scored much higher than Peru and Zaire on every measure, indicating a considerable difference in quality of life.',
+ 'Japan had the highest annual income per person, at $15,760, followed by Canada at $11,100. People in both countries could expect to live into their late seventies, almost all adults were literate (99%), and the daily calorie supply was high, at 3,326 in Canada and 2,846 in Japan.',
+ 'The situation in Peru and Zaire was very different. Average incomes were only $160 and $130 a year, roughly one hundredth of the Japanese figure, and life expectancy was around thirty years shorter, at 51 and 47. Furthermore, only 68% of adults in Peru and just 34% in Zaire could read, and calorie supply was below 2,000 per day.'],
+ err:[['had a far more better economic and social conditions','had far better economic and social conditions','more better خطأ، better أصلًا مقارنة. وconditions جمع فبدون a.'],['which is 98 times less than Japan','which is roughly one hundredth of Japan’s figure','times less تعبير غير دقيق، والمقارنة لازم بين نفس الشي (figure).'],['they had only 68% adult literate','only 68% of adults were literate','literate صفة، نحتاج اسم: adults were literate أو literacy rate.']]},
+{id:5,ar:'النوم في ٥ مهن',topic:'حياة يومية',kind:'grid',
+ prompt:'The chart below shows the sleep patterns of people in five different occupations according to a Canadian study.',
+ grid:{cols:['Student','Truck driver','Full-time mother','Business executive','Doctor'],hours:['6-7 pm','7-8 pm','8-9 pm','9-10 pm','10-11 pm','11-12 pm','12-1 am','1-2 am','2-3 am','3-4 am','4-5 am','5-6 am','6-7 am','7-8 am','8-9 am','9-10 am','10-11 am','11-12 am','12-1 pm','1-2 pm','2-3 pm','3-4 pm','4-5 pm','5-6 pm'],
+  asleep:[[1,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,1,0,0],[1,0,1,1,0],[1,0,1,1,0],[1,0,0,1,1],[1,0,0,1,1],[1,0,1,1,0],[1,0,1,1,1],[1,0,1,0,1],[1,0,0,0,1],[0,1,0,0,0],[0,1,0,0,0],[0,1,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,0,0,0],[0,1,0,0,0],[0,1,0,0,0]]},
+ ov:['Overall, students and full-time mothers got the most sleep, while doctors slept the least, and only students and executives slept in one continuous block at night.','Overall, students slept from 11 pm to 7 am.','Overall, all five groups slept the same number of hours at the same time.'],
+ model:['The chart illustrates when people in five different jobs sleep during a typical 24-hour period, according to a Canadian study.',
+ 'Overall, students and full-time mothers slept the longest, whereas doctors had the least sleep. In addition, the timing and continuity of sleep varied considerably depending on each person’s working hours.',
+ 'Students and business executives both slept in a single block at night. Students slept for eight hours, from 11 pm to 7 am, while executives went to bed at the same time but woke up at 5 am, giving them only six hours. Doctors slept for just five hours, from 1 to 3 am and then from 4 to 7 am, possibly because of night calls.',
+ 'The other two groups had more fragmented sleep. Full-time mothers slept for eight hours in total, but these were broken into three periods, including a two-hour nap in the early afternoon, probably because of their children’s routines. Truck drivers slept for six hours in three separate blocks, mostly during the day, which reflects their long driving shifts.'],
+ err:[['Truck drivers sleeps on different times','Truck drivers sleep at different times','الفاعل جمع فالفعل بدون s، ومع الوقت at.'],['they also shows a variation','they also show a variation','they + show بدون s.'],['Finally the doctors sleep fewer hours than people from other occupation','Finally, doctors sleep fewer hours than people in the other occupations','other occupations جمع، ولا نحتاج the قبل doctors هنا.']]},
+{id:6,ar:'وقت الفراغ حسب العمر',topic:'حياة يومية',kind:'compare',
+ prompt:'The table below gives data on the hours of leisure time per year for people in Someland.',
+ tables:[T('Hours of leisure time per year in Someland',['Teens','20s','30s','40s','50s','60s','70s+'],[['Watching TV/videos',1200,700,400,500,600,700,1100],['Socialising with 4 or less people',150,150,300,250,250,200,200],['Socialising with 4 or more people',350,350,50,50,25,25,25],['Individual exercise',150,100,200,200,50,75,150],['Group exercise/sport',450,350,200,150,50,0,0],['Cinema',100,75,50,25,25,50,75]],'hours')],
+ ov:['Overall, watching TV was the main leisure activity for every age group, and as people got older they spent less time on group activities and more on small-group or solo ones.','Overall, teenagers watched 1,200 hours of TV and people in their 20s watched 700 hours.','Overall, older people spent more time on group sports than younger people.'],
+ model:['The table shows how many hours per year people of different ages in Someland spend on six leisure activities.',
+ 'Overall, watching TV and videos was by far the most popular pastime for all age groups. As people get older, they tend to move away from group activities towards smaller social gatherings and individual pursuits.',
+ 'Teenagers and people over seventy spent the most time in front of a screen, at 1,200 and 1,100 hours respectively, while those in their thirties watched the least, at 400 hours. Cinema followed a similar U-shaped pattern, falling from 100 hours for teenagers to just 25 hours in middle age, before rising slightly again.',
+ 'Group activities declined sharply with age. Socialising in large groups dropped from 350 hours for teenagers and people in their twenties to only 25 hours from the age of fifty, and group sport fell from 450 hours to zero for the over-sixties. In contrast, socialising with four or fewer people peaked at 300 hours among people in their thirties.'],
+ err:[['Teenagers and people in their twenties spend on average 500 hours per year on socialising','Teenagers and people in their twenties spend 500 hours per year socialising','spend + وقت + فعل ing (spend time socialising) أوضح وأدق.'],['People of all ages spend a good part','People of all ages spend a large part','a good part تعبير غير أكاديمي، الأفضل a large/significant part.'],['and that teenagers and retired people spend a lot more time','and that teenagers and retired people spend far more time','a lot عامية شوي، far/considerably أكاديمية أكثر.']]},
+{id:7,ar:'الإيجارات والرواتب في لندن',topic:'فلوس',kind:'compare',
+ prompt:'The table below provides information on rental charges and salaries in three areas of London.',
+ tables:[T('Weekly rents per property (£ per week)',['1 bed','2 bed','3 bed'],[['Notting Hill',375,485,738],['Regent’s Park',325,450,650],['Fulham',215,390,600]],'£'),T('Salaries needed (£ per year)',['1 bed','2 bed','3 bed'],[['Notting Hill',98500,127500,194000],['Regent’s Park',85500,118000,170500],['Fulham',56500,102500,157500]],'£')],
+ ov:['Overall, Notting Hill was the most expensive area and Fulham the cheapest, and in all three areas both rents and the salaries required rose with the number of bedrooms.','Overall, a one-bedroom flat in Notting Hill cost £375 a week.','Overall, Fulham was the most expensive area in London.'],
+ model:['The tables compare weekly rents for properties with one, two and three bedrooms in three areas of London, together with the annual salary a tenant would need to afford them.',
+ 'Overall, Notting Hill was the most expensive of the three areas and Fulham the least expensive. Unsurprisingly, rents and the necessary salaries increased with the size of the property in every area.',
+ 'In Notting Hill, weekly rents ranged from £375 for a one-bedroom property to £738 for three bedrooms, and a tenant would need to earn between £98,500 and £194,000 a year. Regent’s Park was slightly cheaper, with rents of £325 to £650 and required salaries of £85,500 to £170,500.',
+ 'Fulham was the most affordable option. A one-bedroom property cost only £215 per week, which required a salary of £56,500, little more than half of the equivalent figure in Notting Hill. However, the gap narrowed for larger properties: a three-bedroom home in Fulham cost £600 a week and required an income of £157,500.'],
+ err:[['(salary approximately f 100,000)','(a salary of approximately £100,000)','علامة الجنيه £ مو f، وأدق: a salary of.'],['salaries need to be somewhere between £85,000 and £170,000','salaries would need to be between £56,500 and £157,500','الأرقام غلط! جدول Fulham يقول 56,500 إلى 157,500. دايم راجعي الأرقام.'],['Regent\'s Park might be a more suitable district','Regent’s Park offers mid-range prices','Task 1 وصف فقط، لا تعطين نصيحة أو رأي.']]},
+{id:8,ar:'الأسر الفقيرة في أستراليا',topic:'مجتمع',kind:'compare',
+ prompt:'The table below shows the proportion of different categories of families living in poverty in Australia in 1999.',
+ tables:[T('Proportion of people from each household type living in poverty, 1999',['% in poverty','Number of people'],[['Single aged person',6,54000],['Aged couple',4,48000],['Single, no children',19,359000],['Couple, no children',7,211000],['Sole parent',21,232000],['Couple with children',12,933000],['All households',11,1837000]])],
+ ov:['Overall, sole parents and single people without children were the most likely to be poor, while elderly households were the least affected; however, couples with children made up the largest number of poor people.','Overall, 6% of single aged people and 4% of aged couples lived in poverty.','Overall, elderly people were the group most affected by poverty.'],
+ model:['The table shows the proportion of people in six types of Australian household who were living in poverty in 1999, along with the actual numbers.',
+ 'Overall, people in single-adult households without a partner, especially sole parents, were the most likely to be poor, while elderly people were the least likely. In total, 11% of all households, or 1,837,000 people, lived in poverty.',
+ 'Sole parents had the highest poverty rate, at 21%, closely followed by single people without children, at 19%. Couples with children had a lower rate of 12%, but because this is such a common household type, they accounted for the largest number of poor people, at 933,000.',
+ 'In contrast, older Australians were relatively well off. Only 6% of single aged people and 4% of aged couples lived in poverty, which amounted to around 100,000 people in total. Couples without children also had a low poverty rate of 7%, which corresponded to 211,000 people.'],
+ err:[['most of the families who lived alone were reckoned the vast majority','families made up of single adults were the most likely to be poor','جملة معقّدة وغلط: reckoned وthe vast majority ما يناسبون هنا.'],['Aged couple was about a fifth, 4%, of the proportion of sole parents','The rate for aged couples (4%) was about a fifth of that for sole parents (21%)','لازم نقارن rate بـ rate ونذكر الرقمين.'],['around 50 thousands poor family','around 50,000 poor families','thousand بدون s بعد رقم، وfamilies جمع.']]},
+{id:9,ar:'وفيات الكحول واستهلاك البيرة',topic:'صحة',kind:'compare',
+ prompt:'The table below shows alcohol-related deaths in seven countries in 2005 and the average beer consumption per person.',
+ tables:[T('Alcohol-related deaths 2005 and beer consumption per capita 2002',['Total deaths','Male','Female','Beer per capita (litres)'],[['Lithuania',125000,112000,13000,91],['Ireland',582000,413000,169000,104],['Czech Republic',1369000,900000,469000,132],['Canada',580000,505000,75000,86],['Estonia',383000,332000,51000,98],['Germany',1185000,986000,200000,107],['Austria',913000,783000,130000,106]])],
+ ov:['Overall, men accounted for the vast majority of alcohol-related deaths in every country, and countries with higher beer consumption generally recorded more deaths, although the link was not perfect.','Overall, Lithuania had 125,000 deaths and Ireland had 582,000.','Overall, more women than men died from alcohol-related causes.'],
+ model:['The table compares the number of alcohol-related deaths in seven countries in 2005, divided by gender, with the average amount of beer each person drank per year.',
+ 'Overall, men made up the great majority of deaths in all seven countries. There also appears to be a general link between beer consumption and alcohol-related deaths, although there are some exceptions.',
+ 'The Czech Republic had both the highest beer consumption, at 132 litres per person, and the highest number of deaths, at 1,369,000. Germany was second on both measures, with 107 litres and 1,185,000 deaths. Austria and Ireland, where people drank around 104–106 litres, also recorded high totals of 913,000 and 582,000 respectively.',
+ 'At the other end of the scale, Lithuania had the fewest deaths, at 125,000, with consumption of 91 litres. However, Canada had the lowest beer consumption of all (86 litres) but still recorded 580,000 deaths, far more than Estonia (383,000), where people drank 98 litres. Female deaths ranged from just 13,000 in Lithuania to 469,000 in the Czech Republic.'],
+ err:[['and that caused the highest number of alcohol related death','and this country also had the highest number of alcohol-related deaths','الجدول ما يثبت إن البيرة «سبّبت» الوفيات، نقول correlation مو cause. وdeaths جمع.'],['more than 5000000 people died','more than 5 million people died','الأرقام الكبيرة اكتبيها بالكلمات أو بفواصل (5 million).'],['were much lesser than the male counterparts','was much lower than that of men','lesser للصفات المعنوية، مع الأرقام lower.']]},
+{id:10,ar:'المسافرين في ٣ مطارات ألمانية',topic:'مواصلات',kind:'time',
+ prompt:'The table below highlights data on the number of travellers using three major German airports between 2007 and 2012.',
+ tables:[T('Airport visitors, 2007–2012 (millions of travellers per year)',['2007','2008','2009','2010','2011','2012'],[['Dusseldorf',27.2,36.4,48.2,37.1,33.2,45.6],['Frankfurt',36.5,41.9,44.4,47.3,51.1,69.3],['Berlin Tegel',17.3,26.6,39.9,43.3,43.3,43.3]],'million')],
+ ov:['Overall, passenger numbers grew at all three airports over the period, with Frankfurt showing steady growth to become by far the busiest, while Dusseldorf fluctuated and Berlin Tegel levelled off.','Overall, Dusseldorf had 27.2 million travellers in 2007 and 36.4 million in 2008.','Overall, all three airports had fewer travellers in 2012 than in 2007.'],
+ model:['The table shows the number of passengers, in millions, who used three major German airports each year from 2007 to 2012.',
+ 'Overall, all three airports were busier at the end of the period than at the beginning. Frankfurt grew steadily and remained the busiest airport for most of the period, whereas Dusseldorf fluctuated and Berlin Tegel levelled off.',
+ 'Frankfurt began with 36.5 million travellers in 2007 and its numbers rose every year, before jumping to 69.3 million in 2012, almost double the original figure. Berlin Tegel had the fewest passengers at the start, at 17.3 million, but this figure climbed rapidly to 43.3 million in 2010 and then remained unchanged.',
+ 'Dusseldorf showed the most irregular pattern. Its passenger numbers rose from 27.2 million to a peak of 48.2 million in 2009, briefly overtaking Frankfurt, before falling to 33.2 million in 2011. In the final year, however, it recovered strongly to 45.6 million.'],
+ err:[['highest number of travelers used Frankfurt airport','the highest number of travellers used Frankfurt airport','لازم the قبل superlative (the highest).'],['Almost 10 millions more passengers','Almost 10 million more passengers','million بعد رقم بدون s.'],['the Frunkfurt airport','Frankfurt airport','انتبهي للتهجئة، وأسماء الأماكن بدون the غالبًا.']]}
+];
+
+TASKS.push(
+{id:11,ar:'وسائل التنقّل في إنجلترا',topic:'مواصلات',kind:'time',
+ prompt:'The table below gives information about changes in modes of travel in England between 1985 and 2000.',
+ tables:[T('Average distance in miles travelled per person per year',['1985','2000'],[['Walking',255,237],['Bicycle',51,41],['Car',3199,4806],['Local bus',429,274],['Long distance bus',54,124],['Train',239,366],['Taxi',13,42],['Other',450,585],['All modes',4740,6475]],'miles')],
+ ov:['Overall, people in England travelled considerably further in 2000 than in 1985, and the car was by far the most important mode of transport in both years.','Overall, people walked 255 miles in 1985 and 237 miles in 2000.','Overall, people travelled less by car in 2000 than in 1985.'],
+ model:['The table compares the average distance, in miles, that people in England travelled per year using different forms of transport in 1985 and 2000.',
+ 'Overall, the total distance travelled increased considerably over the fifteen years, and the car remained by far the most common way to travel. Most other forms of transport also grew, although walking, cycling and local buses declined.',
+ 'The average total distance rose from 4,740 miles in 1985 to 6,475 miles in 2000. Most of this growth came from car travel, which increased from 3,199 to 4,806 miles, accounting for roughly three quarters of all travel by the end of the period. Train journeys also became more popular, rising from 239 to 366 miles.',
+ 'Several smaller modes grew rapidly. Distances travelled by long-distance bus more than doubled, from 54 to 124 miles, and taxi use tripled, from 13 to 42 miles. In contrast, local bus travel fell from 429 to 274 miles, while walking and cycling decreased slightly, to 237 and 41 miles respectively.'],
+ err:[['information on the way of travelling by British people','information on how people in England travelled','الجدول عن England مو British كلها، دقّقي في المكان.'],['As is observed','As can be seen','As is observed تعبير ركيك، الطبيعي As can be seen.'],['travelled by an average British people','travelled by the average person in England','British صفة، ونقول the average person. وpeople جمع ما يجي بعد an.']]},
+{id:12,ar:'استخدام الإنترنت حسب العمر',topic:'تقنية',kind:'compare',
+ prompt:'The table below gives information on internet use in six categories by age group.',
+ tables:[T('Internet activities by age group (%)',['Teens','20s','30s','40s','50s','60s','70+'],[['Get news',76,73,76,75,71,74,70],['Online games',81,54,37,29,25,25,32],['Downloads',52,46,27,15,13,8,6],['Product research',0,79,80,83,79,74,70],['Buying a product',43,68,69,68,67,65,41],['Searching for people',5,31,23,23,24,29,27]],'%')],
+ ov:['Overall, getting news was popular with every age group, while teenagers were most interested in games and downloads and adults focused far more on researching and buying products.','Overall, 76% of teenagers got news online and 73% of people in their twenties did.','Overall, older people played online games more than teenagers.'],
+ model:['The table shows the percentage of internet users in seven age groups who took part in six different online activities.',
+ 'Overall, reading the news was equally popular across all ages. Teenagers stood out for playing games and downloading, whereas adults were much more likely to research and buy products online.',
+ 'Getting news was consistently popular, with between 70% and 76% of every group doing it. Online games and downloads, however, were dominated by teenagers, at 81% and 52% respectively. These activities became less common with age: only 25% of people in their fifties and sixties played games, and just 6% of the over-seventies downloaded files.',
+ 'Product research showed the opposite pattern. No teenagers researched products, but the figure jumped to 79% for people in their twenties and peaked at 83% for those in their forties. Buying products was most common between the ages of 20 and 69, at around two thirds of users, but dropped to 43% for teenagers and 41% for the over-seventies.'],
+ err:[['teenagers mostly plays game and get news','teenagers mostly played games and got news','teenagers جمع فبدون s، وgames جمع.'],['look for news news','look for news','كلمة مكررة: راجعي كتابتك قبل التسليم.'],['only 5% activity of teenagers involves searching for people','only 5% of teenagers searched for people','الجدول نسبة أشخاص مو نسبة نشاط.']]},
+{id:13,ar:'القطارات في ٤ دول',topic:'مواصلات',kind:'compare',
+ prompt:'The table below gives information about rail transport in four countries in 2007.',
+ tables:[T('Rail transport, 2007',['People using rail (millions)','Passenger km per head','Cargo (billion tons)'],[['Malaysia',5.9,770,22.2],['Canada',0.3,80,28.2],['China',27,1980,23.01],['UAE',5.5,780,21.9]])],
+ ov:['Overall, China had by far the largest number of rail passengers and the greatest distance travelled per person, whereas Canada used its railways mainly for freight.','Overall, Malaysia had 5.9 million rail users and Canada had 0.3 million.','Overall, Canada had the most rail passengers of the four countries.'],
+ model:['The table compares rail transport in Malaysia, Canada, China and the UAE in 2007 in terms of passenger numbers, distance travelled per person and the amount of cargo carried.',
+ 'Overall, China’s railways were by far the most used by passengers, while Canada had very few rail passengers but carried the most freight. The amount of cargo was broadly similar in all four countries.',
+ 'China had 27 million rail users, more than four times as many as Malaysia (5.9 million) and the UAE (5.5 million). Similarly, the average Chinese person travelled 1,980 kilometres by train, compared with around 770–780 kilometres in Malaysia and the UAE. Canada lagged far behind on both measures, with only 0.3 million passengers and just 80 kilometres per head.',
+ 'In terms of freight, however, the gap was much smaller. Canada carried the most cargo, at 28.2 billion tons, followed by China at 23.01 billion tons and Malaysia at 22.2 billion. The UAE transported slightly less, at 21.9 billion tons.'],
+ err:[['the cargoes carried more goods in Canada','Canadian railways carried the most cargo','cargoes ما «تحمل» بضائع، القطارات هي اللي تحمل.'],['(over 28 tons)','(over 28 billion tons)','الوحدة في الجدول billions of tons، لا تنسين الوحدة.'],['in china','in China','أسماء الدول تبدأ بحرف كبير.']]},
+{id:14,ar:'حصص شركات الجوالات',topic:'تقنية',kind:'time',
+ prompt:'The table shows the worldwide market share of the mobile phone market for manufacturers in the years 2005 and 2006.',
+ tables:[T('Worldwide mobile phone sales (% share of market)',['2005','2006'],[['Nokia',32.5,35],['Motorola',17.7,21.1],['Samsung',12.7,11.8],['Sony Ericsson',6.3,7.4],['LG',6.7,6.3],['BenQ Mobile',4.9,2.4],['Others',19.2,16.2]],'%')],
+ ov:['Overall, Nokia dominated the market in both years and, together with Motorola and Sony Ericsson, increased its share, while the other manufacturers lost ground.','Overall, Nokia had 32.5% in 2005 and 35% in 2006.','Overall, Samsung was the market leader in both years.'],
+ model:['The table shows the percentage share of the global mobile phone market held by different manufacturers in 2005 and 2006.',
+ 'Overall, Nokia was the clear market leader in both years. Nokia, Motorola and Sony Ericsson all gained market share, whereas the remaining companies saw their shares fall.',
+ 'Nokia’s share grew from 32.5% to 35%, meaning it sold about one in three mobile phones worldwide. Motorola remained in second place and saw the largest increase, from 17.7% to 21.1%. Sony Ericsson also improved its position slightly, from 6.3% to 7.4%, moving ahead of LG.',
+ 'By contrast, Samsung’s share dipped from 12.7% to 11.8%, although it remained the third largest manufacturer, and LG fell slightly to 6.3%. BenQ Mobile experienced the biggest relative decline, as its share halved from 4.9% to 2.4%. The combined share of all other manufacturers also dropped, from 19.2% to 16.2%.'],
+ err:[['their market share increased by 2.5%','its market share increased by 2.5 percentage points','Nokia شركة واحدة فنستخدم its. والفرق بين نسبتين نسميه percentage points.'],['their share decreased to 11.8% in 2005','its share decreased to 11.8% in 2006','الرقم 11.8 لسنة 2006 مو 2005. دقّة الأرقام مهمة جدًا.'],['Sonly Ericsson','Sony Ericsson','غلط إملائي في اسم الشركة.']]},
+{id:15,ar:'ميداليات أولمبياد لندن 2012',topic:'رياضة',kind:'compare',
+ prompt:'The table below shows the number of medals won by the top ten countries in the London 2012 Olympic Games.',
+ tables:[T('London 2012 Olympic Games medal table (ranked by gold)',['Gold','Silver','Bronze','Total'],[['United States',46,29,29,104],['China',38,27,23,88],['Great Britain',29,17,19,65],['Russia',24,26,32,82],['South Korea',13,8,7,28],['Germany',11,19,14,44],['France',11,11,12,34],['Italy',8,9,11,28],['Hungary',8,4,5,17],['Australia',7,16,12,35]])],
+ ov:['Overall, the United States and China were far ahead of the other countries, and because the ranking is based on gold medals, some countries with more medals in total were placed lower.','Overall, the USA won 46 gold, 29 silver and 29 bronze medals.','Overall, countries were ranked by their total number of medals.'],
+ model:['The table shows the number of gold, silver and bronze medals won by the ten most successful countries at the London 2012 Olympic Games, ranked by gold medals.',
+ 'Overall, the United States and China dominated the Games, winning far more medals than any other country. It is also clear that a country’s rank depended on its gold medals rather than its total.',
+ 'The United States topped the table with 46 gold medals and 104 medals in total, while China came second with 38 golds and 88 medals overall. Great Britain was third with 29 gold medals, even though Russia won more medals in total (82 compared with 65), because Russia won only 24 golds.',
+ 'The rest of the top ten won considerably fewer medals. South Korea ranked fifth with 13 golds but only 28 medals in total, whereas Germany and Australia, ranked sixth and tenth, actually won more medals overall, with 44 and 35 respectively. Hungary had the smallest total, with 17 medals.'],
+ err:[['As is presented in the tale data','As the table shows','tale معناها حكاية، الصح table.'],['China won 88 medals in total of which 29 were gold medals','China won 88 medals in total, of which 38 were gold','الرقم غلط: الصين أخذت 38 ذهبية مو 29.'],['The least gold medal winning country was Australia','Australia won the fewest gold medals','fewest مع المعدود، وجملة أبسط وأوضح.']]},
+{id:16,ar:'الهوايات المفضّلة في عدة دول',topic:'حياة يومية',kind:'compare',
+ prompt:'The table below gives information about favourite pastimes of people aged 30–50 in different countries.',
+ tables:[T('Favourite pastimes, people aged 30–50 (%)',['TV','Sport','Reading','Hobbies','Music','Beach','Sleep'],[['Canada',60,22,15,40,3,0,2],['France',null,null,30,20,4,null,null],['England',null,null,30,21,4,null,20],['Australia',65,30,15,45,5,30,4],['Korea',22,21,60,45,2,2,4],['China',15,25,60,50,0,5,5],['USA',60,23,15,42,23,30,2],['Japan',null,null,62,null,null,null,null]],'%')],
+ ov:['Overall, watching TV and hobbies were the most popular pastimes in Western countries such as Canada, Australia and the USA, while reading was the favourite activity in the Asian countries.','Overall, 60% of Canadians watched TV and 22% played sport.','Overall, sleeping was the most popular pastime in all countries.'],
+ model:['The table shows the percentage of people aged between 30 and 50 in eight countries who chose various activities as their favourite pastimes. Data is incomplete for France, England and Japan.',
+ 'Overall, watching television was the most popular pastime in Canada, Australia and the USA, whereas reading was the top choice in the three Asian countries. Hobbies were popular almost everywhere, while music and sleep were among the least popular choices.',
+ 'Around 60–65% of people in Canada, Australia and the USA named TV as a favourite pastime, compared with only 22% in Korea and 15% in China. Beach activities were also fairly popular in Australia and the USA (30%), but almost no one in Canada chose them.',
+ 'Reading, by contrast, was chosen by around 60% of people in Korea, China and Japan, which was four times the figure for the Western countries (15%). Hobbies were enjoyed by between 40% and 50% of people in most countries. Music was generally unpopular, except in the USA (23%), and sleep was significant only in England, at 20%.'],
+ err:[['spent their 60-65 of past time watching TV','about 60–65% of them chose watching TV','الأرقام نسب مئوية، لا تنسين % وpastime كلمة وحدة.'],['listening music','listening to music','listen يحتاج to.'],['Korean, Japanese and Chinese people of this age group prefer to read books','Reading was the favourite activity in Korea, Japan and China','قريبة، لكن الجدول يعطي نسب، فالأفضل نكتب بالأرقام ونستخدم الماضي.']]},
+{id:17,ar:'إنفاق المستهلكين في ٥ دول',topic:'فلوس',kind:'compare',
+ prompt:'The table below gives information on consumer spending on different items in five different countries in 2002.',
+ tables:[T('Percentage of national consumer expenditure by category, 2002',['Food/Drink/Tobacco','Clothing/Footwear','Leisure/Education'],[['Ireland',28.91,6.43,2.21],['Italy',16.36,9,3.2],['Spain',18.8,6.51,1.98],['Sweden',15.77,5.4,3.22],['Turkey',32.14,6.63,4.35]],'%')],
+ ov:['Overall, food, drink and tobacco made up by far the largest share of spending in all five countries, while leisure and education accounted for the smallest share.','Overall, Ireland spent 28.91% on food and 6.43% on clothing.','Overall, people spent most of their money on leisure and education.'],
+ model:['The table compares the proportion of consumer spending that went on three categories of goods in Ireland, Italy, Spain, Sweden and Turkey in 2002.',
+ 'Overall, food, drink and tobacco accounted for the largest share of expenditure in every country, whereas leisure and education received the smallest share. Turkey spent the highest proportion on two of the three categories.',
+ 'Turkish consumers spent 32.14% of their budget on food, drink and tobacco, closely followed by the Irish at 28.91%. The figures for the other three countries were much lower, at between 15.77% in Sweden and 18.8% in Spain.',
+ 'Spending on clothing and footwear was far lower and more similar across the countries, ranging from 5.4% in Sweden to 9% in Italy, which was the only country above 7%. Leisure and education took the smallest share everywhere, from just 1.98% in Spain to 4.35% in Turkey, the only country where this figure exceeded 4%.'],
+ err:[['Turk people spent the highest percentage','Turkish people spent the highest percentage','الصفة Turkish مو Turk.'],['Ireland, Spain, Sweden and finally Turkey expenditures were less than 5%','in Ireland, Spain, Sweden and Turkey the figure was between 5% and 7%','الأرقام 5.4 إلى 6.63 يعني أكثر من 5% مو أقل.'],['the least amount spent by was in Spain','the lowest figure was in Spain','جملة ناقصة، ومع النسب lowest.']]},
+{id:18,ar:'عدد الأطفال لكل امرأة في أستراليا',topic:'مجتمع',kind:'time',
+ prompt:'The table below presents the number of children ever born to women aged 40–44 years in Australia for each year the information was collected since 1981.',
+ tables:[T('Number of children ever born, women aged 40–44 (%)',['1981','1986','1996','2006'],[['None',8.5,9.7,12.8,15.9],['One child',7.6,8.7,11.3,13.2],['Two children',29,35.6,38.2,38.3],['Three children',27.4,27,24.6,21.5],['Four or more',27.6,18.9,13.1,11]],'%')],
+ ov:['Overall, Australian women had fewer children over the period: the proportions with no children, one or two children increased, while large families with three or more children became less common.','Overall, 8.5% of women had no children in 1981 and 9.7% in 1986.','Overall, families with four or more children became more common over time.'],
+ model:['The table shows the percentage of Australian women aged 40 to 44 who had given birth to different numbers of children, based on data collected in 1981, 1986, 1996 and 2006.',
+ 'Overall, there was a clear trend towards smaller families. The proportion of women with no children, one child or two children rose, while the share of women with three or more children fell.',
+ 'Having two children was the most common situation throughout the period, and its share rose from 29% in 1981 to around 38% from 1996 onwards. The proportion of childless women almost doubled, from 8.5% to 15.9%, and women with only one child increased from 7.6% to 13.2%.',
+ 'By contrast, large families declined sharply. In 1981, 27.6% of women had four or more children, but by 2006 this figure had fallen to just 11%, the most dramatic change in the table. The percentage of women with three children also decreased, though more gradually, from 27.4% to 21.5%.'],
+ err:[['who has no children was 8.5%','who had no children was 8.5%','وصف الماضي (1981) فنستخدم had.'],['the percentage reached to over 15%','the percentage rose to over 15%','reach بدون to، أو استخدمي rose to.'],['mothers who had no children were surged','the proportion of childless women surged','surge فعل لازم ما يجي مبني للمجهول، و«أمهات بدون أطفال» تناقض.']]},
+{id:19,ar:'استهلاك البيرة والعصير',topic:'صحة',kind:'compare',
+ prompt:'The tables below give information about the amount of beer and fruit juice consumed per person per year in different countries.',
+ tables:[T('Beer (litres per person per year)',['Litres'],[['Ireland',155],['Germany',119],['Austria',106],['Belgium',98],['Denmark',98],['United Kingdom',97],['Australia',89],['United States',85],['Netherlands',80],['Finland',79]],'litres'),T('Fruit juice (litres per person per year)',['Litres'],[['Canada',52.6],['United States',42.8],['Germany',38.6],['Austria',37.3],['Sweden',35.5],['Australia',34.4],['Finland',33],['United Kingdom',29.3],['Netherlands',28.1],['New Zealand',24.8]],'litres')],
+ ov:['Overall, people in all the listed countries drank far more beer than fruit juice, with Ireland leading in beer consumption and Canada in fruit juice.','Overall, Ireland drank 155 litres and Germany 119 litres of beer.','Overall, people drank more fruit juice than beer.'],
+ model:['The tables show the ten countries with the highest consumption of beer and of fruit juice, measured in litres per person per year.',
+ 'Overall, beer was consumed in much larger quantities than fruit juice: even the tenth-ranked beer country drank more than the top fruit juice consumer. Seven countries appear in both tables.',
+ 'Ireland had by far the highest beer consumption, at 155 litres per person, followed by Germany at 119 litres and Austria at 106 litres. The remaining seven countries were grouped closely together, from 98 litres in Belgium and Denmark down to 79 litres in Finland.',
+ 'Fruit juice consumption was considerably lower. Canada topped the list with 52.6 litres per person, ahead of the United States with 42.8 litres. Germany and Austria, which were also among the top beer drinkers, consumed 38.6 and 37.3 litres respectively, while New Zealand was tenth with 24.8 litres, less than half of the Canadian figure.'],
+ err:[['Finnish took 79 litres','Finnish people drank 79 litres','Finnish صفة نحتاج بعدها people، وtook ما تناسب الشرب.'],['German and Australian citizens take more than 100 litres beer','Germans drink more than 100 litres of beer, while Australians drink 89 litres','الرقم الأسترالي 89 مو أكثر من 100، وlitres of beer.'],['while people of UK, Australia, US, Netherland consume','while people in the UK, Australia, the US and the Netherlands drink','بعض الدول تحتاج the، و Netherlands بـ s.']]},
+{id:20,ar:'مصاريف أسرة أسترالية',topic:'فلوس',kind:'time',
+ prompt:'The table below shows the monthly expenditure of an average Australian family in 1991 and 2001.',
+ tables:[T('Monthly expenditure, Australian dollars per month',['1991','2001'],[['Food',155,160],['Electricity and water',75,120],['Clothing',30,20],['Housing',95,100],['Transport',70,45],['Other goods and services',250,270],['Total',675,715]],'AUD')],
+ ov:['Overall, total monthly spending rose slightly over the decade; spending on electricity and water grew the most, while spending on clothing and transport fell.','Overall, the family spent $155 on food in 1991 and $160 in 2001.','Overall, the family spent much less money in 2001 than in 1991.'],
+ model:['The table compares how much an average Australian family spent each month on different items in 1991 and 2001.',
+ 'Overall, total monthly expenditure rose only slightly over the ten years. Spending on electricity and water increased the most, while the amounts spent on clothing and transport fell.',
+ 'In 1991, a typical family spent AUD 675 a month, and this figure rose to AUD 715 in 2001. Non-essential goods and services were the largest expense in both years, increasing from $250 to $270. Spending on food and housing changed very little, rising by only $5 each, to $160 and $100 respectively.',
+ 'The most significant increase was in electricity and water bills, which went up by 60%, from $75 to $120 a month. In contrast, families spent less on transport, which fell from $70 to $45, and on clothing, which dropped by a third, from $30 to $20.'],
+ err:[['this reached to AUD $ 715 after 10 years','this rose to AUD 715 ten years later','reach بدون to، ولا نكرر AUD و$ مع بعض.'],['were $155 & & 95 consecutively','were $155 and $95 respectively','consecutively معناها متتالي، الصح respectively. و & ما تُستخدم في الكتابة الأكاديمية.'],['increased by only 5 dollar','increased by only 5 dollars','الجمع: dollars.']]}
+);
+/* language bank: g=group, e=phrase, a=Arabic, x=example from the tables, sh=shape, past, noun, opp */
+const LG=[
+ {k:'up',g:'صعود',c:'--mint',ic:'up'},{k:'down',g:'نزول',c:'--coral',ic:'down'},{k:'flat',g:'ثبات وتذبذب',c:'--skyc',ic:'flat'},
+ {k:'speed',g:'قوة التغيّر',c:'--grape',ic:'speed'},{k:'cmp',g:'مقارنة',c:'--sun',ic:'cmp'},{k:'approx',g:'تقريب وكسور',c:'--rose',ic:'approx'},{k:'link',g:'ربط التقرير',c:'--accent',ic:'link'}];
+const LANG=[
+ {g:'up',e:'rise',a:'يرتفع',past:'rose',pp:'risen',noun:'a rise',opp:'fall',sh:'up',x:'Car travel rose from 3,199 to 4,806 miles.'},
+ {g:'up',e:'increase',a:'يزيد',past:'increased',noun:'an increase',opp:'decrease',sh:'up',x:'The number of passengers increased every year.'},
+ {g:'up',e:'grow',a:'ينمو',past:'grew',pp:'grown',noun:'growth',opp:'decline',sh:'up',x:'Frankfurt grew steadily over the period.'},
+ {g:'up',e:'climb',a:'يصعد تدريجيًا',past:'climbed',noun:'a climb',opp:'drop',sh:'up',x:'Telephone ownership climbed to 77%.'},
+ {g:'up',e:'go up',a:'يطلع / يرتفع',past:'went up',noun:'a rise',opp:'go down',sh:'up',x:'Electricity and water bills went up by 60%.'},
+ {g:'up',e:'double',a:'يتضاعف',past:'doubled',noun:'a doubling',opp:'halve',sh:'up',x:'Long-distance bus travel more than doubled.'},
+ {g:'up',e:'triple',a:'يتضاعف ٣ مرات',past:'tripled',noun:'a tripling',opp:'halve',sh:'up',x:'Taxi use tripled, from 13 to 42 miles.'},
+ {g:'up',e:'surge',a:'يقفز بقوة',past:'surged',noun:'a surge',opp:'plummet',sh:'jump',x:'Frankfurt surged to 69.3 million in 2012.'},
+ {g:'up',e:'peak at',a:'يبلغ الذروة عند',past:'peaked at',noun:'a peak',opp:'hit a low of',sh:'peak',x:'Dusseldorf peaked at 48.2 million in 2009.'},
+ {g:'up',e:'recover',a:'يتعافى / يرجع يرتفع',past:'recovered',noun:'a recovery',opp:'fall',sh:'vee',x:'Dusseldorf recovered strongly to 45.6 million.'},
+ {g:'down',e:'fall',a:'ينخفض',past:'fell',pp:'fallen',noun:'a fall',opp:'rise',sh:'down',x:'Local bus travel fell from 429 to 274 miles.'},
+ {g:'down',e:'decrease',a:'يقل',past:'decreased',noun:'a decrease',opp:'increase',sh:'down',x:'Spending on transport decreased to $45.'},
+ {g:'down',e:'decline',a:'يتراجع',past:'declined',noun:'a decline',opp:'grow',sh:'down',x:'Large families declined sharply.'},
+ {g:'down',e:'drop',a:'يهبط',past:'dropped',noun:'a drop',opp:'climb',sh:'down',x:'Lunch sales dropped to $1,550 on Sunday.'},
+ {g:'down',e:'go down',a:'ينزل',past:'went down',noun:'a fall',opp:'go up',sh:'down',x:'The share of other manufacturers went down.'},
+ {g:'down',e:'plummet',a:'يهوي بشدة',past:'plummeted',noun:'a plunge',opp:'surge',sh:'crash',x:'Group sport plummeted to zero for the over-sixties.'},
+ {g:'down',e:'halve',a:'ينخفض للنصف',past:'halved',noun:'a halving',opp:'double',sh:'down',x:'BenQ Mobile’s share halved from 4.9% to 2.4%.'},
+ {g:'down',e:'dip',a:'ينزل نزول بسيط',past:'dipped',noun:'a dip',opp:'climb',sh:'dip',x:'Samsung’s share dipped to 11.8%.'},
+ {g:'flat',e:'remain stable',a:'يبقى ثابتًا',past:'remained stable',noun:'stability',opp:'fluctuate',sh:'flat',x:'Television ownership remained stable at around 97%.'},
+ {g:'flat',e:'remain unchanged',a:'يبقى بدون تغيير',past:'remained unchanged',noun:'no change',opp:'change',sh:'flat',x:'Berlin Tegel remained unchanged at 43.3 million.'},
+ {g:'flat',e:'level off',a:'يستقر بعد تغيّر',past:'levelled off',noun:'a levelling off',opp:'surge',sh:'level',x:'Berlin Tegel levelled off after 2010.'},
+ {g:'flat',e:'fluctuate',a:'يتذبذب',past:'fluctuated',noun:'a fluctuation',opp:'remain stable',sh:'fluct',x:'Dusseldorf fluctuated throughout the period.'},
+ {g:'flat',e:'stay at',a:'يبقى عند',past:'stayed at',noun:'',opp:'',sh:'flat',x:'The figure stayed at 43.3 million for three years.'},
+ {g:'speed',e:'sharply',a:'بشكل حاد',adj:'sharp',opp:'slightly',sh:'jump',x:'Dinner sales fell sharply at the weekend.'},
+ {g:'speed',e:'dramatically',a:'بشكل كبير جدًا',adj:'dramatic',opp:'marginally',sh:'jump',x:'Large families declined dramatically.'},
+ {g:'speed',e:'significantly',a:'بشكل ملحوظ',adj:'significant',opp:'slightly',sh:'up',x:'Total travel increased significantly.'},
+ {g:'speed',e:'considerably',a:'بدرجة كبيرة',adj:'considerable',opp:'slightly',sh:'up',x:'Group activities decreased considerably with age.'},
+ {g:'speed',e:'steadily',a:'بشكل ثابت',adj:'steady',opp:'erratically',sh:'up',x:'Frankfurt grew steadily.'},
+ {g:'speed',e:'gradually',a:'تدريجيًا',adj:'gradual',opp:'suddenly',sh:'up',x:'Three-child families decreased gradually.'},
+ {g:'speed',e:'slightly',a:'قليلًا',adj:'slight',opp:'sharply',sh:'flat',x:'Food spending rose slightly, to $160.'},
+ {g:'speed',e:'marginally',a:'بشكل طفيف جدًا',adj:'marginal',opp:'dramatically',sh:'flat',x:'LG’s share fell marginally to 6.3%.'},
+ {g:'cmp',e:'the highest',a:'الأعلى',opp:'the lowest',x:'Turkey had the highest figure, at 32.14%.'},
+ {g:'cmp',e:'the lowest',a:'الأدنى',opp:'the highest',x:'Spain had the lowest figure, at 1.98%.'},
+ {g:'cmp',e:'far higher than',a:'أعلى بكثير من',opp:'far lower than',x:'China’s figure was far higher than Canada’s.'},
+ {g:'cmp',e:'twice as many as',a:'ضعف العدد',opp:'half as many as',x:'Japan had twice as many readers as Canada.'},
+ {g:'cmp',e:'whereas',a:'بينما',opp:'',x:'Adults bought products, whereas teenagers played games.'},
+ {g:'cmp',e:'compared with',a:'مقارنةً بـ',opp:'',x:'China had 1,980 km per head, compared with 80 km in Canada.'},
+ {g:'cmp',e:'respectively',a:'على التوالي',opp:'',x:'Japan and Canada had 78 and 76 years respectively.'},
+ {g:'cmp',e:'followed by',a:'يليه',opp:'',x:'Ireland drank 155 litres, followed by Germany at 119 litres.'},
+ {g:'cmp',e:'similar',a:'متشابه',opp:'different',x:'Cargo figures were similar in all four countries.'},
+ {g:'approx',e:'just over',a:'أكثر بقليل من',opp:'just under',x:'Nokia sold just over a third of all phones.'},
+ {g:'approx',e:'just under',a:'أقل بقليل من',opp:'just over',x:'Just under half of the teenagers downloaded files.'},
+ {g:'approx',e:'nearly / almost',a:'تقريبًا (أقل بشوي)',opp:'',x:'Central heating almost doubled.'},
+ {g:'approx',e:'roughly / around',a:'حوالي',opp:'',x:'Roughly three quarters of all travel was by car.'},
+ {g:'approx',e:'a quarter',a:'ربع',val:25,x:'About a quarter of people in their fifties played games.'},
+ {g:'approx',e:'a third',a:'ثلث',val:33,x:'Nokia had about a third of the market.'},
+ {g:'approx',e:'half',a:'نصف',val:50,x:'Fulham’s figure was little more than half of Notting Hill’s.'},
+ {g:'approx',e:'two thirds',a:'ثلثين',val:67,x:'About two thirds of adults bought products online.'},
+ {g:'approx',e:'three quarters',a:'ثلاثة أرباع',val:75,x:'Car travel made up roughly three quarters of the total.'},
+ {g:'approx',e:'the vast majority',a:'الأغلبية الساحقة',val:90,x:'The vast majority of households owned a television.'},
+ {g:'link',e:'Overall,',a:'بشكل عام (لبداية الـOverview)',x:'Overall, all three airports became busier.'},
+ {g:'link',e:'In contrast,',a:'على العكس',x:'In contrast, local bus travel fell.'},
+ {g:'link',e:'However,',a:'لكن / ومع ذلك',x:'However, the gap narrowed for larger properties.'},
+ {g:'link',e:'Similarly,',a:'بالمثل',x:'Similarly, train journeys became more popular.'},
+ {g:'link',e:'In terms of',a:'من ناحية',x:'In terms of freight, the gap was much smaller.'},
+ {g:'link',e:'The table compares',a:'الجدول يقارن (للمقدمة)',x:'The table compares rail transport in four countries.'}
+];
+
+/* ================= Table Lab: core ================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function toast(m){const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2400)}
+const fmtN=v=>v==null?'–':(typeof v==='number'?(Math.abs(v)>=1000?v.toLocaleString('en-US'):String(v)):String(v));
+const COLS=['--coral','--sun','--mint','--skyc','--grape','--rose'];
+const PCOL=['--skyc','--sun','--mint','--grape'];const PLAB=['المقدمة (Introduction)','الصورة العامة (Overview)','التفاصيل ١ (Body 1)','التفاصيل ٢ (Body 2)'];
+let P=store.get('t1_p',{m:{},xp:0,streak:0,last:'',reports:[]});
+function MP(id){return P.m[id]||(P.m[id]={explore:0,ov:0,lab:null,order:0,err:null,wrote:0,draft:''})}
+function save(){store.set('t1_p',P)}
+const dkey=d=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+function addXP(n){const t=dkey(new Date()),y=dkey(new Date(Date.now()-864e5));if(P.last!==t){P.streak=P.last===y?P.streak+1:1;P.last=t}P.xp+=n;save();renderHud()}
+const streakNow=()=>{const t=dkey(new Date()),y=dkey(new Date(Date.now()-864e5));return (P.last===t||P.last===y)?P.streak:0};
+function starsOf(id){const m=MP(id);return (m.explore>=3?1:0)+((m.lab||0)>=80?1:0)+(m.wrote?1:0)}
+const totalStars=()=>TASKS.reduce((a,t)=>a+starsOf(t.id),0);
+const STEPS=[['explore','اكتشفي الجدول'],['ov','الصورة العامة'],['lab','مختبر الجمل'],['order','ركّبي التقرير'],['err','صيّادة الأخطاء'],['write','اكتبي تقريرك']];
+function stepDone(id,k){const m=MP(id);return k==='explore'?m.explore>=3:k==='ov'?!!m.ov:k==='lab'?(m.lab!=null):k==='order'?!!m.order:k==='err'?(m.err!=null):!!m.wrote}
+function currentM(){for(const t of TASKS)if(starsOf(t.id)<3)return t.id;return 20}
+
+/* speech + AI */
+let enV=null;function pickV(){try{const v=speechSynthesis.getVoices();enV=v.find(x=>/en-GB/i.test(x.lang))||v.find(x=>/^en/i.test(x.lang))||null}catch(e){}}
+try{pickV();speechSynthesis.onvoiceschanged=pickV}catch(e){}
+function speak(t,r){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-GB';if(enV)u.voice=enV;u.rate=r||.92;speechSynthesis.speak(u)}catch(e){toast('الصوت غير متاح هنا')}}
+let AI=null,AI_STATE='loading';
+(async()=>{await Promise.resolve();try{if(window.claude&&window.claude.use){AI=await window.claude.use('sample');AI_STATE=AI?'ready':'off'}else AI_STATE='off'}catch(e){AI_STATE='off'}renderHud()})();
+const aiErr=e=>{const c=e&&e.code;return c==='rate_limited'?'طلبات كثيرة الحين، جرّبي بعد دقيقة.':c==='not_granted'?'ما تم السماح للمدرّبة الذكية في هذي الصفحة.':'ما قدرت أوصل للمدرّبة الذكية'+(c?' ('+c+')':'')+'. جرّبي مرة ثانية.'};
+function parseJSON(t){t=String(t||'').replace(/```json|```/g,'');const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<a)return null;try{return JSON.parse(t.slice(a,b+1))}catch(e){return null}}
+
+/* ================= table helpers ================= */
+function numericCells(t){const out=[];t.tables.forEach((tb,ti)=>tb.rows.forEach((r,ri)=>r.vals.forEach((v,ci)=>{if(typeof v==='number')out.push({ti,ri,ci,v,row:r.name,col:tb.cols[ci],unit:tb.unit})})));return out}
+const isTotalRow=n=>/^(total|all )/i.test(n);
+const unitTxt=(u,v)=>u==='%'?'%':u==='$'?'':u?(' '+u):'';
+const showV=(u,v)=>u==='$'||u==='£'?u+fmtN(v):fmtN(v)+(u==='%'?'%':'');
+function tableHTML(t,ti,S){const tb=t.tables[ti];const ex=S.ex||{};
+ return `<div class="dtable-wrap"><table class="dt"><caption>${esc(tb.caption)}</caption><thead><tr><th class="rh" data-tsel="${ti}:r:-1"></th>${tb.cols.map((c,ci)=>`<th data-tsel="${ti}:c:${ci}" class="${S.sel&&S.sel.ti===ti&&S.sel.k==='c'&&S.sel.i===ci?'hlr':''}" title="ارسمي هذا العمود">${esc(c)}</th>`).join('')}</tr></thead><tbody>${tb.rows.map((r,ri)=>`<tr><th class="rh ${S.sel&&S.sel.ti===ti&&S.sel.k==='r'&&S.sel.i===ri?'hlr':''}" data-tsel="${ti}:r:${ri}" title="ارسمي هذا الصف">${esc(r.name)}</th>${r.vals.map((v,ci)=>{const key=ti+':'+ri+':'+ci;let c=v==null?'na':'';if(S.sel&&S.sel.ti===ti&&((S.sel.k==='r'&&S.sel.i===ri)||(S.sel.k==='c'&&S.sel.i===ci)))c+=' hlc';if(ex[key])c+=' '+ex[key];return `<td class="${c}" data-cell="${key}">${v==null?'–':showV(tb.unit,v)}</td>`}).join('')}</tr>`).join('')}</tbody></table></div>`}
+function chartSVG(t,sel){
+ if(!sel)return '';const tb=t.tables[sel.ti];let labels,vals,title;
+ if(sel.k==='r'){const r=tb.rows[sel.i];labels=tb.cols;vals=r.vals;title=r.name}else{labels=tb.rows.filter(r=>!isTotalRow(r.name)).map(r=>r.name);vals=tb.rows.filter(r=>!isTotalRow(r.name)).map(r=>r.vals[sel.i]);title=tb.cols[sel.i]}
+ const n=labels.length,W=640,H=260,L=40,B=64,top=26;const max=Math.max(...vals.filter(v=>v!=null),1);const bw=(W-L-10)/n;
+ const bars=vals.map((v,i)=>{if(v==null)return '';const h=(H-B-top)*v/max;const x=L+i*bw+bw*.15,y=H-B-h;const c=`var(${COLS[i%6]})`;return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(bw*.7).toFixed(1)}" height="${h.toFixed(1)}" rx="5" fill="${c}"/><text x="${(x+bw*.35).toFixed(1)}" y="${(y-6).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="600">${esc(showV(tb.unit,v))}</text>`}).join('');
+ const labs=labels.map((l,i)=>`<text x="${(L+i*bw+bw*.5).toFixed(1)}" y="${H-B+16}" text-anchor="end" font-size="11.5" transform="rotate(-30 ${(L+i*bw+bw*.5).toFixed(1)} ${H-B+16})">${esc(String(l).slice(0,18))}</text>`).join('');
+ return `<div class="chart"><div class="row" style="justify-content:space-between"><b class="en">${esc(title)}</b><span class="small muted">${sel.k==='r'?'الصف كرسم':'العمود كرسم'} · اضغطي أي عنوان صف أو عمود</span></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Bar chart of ${esc(title)}"><line x1="${L}" y1="${H-B}" x2="${W-6}" y2="${H-B}" stroke="currentColor" stroke-opacity=".3"/>${bars}${labs}</svg></div>`}
+function sleepHTML(t){const g=t.grid;const tot=g.cols.map((_,c)=>g.asleep.reduce((a,r)=>a+r[c],0));
+ return `<div class="dtable-wrap"><table class="dt gridsleep"><caption>Sleep patterns (coloured = asleep)</caption><thead><tr><th class="rh">Time</th>${g.cols.map((c,ci)=>`<th data-sleep="${ci}">${esc(c)}</th>`).join('')}</tr></thead><tbody>${g.hours.map((h,hi)=>`<tr><th class="rh">${h}</th>${g.cols.map((c,ci)=>`<td class="${g.asleep[hi][ci]?'z':''}" aria-label="${g.asleep[hi][ci]?'asleep':'awake'}"></td>`).join('')}</tr>`).join('')}<tr><th class="rh">Total hours</th>${tot.map(x=>`<td><b>${x}</b></td>`).join('')}</tr></tbody></table></div>`}
+
+/* ================= auto-generated data missions & sentence lab ================= */
+function missions(t){
+ if(t.kind==='grid'){const g=t.grid;const tot=g.cols.map((_,c)=>g.asleep.reduce((a,r)=>a+r[c],0));const mx=Math.max(...tot),mn=Math.min(...tot);
+  return [{q:'مين نام أكثر عدد ساعات؟ اضغطي على اسم المهنة',sleep:tot.map((v,i)=>v===mx?i:-1).filter(i=>i>=0)},{q:'مين نام أقل عدد ساعات؟',sleep:[tot.indexOf(mn)]},{q:'مين نام في النهار (بعد الظهر) بس؟ اضغطي على الأم أو السائق',sleep:[1,2]}]}
+ const cells=numericCells(t).filter(c=>!isTotalRow(c.row));const out=[];
+ const byCol={};cells.forEach(c=>{const k=c.ti+':'+c.ci;(byCol[k]=byCol[k]||[]).push(c)});
+ const cols=shuffle(Object.values(byCol).filter(a=>a.length>=3));
+ if(cols[0]){const a=cols[0];const mx=Math.max(...a.map(c=>c.v));out.push({q:`اضغطي على أكبر رقم في عمود «${a[0].col}»`,ans:a.filter(c=>c.v===mx).map(c=>c.ti+':'+c.ri+':'+c.ci)})}
+ if(cols[1]||cols[0]){const a=cols[1]||cols[0];const mn=Math.min(...a.map(c=>c.v));out.push({q:`اضغطي على أصغر رقم في عمود «${a[0].col}»`,ans:a.filter(c=>c.v===mn).map(c=>c.ti+':'+c.ri+':'+c.ci)})}
+ const all=cells;const gmx=Math.max(...all.map(c=>c.v));if(t.tables.length===1&&t.tables[0].cols.length>1&&t.kind!=='time')out.push({q:'وين أكبر رقم في الجدول كله؟',ans:all.filter(c=>c.v===gmx).map(c=>c.ti+':'+c.ri+':'+c.ci)});
+ if(t.kind==='time'){const tb=t.tables[0];const rows=tb.rows.map((r,ri)=>{const v=r.vals.filter(x=>x!=null);return {ri,d:v.length>1?v[v.length-1]-v[0]:0,r}}).filter(x=>!isTotalRow(x.r.name));const up=rows.reduce((a,b)=>b.d>a.d?b:a);const dn=rows.reduce((a,b)=>b.d<a.d?b:a);
+  out.push({q:'أي صف زاد أكثر من أول سنة لآخر سنة؟ اضغطي على أي رقم في هذا الصف',row:{ti:0,ri:up.ri}});if(dn.d<0)out.push({q:'أي صف نقص أكثر؟ اضغطي على أي رقم في صفه',row:{ti:0,ri:dn.ri}})}
+ else{const tb=t.tables[0];if(tb.rows.length>=3){const c=Math.floor(Math.random()*tb.cols.length);const rr=tb.rows.map((r,ri)=>({ri,v:r.vals[c]})).filter(x=>x.v!=null&&!isTotalRow(tb.rows[x.ri].name));if(rr.length>=3){const s=rr.slice().sort((a,b)=>b.v-a.v)[1];out.push({q:`مين في المركز الثاني في «${tb.cols[c]}»؟ اضغطي على رقمه`,ans:[`0:${s.ri}:${c}`]})}}}
+ if(out.length<4){const byRow={};cells.forEach(c=>{const k=c.ti+':'+c.ri;(byRow[k]=byRow[k]||[]).push(c)});shuffle(Object.values(byRow).filter(a=>a.length>=3)).slice(0,4-out.length).forEach((a,j)=>{const f=j%2?Math.min:Math.max;const v=f(...a.map(c=>c.v));out.push({q:`اضغطي على ${j%2?'أصغر':'أكبر'} رقم في صف «${a[0].row}»`,ans:a.filter(c=>c.v===v).map(c=>c.ti+':'+c.ri+':'+c.ci)})})}
+ return out.slice(0,4)}
+function labRounds(t){
+ const R=[];
+ if(t.kind==='grid'){const g=t.grid;const tot=g.cols.map((_,c)=>g.asleep.reduce((a,r)=>a+r[c],0));
+  g.cols.forEach((c,i)=>R.push({s:`${c}s slept for a total of ___ hours.`,opts:shuffle([...new Set([tot[i],tot[i]+1,tot[i]-1,tot[i]+2])]).map(String),ans:String(tot[i])}));
+  R.push({s:'Doctors slept ___ hours than students.',opts:['fewer','more','the same'],ans:'fewer'},{s:'Students slept in one block, ___ truck drivers slept at three different times.',opts:['whereas','because','so'],ans:'whereas'},{s:'Overall, the amount of sleep ___ depending on the occupation.',opts:['varied','remained stable','doubled'],ans:'varied'});return shuffle(R).slice(0,8)}
+ const cells=numericCells(t).filter(c=>!isTotalRow(c.row));
+ for(let k=0;k<3;k++){const c=pick(cells);const same=cells.filter(x=>x.ti===c.ti&&x.v!==c.v);const o=shuffle([...new Set(same.map(x=>showV(c.unit,x.v)))]).slice(0,3);R.push({s:`According to the table, the figure for ${c.row} (${c.col}) was ___.`,opts:shuffle([showV(c.unit,c.v),...o]),ans:showV(c.unit,c.v)})}
+ for(let k=0;k<2;k++){const c=pick(cells);const d=cells.filter(x=>x.ti===c.ti&&x.ci===c.ci&&x.row!==c.row&&x.v!==c.v);if(!d.length)continue;const e=pick(d);R.push({s:`In terms of ${c.col}, ${c.row} (${showV(c.unit,c.v)}) was ___ than ${e.row} (${showV(e.unit,e.v)}).`,opts:['higher','lower'],ans:c.v>e.v?'higher':'lower'})}
+ const tb=t.tables[0];const ci=Math.floor(Math.random()*tb.cols.length);const rr=tb.rows.filter(r=>r.vals[ci]!=null&&!isTotalRow(r.name));if(rr.length>=3){const top=rr.reduce((a,b)=>b.vals[ci]>a.vals[ci]?b:a);R.push({s:`___ had the highest figure for ${tb.cols[ci]}.`,opts:shuffle([top.name,...shuffle(rr.filter(r=>r!==top)).slice(0,3).map(r=>r.name)]),ans:top.name})}
+ if(t.kind==='time'){shuffle(tb.rows.filter(r=>!isTotalRow(r.name))).slice(0,3).forEach(r=>{const idx=r.vals.map((v,i)=>v==null?-1:i).filter(i=>i>=0);if(idx.length<2)return;const a=r.vals[idx[0]],b=r.vals[idx[idx.length-1]];const ch=(b-a)/Math.abs(a||1);const verb=Math.abs(ch)<.03?'remained stable':ch>0?'rose':'fell';
+   R.push({s:`${r.name} ___ from ${showV(tb.unit,a)} in ${tb.cols[idx[0]]} to ${showV(tb.unit,b)} in ${tb.cols[idx[idx.length-1]]}.`,opts:['rose','fell','remained stable'],ans:verb});
+   if(verb!=='remained stable')R.push({s:`${r.name} ${verb==='rose'?'increased':'decreased'} ___ (from ${showV(tb.unit,a)} to ${showV(tb.unit,b)}).`,opts:['sharply','slightly'],ans:Math.abs(ch)>=.25?'sharply':'slightly',why:Math.abs(ch)>=.25?'التغيّر كبير (أكثر من ٢٥٪ تقريبًا) فنقول sharply.':'التغيّر بسيط فنقول slightly.'})})}
+ return shuffle(R).slice(0,8)}
+const LANG_RE=new RegExp('\\b('+['rose','rise','risen','increased','increase','climbed','grew','doubled','tripled','surged','peak','peaked','fell','fallen','decreased','declined','dropped','plummeted','halved','dipped','remained','levelled off','fluctuated','sharply','dramatically','significantly','considerably','steadily','gradually','slightly','the highest','the lowest','far','whereas','while','compared with','respectively','just over','almost','roughly','around','a quarter','a third','half','the majority','Overall','In contrast','By contrast','However','followed by','more than','less than','fewer','twice'].sort((a,b)=>b.length-a.length).map(x=>x.replace(/ /g,'\\s+')).join('|')+')\\b','g');
+const markLang=s=>esc(s).replace(LANG_RE,'<mark class="lg" title="لغة مفيدة لـ Task 1">$1</mark>');
+
+/* ================= state & rendering ================= */
+const S={room:'map',m:null,step:'explore',sel:null,ex:{},mi:0,ovPick:null,ovOrder:null,lab:null,ord:null,err:null,timer:null,ai:null,aiBusy:false};
+const ROOMS=[['map','المهمات'],['lang','بنك اللغة'],['recipe','وصفة Task 1'],['reports','تقاريري']];
+function renderHud(){const el=$('#hud');if(!el)return;el.innerHTML=`<span class="chip c1">🔥 <b>${streakNow()}</b> يوم</span><span class="chip c2"><span class="star">★</span> <b>${totalStars()}</b>/60</span><span class="chip c3"><b>${P.xp}</b> XP</span><span class="chip small muted">${AI_STATE==='ready'?'المدرّبة الذكية متصلة':AI_STATE==='loading'?'جاري الاتصال…':'المدرّبة الذكية غير متاحة هنا'}</span>`}
+function render(){$('#tabs').innerHTML=ROOMS.map(([k,l])=>`<button class="tab" data-room="${k}" aria-current="${S.room===k}">${l}</button>`).join('');renderHud();
+ $('#main').innerHTML=({map:()=>S.m?missionView():mapView(),lang:langView,recipe:recipeView,reports:reportsView})[S.room]()}
+function starsHTML(n){return `<span class="stars" aria-label="${n} من 3 نجوم">${[0,1,2].map(i=>`<span class="${i<n?'on':''}">★</span>`).join('')}</span>`}
+function mapView(){const cm=currentM();const T=TASKS[cm-1];const done=STEPS.filter(s=>stepDone(cm,s[0])).length;
+ return `<section class="hero2"><span class="bubble" style="width:230px;height:230px;left:-60px;top:-90px"></span><span class="bubble" style="width:130px;height:130px;left:35%;bottom:-60px"></span>
+ <div class="stack" style="position:relative"><span class="eyebrow">مهمتك الحالية · Mission ${cm} من 20</span><h2>${esc(T.ar)}</h2><div class="ttl">${esc(T.prompt)}</div>
+ <div class="sp">${STEPS.map(([k,l])=>`<span class="${stepDone(cm,k)?'done':''}">${stepDone(cm,k)?'✓ ':''}${l}</span>`).join('')}</div>
+ <div class="row"><button class="btn sun" data-m="${cm}">${done?'كمّلي المهمة':'ابدئي المهمة'} ←</button><span style="opacity:.92;font-size:14px">كل جدول لغز: اكتشفيه، افهمي قصته، ثم اكتبي تقريره.</span></div></div>
+ <div class="ring"><div class="in"><div><b>${totalStars()}</b><span style="font-size:13px;opacity:.9">من 60 نجمة</span></div></div>${ringSVG(totalStars()/60)}</div></section>
+ <section class="card stack"><div class="row" style="justify-content:space-between"><h3>٢٠ مهمة · ٢٠ جدول من كتابك</h3><span class="small muted">كل مهمة فيها ٣ نجوم: اكتشاف الجدول، مختبر الجمل (٨٠٪+)، وكتابة التقرير</span></div>
+ <div class="mgrid">${TASKS.map((t,i)=>`<button class="mtile${t.id===cm?' cur':''}" style="--mc:var(${COLS[i%6]})" data-m="${t.id}"><span class="row" style="justify-content:space-between"><span class="mn">${t.id}</span>${starsHTML(starsOf(t.id))}</span><h4>${esc(t.ar)}</h4><span class="tp">${t.topic} · ${t.kind==='time'?'تغيّر عبر الزمن':t.kind==='grid'?'جدول ألوان':'مقارنة'}</span></button>`).join('')}</div></section>`}
+function ringSVG(p){const r=62,c=2*Math.PI*r;return `<svg viewBox="0 0 150 150" aria-hidden="true"><circle cx="75" cy="75" r="${r}" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="13"/><circle cx="75" cy="75" r="${r}" fill="none" stroke="#FFB938" stroke-width="13" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-p)}"/></svg>`}
+function missionView(){const t=TASKS[S.m-1];const i=TASKS.indexOf(t);const k=STEPS.filter(s=>stepDone(t.id,s[0])).length;
+ const head=`<section class="banner" style="--wk:var(${COLS[i%6]})"><span class="bubble" style="width:200px;height:200px;right:-50px;top:-80px"></span><div class="stack" style="gap:6px;position:relative;min-width:0"><button class="icon-btn" data-back="1" style="align-self:flex-start">→ كل المهمات</button><span class="eyebrow">Mission ${t.id} · ${t.topic}</span><h2 style="font-family:var(--ui);direction:rtl;text-align:right">${esc(t.ar)}</h2><p class="en" style="opacity:.95;font-family:var(--read)">${esc(t.prompt)}</p></div><div class="bprog" style="position:relative"><b>${starsHTML(starsOf(t.id))} ${k}/6 خطوات</b><div class="meter"><i style="width:${k/6*100}%"></i></div></div></section>
+ <nav class="stepbar" aria-label="خطوات المهمة">${STEPS.map(([kk,l],j)=>`<button class="stepbtn${stepDone(t.id,kk)?' done':''}" style="--sc:var(${COLS[j%6]})" data-step="${kk}" aria-current="${S.step===kk}"><span class="k">${stepDone(t.id,kk)?'✓':j+1}</span>${l}</button>`).join('')}</nav>`;
+ return head+({explore:exploreStep,ov:ovStep,lab:labStep,order:orderStep,err:errStep,write:writeStep})[S.step](t)}
+function nextBtn(cur){const i=STEPS.findIndex(s=>s[0]===cur);return i<STEPS.length-1?`<div class="row" style="justify-content:flex-end"><button class="btn ghost" data-step="${STEPS[i+1][0]}">التالي: ${STEPS[i+1][1]} ←</button></div>`:''}
+function tablesBlock(t){return t.kind==='grid'?sleepHTML(t):t.tables.map((_,ti)=>tableHTML(t,ti,S)).join('')}
+
+/* ---------- step 1: explore ---------- */
+function exploreStep(t){
+ if(!S.ms||S.ms.id!==t.id){S.ms={id:t.id,list:missions(t)};S.mi=0;S.ex={};S.sel=t.kind==='grid'?null:{ti:0,k:'c',i:0}}
+ const L=S.ms.list;const m=MP(t.id);const cur=L[S.mi];
+ return `<section class="card stack"><div class="row" style="justify-content:space-between"><div><h3>محقّقة البيانات</h3><p class="small muted">قبل الكتابة لازم «تقرئين» الجدول. اضغطي عنوان أي صف أو عمود يتحوّل لرسم، وحلّي ألغاز الأرقام.</p></div><span class="pill">${Math.min(m.explore,L.length)}/${L.length} لغز</span></div>
+ ${cur?`<div class="mission"><span class="mi">${S.mi+1}</span><b>${esc(cur.q)}</b></div>`:`<div class="fb ok"><b>حلّيتي كل الألغاز!</b> صار عندك فكرة واضحة عن الجدول. ${starsOf(t.id)?'أخذتي أول نجمة ★':''}</div>`}
+ ${tablesBlock(t)}${t.kind==='grid'?'':chartSVG(t,S.sel)}
+ <p class="hint">اسألي نفسك ٣ أسئلة: وش الأكبر؟ وش الأصغر؟ وش اللي تغيّر أكثر أو يختلف عن الباقي؟ هذي هي مادة الـOverview.</p></section>${nextBtn('explore')}`}
+/* ---------- step 2: overview ---------- */
+function ovStep(t){if(!S.ovOrder||S.ovOrder.id!==t.id){S.ovOrder={id:t.id,o:shuffle([0,1,2])};S.ovPick=null}
+ const why=['هذي هي الـOverview الصح: تلخّص أهم ملامح الجدول بدون أرقام كثيرة.','هذي تفاصيل أرقام، مو صورة عامة. الـOverview ما فيها أرقام تقريبًا.','هذي تناقض الجدول. ارجعي للأرقام وشوفي.'];
+ return `<section class="card stack"><h3>الصورة العامة (Overview)</h3><p class="muted">أهم فقرة في Task 1. الممتحن يدوّرها أول شي، وبدونها ما تتجاوزين Band 5 في Task Achievement. اختاري أفضل جملة Overview لهذا الجدول:</p>
+ <div class="opts" style="grid-template-columns:1fr">${S.ovOrder.o.map(k=>{let c='opt en';if(S.ovPick!=null){if(k===0)c+=' right';else if(k===S.ovPick)c+=' wrong'}return `<button class="${c}" style="text-align:left" data-ov="${k}" ${S.ovPick!=null?'disabled':''}>${esc(t.ov[k])}</button>`}).join('')}</div>
+ ${S.ovPick!=null?`<div class="fb ${S.ovPick===0?'ok':'no'}"><b>${S.ovPick===0?'صح!':'لا، هذي مو الأفضل.'}</b> ${why[S.ovPick]} ${S.ovPick!==0?'<br>'+why[0]:''}</div><div class="row"><button class="icon-btn" data-say="${esc(t.ov[0])}">🔊 اسمعيها</button><button class="icon-btn" data-ovagain="1">جرّبي مرة ثانية</button></div>`:''}
+ <div class="hint"><b>سرّ الـOverview:</b> ابدئي بـ <span class="en">Overall,</span> واذكري شيئين: الاتجاه العام (زاد/نقص) أو الأكبر والأصغر، والفرق الأوضح. بدون أرقام.</div></section>${nextBtn('ov')}`}
+/* ---------- step 3: sentence lab ---------- */
+function labStep(t){if(!S.lab||S.lab.id!==t.id)S.lab={id:t.id,R:labRounds(t),i:0,score:0,picked:null};const L=S.lab;
+ if(L.i>=L.R.length){const pct=Math.round(L.score/L.R.length*100);return `<section class="card stack" style="align-items:center;text-align:center"><span class="eyebrow">مختبر الجمل</span><b style="font-size:44px">${L.score} / ${L.R.length}</b><p>${pct>=80?'ممتاز! أخذتي نجمة المختبر ★':'تحتاجين ٨٠٪ للنجمة. جرّبي بأسئلة جديدة.'}</p><div class="row"><button class="btn" data-labnew="1">جولة جديدة</button></div></section>${nextBtn('lab')}`}
+ const R=L.R[L.i];const done=L.picked!=null;
+ return `<section class="card stack"><div class="row" style="justify-content:space-between"><h3>مختبر الجمل</h3><span class="pill">${L.i+1}/${L.R.length} · صح ${L.score}</span></div><div class="meter"><i style="width:${L.i/L.R.length*100}%"></i></div>
+ <p class="small muted">كل الجمل مبنية من أرقام الجدول نفسه. اختاري الكلمة أو الرقم اللي يكمّل الجملة صح:</p>
+ <div class="prompt"><div class="sent">${esc(R.s).replace('___','<span class="blank">&nbsp;</span>')}</div></div>
+ <div class="opts">${R.opts.map((o,k)=>{let c='opt en';if(done){if(o===R.ans)c+=' right';else if(o===L.picked)c+=' wrong'}return `<button class="${c}" data-lp="${k}" ${done?'disabled':''}>${esc(o)}</button>`}).join('')}</div>
+ ${done?`<div class="fb ${L.picked===R.ans?'ok':'no'}"><b>${L.picked===R.ans?'صح!':'الصح: '+esc(R.ans)}</b> ${R.why||''} <div class="en" style="margin-top:4px">${esc(R.s.replace('___',R.ans))}</div></div><div class="row"><button class="icon-btn" data-say="${esc(R.s.replace('___',R.ans))}">🔊 اسمعي الجملة</button><button class="btn" data-lnext="1">التالي ←</button></div>`:''}
+ ${tablesBlock(t)}</section>`}
+/* ---------- step 4: build the report ---------- */
+function orderStep(t){if(!S.ord||S.ord.id!==t.id)S.ord={id:t.id,o:shuffle([0,1,2,3]),picked:[],done:false};const O=S.ord;const m=MP(t.id);
+ if(O.done||m.order&&O.picked.length===0&&S.showModel){return modelHTML(t)}
+ return `<section class="card stack"><h3>ركّبي التقرير</h3><p class="muted">هذي فقرات تقرير Band 8 لهذا الجدول، بس مخلوطة. اضغطيها بالترتيب الصحيح: مقدمة ← Overview ← تفاصيل ١ ← تفاصيل ٢.</p>
+ <div class="order">${O.o.map(j=>{const pos=O.picked.indexOf(j);return `<button class="${pos>=0?'picked':''}" data-ord="${j}"><span class="o">${pos>=0?pos+1:'·'}</span><span>${esc(t.model[j].slice(0,230))}${t.model[j].length>230?'…':''}</span></button>`}).join('')}</div>
+ <div class="row"><button class="btn" data-ocheck="1" ${O.picked.length===4?'':'disabled'}>تحقّقي</button><button class="icon-btn" data-oreset="1">امسحي</button>${m.order?'<button class="icon-btn" data-showmodel="1">اعرضي التقرير كامل</button>':''}</div></section>`}
+function modelHTML(t){const words=t.model.join(' ').split(/\s+/).length;
+ return `<section class="card stack"><div class="row" style="justify-content:space-between"><h3>تقرير Band 8 (${words} كلمة)</h3><div class="row"><button class="btn sm ghost" data-say="${esc(t.model.join(' '))}">🔊 اسمعيه</button><button class="btn sm ghost" data-reorder="1">ركّبيه مرة ثانية</button></div></div>
+ <p class="small muted">الكلمات المظلّلة لغة مفيدة لـ Task 1. لاحظي إن كل فقرة لها وظيفة.</p>
+ ${t.model.map((p,i)=>`<div class="para-lab" style="--pc:var(${PCOL[i]})"><span class="pl">${PLAB[i]}</span>${markLang(p)}</div>`).join('')}</section>${nextBtn('order')}`}
+/* ---------- step 5: error hunt ---------- */
+function errStep(t){if(!S.err||S.err.id!==t.id){S.err={id:t.id,i:0,score:0,picked:null,items:t.err.map((e,k)=>{const other=t.err[(k+1)%t.err.length][1];return {e,opts:shuffle([e[1],e[0]+' ✓ (ما فيها غلط)',other])}})}}const E=S.err;
+ if(E.i>=E.items.length){return `<section class="card stack" style="align-items:center;text-align:center"><span class="eyebrow">صيّادة الأخطاء</span><b style="font-size:44px">${E.score} / ${E.items.length}</b><p>الإجابات في الكتاب مكتوب إنها «ممتازة» لكن فيها أخطاء. الحين صرتي تشوفينها!</p><div class="row"><button class="btn" data-errnew="1">مرة ثانية</button></div></section>${nextBtn('err')}`}
+ const it=E.items[E.i];const done=E.picked!=null;
+ return `<section class="card stack"><div class="row" style="justify-content:space-between"><h3>صيّادة الأخطاء</h3><span class="pill">${E.i+1}/${E.items.length}</span></div>
+ <p class="muted">هذا جزء من «الإجابة النموذجية» في كتابك، وفيه غلط. اختاري التصحيح الأفضل:</p>
+ <div class="errcard"><div class="wrongq">${esc(it.e[0])}</div></div>
+ <div class="opts" style="grid-template-columns:1fr">${it.opts.map((o,k)=>{let c='opt en';if(done){if(o===it.e[1])c+=' right';else if(k===E.picked)c+=' wrong'}return `<button class="${c}" style="text-align:left" data-ep="${k}" ${done?'disabled':''}>${esc(o)}</button>`}).join('')}</div>
+ ${done?`<div class="fb ${it.opts[E.picked]===it.e[1]?'ok':'no'}"><b>${it.opts[E.picked]===it.e[1]?'صيدة حلوة!':'التصحيح:'}</b> <span class="en">${esc(it.e[1])}</span><br>${esc(it.e[2])}</div><div class="row"><button class="btn" data-enext="1">التالي ←</button></div>`:''}</section>`}
+/* ---------- step 6: write ---------- */
+const STARTERS=['The table compares ','The table shows ','Overall, ','It is clear that ','In contrast, ','By contrast, ','whereas ','compared with ','followed by ','respectively','rose from … to …','fell sharply to ','remained stable at ','reached a peak of ','just over ','almost twice as … as '];
+function checks(t,txt){const w=(txt.match(/\b[\w’'-]+\b/g)||[]).length;const nums=new Set((txt.match(/\d[\d,.]*/g)||[]).map(x=>x.replace(/,/g,'')));
+ const tv=new Set((t.kind==='grid'?['8','6','5']:numericCells(t).map(c=>String(c.v))));const hit=[...nums].filter(n=>tv.has(n)||tv.has(n.replace(/\.0$/,''))).length;
+ const cmp=(txt.match(/\b(higher|lower|more|less|fewer|highest|lowest|largest|smallest|whereas|while|compared|contrast|than|twice|respectively)\b/gi)||[]).length;
+ return [['١٥٠ كلمة أو أكثر ('+w+')',w>=150],['فيه Overview (Overall / In general)',/\b(overall|in general|it is clear that)\b/i.test(txt)],['استخدمتي ٥ أرقام من الجدول ('+hit+')',hit>=5],['٤ كلمات مقارنة أو أكثر ('+cmp+')',cmp>=4],['٣ فقرات أو أكثر',txt.split(/\n\s*\n/).filter(x=>x.trim()).length>=3],['بدون رأي شخصي (I think / I believe)',!/\bI (think|believe|feel)\b/i.test(txt)&&w>0]]}
+function writeStep(t){const m=MP(t.id);const txt=m.draft||'';const C=checks(t,txt);const T=S.timer;
+ return `<section class="card stack"><div class="row" style="justify-content:space-between"><div><h3>اكتبي تقريرك</h3><p class="small muted">٢٠ دقيقة، ١٥٠ كلمة على الأقل. الجدول قدامك، والقائمة تتحدّث وأنتِ تكتبين.</p></div><div class="row"><span class="chip">⏱ <b class="timer" id="tmr">${fmtT(T&&T.id===t.id?T.left:1200)}</b></span><button class="btn sm ghost" data-timer="1">${T&&T.id===t.id&&T.run?'إيقاف':'شغّلي ٢٠ دقيقة'}</button></div></div>
+ ${tablesBlock(t)}
+ <div class="starters" aria-label="قوالب جمل">${STARTERS.map(s=>`<button data-ins="${esc(s)}">${esc(s)}</button>`).join('')}</div>
+ <textarea id="rep" class="input report" spellcheck="true" placeholder="The table compares …">${esc(txt)}</textarea>
+ <div class="check" id="chk">${C.map(([l,ok])=>`<span class="${ok?'on':''}">${ok?'✓':'○'} ${l}</span>`).join('')}</div>
+ <div class="row"><button class="btn" data-submit="1">${AI?'سلّمي للمدرّبة الذكية':'سلّمي التقرير'}</button><button class="btn ghost" data-step="order" >شوفي تقرير Band 8</button></div>
+ ${S.aiBusy?'<p class="hint">المدرّبة تقرأ تقريرك وتصحّحه…</p>':''}${S.ai&&S.ai.id===t.id?aiHTML(S.ai.r):''}</section>`}
+const fmtT=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function aiHTML(r){if(r.err)return `<p class="fb no">${esc(r.err)}</p>`;const b=r.bands||{};
+ return `<div class="stack"><div class="band9">${[['TA','Task Achievement'],['CC','Coherence'],['LR','Vocabulary'],['GRA','Grammar']].map(([k,l])=>`<div><span class="small muted">${l}</span><b>${esc(b[k]??'–')}</b></div>`).join('')}</div>
+ <div class="fb ok"><b>Band تقريبي: ${esc(r.overall??'–')}</b><br>${esc(r.summary_ar||'')}</div>
+ ${(r.fixes||[]).length?`<div class="stack">${r.fixes.slice(0,8).map(f=>`<div class="errcard"><div class="wrongq">${esc(f.wrong)}</div><div class="en" style="color:var(--ok);font-weight:600">${esc(f.right)}</div><div class="small">${esc(f.why_ar)}</div></div>`).join('')}</div>`:''}
+ ${r.improved?`<details><summary>نسخة محسّنة من تقريرك</summary><div class="para-lab" style="--pc:var(--mint)">${esc(r.improved)}</div></details>`:''}</div>`}
+
+/* ---------- other rooms ---------- */
+function recipeView(){const R=[['المقدمة','Introduction','أعيدي صياغة السؤال بكلماتك: shows ← compares / illustrates. لا تنسخين السؤال.','The table compares the number of passengers who used three German airports between 2007 and 2012.','--skyc'],['الصورة العامة','Overview','جملتين تبدأ بـ Overall: الاتجاه العام + الأكبر/الأصغر أو أوضح فرق. بدون أرقام.','Overall, all three airports became busier, with Frankfurt remaining the busiest.','--sun'],['التفاصيل ١','Body 1','اختاري مجموعة (مثلًا الأرقام الكبيرة أو أول نصف من السنوات) وصفيها بالأرقام والمقارنة.','Frankfurt grew steadily from 36.5 million to 69.3 million, almost double the original figure.','--mint'],['التفاصيل ٢','Body 2','المجموعة الثانية، وقارني مع الأولى بـ whereas / in contrast.','By contrast, Dusseldorf fluctuated, peaking at 48.2 million in 2009.','--grape']];
+ return `<section class="card stack"><h3>وصفة Task 1 في ٤ فقرات</h3><p class="muted">٢٠ دقيقة: ٣ دقائق تقرئين الجدول وتختارين المجموعات، ١٥ دقيقة كتابة، دقيقتين مراجعة الأرقام والقواعد.</p></section>
+ ${R.map(([a,e,d,x,c],i)=>`<div class="para-lab" style="--pc:var(${c})"><span class="pl">${i+1}. ${a} (${e})</span><div style="font-family:var(--ui);direction:rtl;text-align:right;font-size:15px">${d}</div><div style="margin-top:6px">${markLang(x)}</div></div>`).join('')}
+ <section class="card stack"><h3>أخطاء تنزّل الدرجة</h3><ul style="margin:0;padding-inline-start:20px" class="small"><li>نسيان الـOverview أو وضع أرقام كثيرة فيه.</li><li>سرد كل الأرقام بدون مقارنة أو تجميع.</li><li>أرقام غلط أو بدون وحدة (million, %, £).</li><li>إعطاء رأي أو أسباب من عندك (إلا إذا السؤال طلب).</li><li>الأزمنة: الماضي للسنوات اللي فاتت، والمضارع إذا ما فيه وقت.</li><li>أقل من ١٥٠ كلمة.</li></ul></section>`}
+function reportsView(){return `<section class="card stack"><h3>تقاريري</h3><p class="small muted">التقارير اللي سلّمتيها، محفوظة في هذا المتصفح.</p>${P.reports.length?P.reports.slice().reverse().map(r=>`<div class="errcard"><div class="row" style="justify-content:space-between"><b>Mission ${r.id}: ${esc(TASKS[r.id-1].ar)}</b><span class="pill">${r.band?'Band '+esc(r.band):r.words+' كلمة'}</span></div><div class="en small" style="margin-top:6px;white-space:pre-wrap">${esc(r.text.slice(0,500))}${r.text.length>500?'…':''}</div></div>`).join(''):'<p class="muted">ما سلّمتي تقارير بعد. افتحي أي مهمة واكتبي تقريرك في آخر خطوة.</p>'}</section>`}
+
+/* ================= events ================= */
+document.addEventListener('click',async ev=>{const b=ev.target.closest('button,[data-cell],[data-tsel],[data-sleep]');if(!b)return;const d=b.dataset;
+ if(d.room){S.room=d.room;S.m=null;if(typeof LG_S!=='undefined')LG_S=null;render();scrollTo({top:0});return}
+ if(d.m){S.room='map';S.m=+d.m;S.step=STEPS.find(s=>!stepDone(+d.m,s[0]))?.[0]||'write';S.ms=null;S.lab=null;S.ord=null;S.err=null;S.ovOrder=null;S.ai=null;S.showModel=false;render();scrollTo({top:0});return}
+ if(d.back){S.m=null;render();return}
+ if(d.step){S.step=d.step;if(d.step==='order'&&MP(S.m).order)S.showModel=true;render();scrollTo({top:0,behavior:'smooth'});return}
+ if(d.say){speak(d.say);return}
+ const t=S.m?TASKS[S.m-1]:null;if(!t)return;const m=MP(t.id);
+ if(d.tsel){const [ti,k,i]=d.tsel.split(':');if(+i<0)return;S.sel={ti:+ti,k,i:+i};render();return}
+ if(d.cell&&S.step==='explore'){const cur=S.ms.list[S.mi];if(!cur||cur.sleep)return;const [ti,ri]=d.cell.split(':').map(Number);const ok=cur.ans?cur.ans.includes(d.cell):(cur.row.ti===ti&&cur.row.ri===ri);S.ex={...S.ex,[d.cell]:ok?'ok':'no'};
+  if(ok){S.mi++;m.explore=Math.max(m.explore,S.mi);addXP(5);toast('صح! لغز محلول');setTimeout(()=>{S.ex={};render()},900)}else toast('مو هذا، دوّري مرة ثانية');save();render();return}
+ if(d.sleep!=null&&S.step==='explore'){const cur=S.ms.list[S.mi];if(!cur||!cur.sleep)return;if(cur.sleep.includes(+d.sleep)){S.mi++;m.explore=Math.max(m.explore,S.mi);addXP(5);toast('صح!')}else toast('مو هذا، عدّي الساعات الملوّنة');save();render();return}
+ if(d.ov!=null){S.ovPick=+d.ov;if(S.ovPick===0&&!m.ov){m.ov=1;addXP(10)}save();render();return}
+ if(d.ovagain){S.ovOrder=null;render();return}
+ if(d.lp!=null){const L=S.lab;const R=L.R[L.i];L.picked=R.opts[+d.lp];if(L.picked===R.ans){L.score++;addXP(3)}render();return}
+ if(d.lnext){const L=S.lab;L.i++;L.picked=null;if(L.i>=L.R.length){const pct=Math.round(L.score/L.R.length*100);m.lab=Math.max(m.lab||0,pct);addXP(10);save()}render();return}
+ if(d.labnew){S.lab=null;render();return}
+ if(d.ord!=null){const O=S.ord;const j=+d.ord;const k=O.picked.indexOf(j);if(k>=0)O.picked.splice(k,1);else O.picked.push(j);render();return}
+ if(d.oreset){S.ord.picked=[];render();return}
+ if(d.ocheck){const O=S.ord;const ok=O.picked.every((j,i)=>j===i);if(ok){O.done=true;if(!m.order){m.order=1;addXP(15)}save();toast('ترتيب صحيح! هذا هو التقرير كامل')}else{toast('الترتيب مو صحيح. ابدئي بالمقدمة ثم Overall…');O.picked=[]}render();return}
+ if(d.showmodel){S.ord.done=true;render();return}
+ if(d.reorder){S.ord=null;S.showModel=false;render();return}
+ if(d.ep!=null){const E=S.err;E.picked=+d.ep;if(E.items[E.i].opts[E.picked]===E.items[E.i].e[1]){E.score++;addXP(4)}render();return}
+ if(d.enext){const E=S.err;E.i++;E.picked=null;if(E.i>=E.items.length){m.err=Math.max(m.err||0,E.score);save()}render();return}
+ if(d.errnew){S.err=null;render();return}
+ if(d.ins){const ta=$('#rep');if(!ta)return;const s=ta.selectionStart||ta.value.length;ta.value=ta.value.slice(0,s)+d.ins+ta.value.slice(s);m.draft=ta.value;save();ta.focus();ta.selectionStart=ta.selectionEnd=s+d.ins.length;updChecks(t);return}
+ if(d.timer){if(!S.timer||S.timer.id!==t.id)S.timer={id:t.id,left:1200,run:false};S.timer.run=!S.timer.run;render();return}
+ if(d.submit){const txt=m.draft||'';const w=(txt.match(/\b[\w’'-]+\b/g)||[]).length;if(w<40){toast('اكتبي تقريرك أول (على الأقل فقرة أو فقرتين).');return}
+  const rec={id:t.id,text:txt,words:w,at:Date.now(),band:null};
+  if(w>=150&&!m.wrote){m.wrote=1;addXP(30)}
+  if(AI){S.aiBusy=true;render();
+   const data=t.kind==='grid'?'Sleep chart: student 8h (11pm-7am), truck driver 6h in three blocks mostly daytime, full-time mother 8h in three blocks incl. 1-3pm, business executive 6h (11pm-5am), doctor 5h (1-3am, 4-7am).':t.tables.map(tb=>tb.caption+'\n'+['',...tb.cols].join(' | ')+'\n'+tb.rows.map(r=>[r.name,...r.vals.map(v=>v==null?'-':v)].join(' | ')).join('\n')).join('\n\n');
+   try{const out=await AI(`You are a strict, kind IELTS examiner. Grade this IELTS Academic Writing Task 1 report written by an Arabic-speaking learner.\nTask: ${t.prompt}\nData:\n${data}\n\nReport:\n"""${txt.slice(0,4000)}"""\n\nCheck: overview, accuracy of every number, comparisons, grouping, paragraphing, vocabulary, grammar, word count (${w}).\nReply ONLY JSON: {"bands":{"TA":n,"CC":n,"LR":n,"GRA":n},"overall":n,"summary_ar":"3-4 sentences in simple Arabic: strengths, then the 2 most important things to improve","fixes":[{"wrong":"exact phrase from the report","right":"corrected phrase","why_ar":"short Arabic reason"}],"improved":"an improved version of the whole report in English, keeping the learner's ideas"} Use half bands like 6.5.`,{modelTier:'default'});
+    const r=parseJSON(out&&out.text);S.ai={id:t.id,r:r||{err:'وصل رد غير واضح من المدرّبة. جرّبي مرة ثانية.'}};if(r&&r.overall)rec.band=r.overall}catch(e){S.ai={id:t.id,r:{err:aiErr(e)}}}
+   S.aiBusy=false}
+  else toast(w>=150?'تم حفظ تقريرك! قارنيه بتقرير Band 8.':'تم الحفظ. حاولي توصلين ١٥٠ كلمة.');
+  P.reports.push(rec);save();render();return}
+});
+function updChecks(t){const el=$('#chk');if(!el)return;el.innerHTML=checks(t,MP(t.id).draft||'').map(([l,ok])=>`<span class="${ok?'on':''}">${ok?'✓':'○'} ${l}</span>`).join('')}
+document.addEventListener('input',ev=>{if(ev.target.id==='rep'&&S.m){const t=TASKS[S.m-1];MP(t.id).draft=ev.target.value;clearTimeout(window._sv);window._sv=setTimeout(save,400);updChecks(t)}});
+setInterval(()=>{const T=S.timer;if(T&&T.run&&S.m===T.id&&S.step==='write'){T.left=Math.max(0,T.left-1);const e=$('#tmr');if(e)e.textContent=fmtT(T.left);if(!T.left){T.run=false;toast('خلص الوقت! راجعي أرقامك وسلّمي.');render()}}},1000);
+
+/* ================= Language bank: cards + 13 games ================= */
+const SHAPES={up:[[0,40],[25,32],[50,24],[75,14],[100,6]],down:[[0,6],[25,14],[50,24],[75,32],[100,40]],flat:[[0,23],[25,22],[50,23],[75,22],[100,23]],fluct:[[0,30],[20,12],[40,32],[60,10],[80,28],[100,14]],peak:[[0,38],[30,20],[50,4],[70,20],[100,34]],level:[[0,40],[30,20],[55,10],[80,10],[100,10]],jump:[[0,38],[40,36],[55,10],[100,6]],crash:[[0,6],[45,8],[60,38],[100,40]],dip:[[0,16],[40,16],[55,26],[100,26]],vee:[[0,10],[45,36],[100,8]]};
+function shapeSVG(sh,col,big){const pts=SHAPES[sh];if(!pts)return '';const w=big?220:84,h=big?90:36;const P=pts.map(([x,y])=>`${(x/100*(w-8)+4).toFixed(1)},${(y/44*(h-6)+3).toFixed(1)}`).join(' ');
+ return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true" style="direction:ltr;max-width:100%"><polyline points="${P}" fill="none" stroke="var(${col||'--accent'})" stroke-width="${big?4:3}" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${P.split(' ').pop().split(',')[0]}" cy="${P.split(' ').pop().split(',')[1]}" r="${big?5:3.5}" fill="var(${col||'--accent'})"/></svg>`}
+const gcol=g=>(LG.find(x=>x.k===g)||{}).c||'--accent';
+let LP=store.get('t1_lang',{known:{},best:{}});const saveL=()=>store.set('t1_lang',LP);
+const LGAMES=[
+ {id:'flash',ar:'بطاقات الكلمات',d:'اقلبي البطاقة: الكلمة، الرسم، المعنى والمثال.',ic:'cards'},
+ {id:'mean',ar:'المعنى بالعربي',d:'اختاري معنى الكلمة.',ic:'ar'},
+ {id:'shape',ar:'ارسمها بكلمة',d:'تشوفين خط بياني: أي فعل يوصفه؟',ic:'chart'},
+ {id:'opp',ar:'العكس',d:'rise ↔ fall … اختاري عكس الكلمة.',ic:'swap'},
+ {id:'past',ar:'الماضي',d:'rise → rose. التقارير غالبًا بالماضي.',ic:'clock'},
+ {id:'noun',ar:'فعل ← اسم',d:'increase → an increase. نوّعي جملك.',ic:'abc'},
+ {id:'cloze',ar:'أكملي الجملة',d:'جمل من جداولك نقصتها كلمة.',ic:'blank'},
+ {id:'speed',ar:'قوة التغيّر',d:'من 100 إلى 190 = dramatically؟ أو slightly؟',ic:'speed'},
+ {id:'frac',ar:'كسور وتقريب',d:'48% = just under half. حوّلي الأرقام لكلمات.',ic:'pie'},
+ {id:'listen',ar:'اسمعي واختاري',d:'تسمعين التعبير وتختارينه.',ic:'ear'},
+ {id:'spell',ar:'اكتبيها صح',d:'تسمعين الكلمة وتكتبين تهجئتها.',ic:'pen'},
+ {id:'build',ar:'رتّبي الجملة',d:'كلمات جملة من التقارير مبعثرة.',ic:'list'},
+ {id:'data',ar:'جملة من جدولك',d:'أرقام حقيقية من جداولك: أي جملة تصفها صح؟',ic:'table'}
+];
+const LIC={cards:'<rect x="3" y="6" width="13" height="15" rx="2"/><path d="M8 3h11a2 2 0 012 2v13"/>',ar:'<path d="M4 7V5h16v2M9 19h6M12 5v14"/>',chart:'<path d="M3 20h18M5 16l4-5 4 3 6-8"/>',swap:'<path d="M7 7h12l-3-3M17 17H5l3 3"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',abc:'<path d="M4 18l4-12 4 12M5.5 14h5M15 6h3a2.5 2.5 0 010 5h-3zM15 11h3.5a2.5 2.5 0 010 5H15z"/>',blank:'<path d="M3 12h4M17 12h4M9 15h6"/>',speed:'<path d="M12 14l4-5M4 18a9 9 0 1116 0"/>',pie:'<path d="M12 3v9h9a9 9 0 11-9-9z"/>',ear:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 010 7"/>',pen:'<path d="M4 20l1-4L16 5l3 3L8 19z"/>',list:'<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/>',table:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/>'};
+const lic=k=>`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${LIC[k]}</svg>`;
+function opt4(right,pool){return shuffle([right,...shuffle([...new Set(pool.filter(x=>x&&x!==right))]).slice(0,3)])}
+const ch=(o)=>Object.assign({kind:'choice'},o);
+const LBUILD={
+ flash:()=>shuffle(LANG).slice(0,12).map(w=>({kind:'flash',w})),
+ mean:()=>shuffle(LANG).slice(0,10).map(w=>ch({p:`<div class="big">${esc(w.e)}</div>`,opts:opt4(w.a,LANG.map(x=>x.a)),ans:w.a,say:w.e,why:`<b class="en">${esc(w.e)}</b> = ${esc(w.a)}<div class="en small" style="margin-top:4px">${esc(w.x)}</div>`})),
+ shape:()=>shuffle(LANG.filter(w=>w.sh&&w.past&&['up','down','flat','fluct','peak','level','crash','dip','vee','jump'].includes(w.sh))).filter((w,i,a)=>a.findIndex(y=>y.sh===w.sh)===i).concat(shuffle(LANG.filter(w=>w.sh&&w.past))).slice(0,10).map(w=>{const same=LANG.filter(x=>x.sh===w.sh&&x.past).map(x=>x.e);return ch({p:`<p class="small muted">أي كلمة توصف هذا الخط؟</p><div style="display:flex;justify-content:center">${shapeSVG(w.sh,gcol(w.g),1)}</div>`,opts:opt4(w.e,LANG.filter(x=>x.past&&x.sh&&!same.includes(x.e)&&(x.g!==w.g||(w.g==='flat'&&x.sh!==w.sh))).map(x=>x.e)),ans:w.e,why:`<b class="en">${esc(w.e)}</b> = ${esc(w.a)}<div class="en small">${esc(w.x)}</div>`})}),
+ opp:()=>shuffle(LANG.filter(w=>w.opp)).slice(0,10).map(w=>ch({p:`<p class="small muted">وش عكس هذي الكلمة؟</p><div class="big">${esc(w.e)}</div>`,opts:opt4(w.opp,LANG.filter(x=>x.g===w.g||x.g==='speed').map(x=>x.e).filter(x=>x!==w.e)),ans:w.opp,why:`${esc(w.e)} ↔ <b class="en">${esc(w.opp)}</b>`})),
+ past:()=>shuffle(LANG.filter(w=>w.past&&w.past!==w.e+'d'&&w.past!==w.e+'ed')).concat(shuffle(LANG.filter(w=>w.past))).filter((w,i,a)=>a.indexOf(w)===i).slice(0,10).map(w=>{const v=w.e.split(' ')[0];const wrong=[v+'ed',v.replace(/e$/,'')+'ed',v+'d',w.pp||'',v+'s'].filter(x=>x!==w.past.split(' ')[0]);return ch({p:`<p class="small muted">الماضي من:</p><div class="big">${esc(w.e)}</div>`,opts:opt4(w.past,wrong.map(x=>x+w.e.slice(v.length))),ans:w.past,why:`${esc(w.e)} → <b class="en">${esc(w.past)}</b>${w.pp?' → '+esc(w.pp):''}<div class="en small">${esc(w.x)}</div>`})}),
+ noun:()=>shuffle(LANG.filter(w=>w.noun&&w.noun!=='no change')).slice(0,10).map(w=>ch({p:`<p class="small muted">الاسم من الفعل:</p><div class="big">${esc(w.e)}</div><p class="small muted" style="margin-top:6px">مثال: There was ___ in the number of …</p>`,opts:opt4(w.noun,LANG.filter(x=>x.noun&&x!==w).map(x=>x.noun)),ans:w.noun,why:`<b class="en">${esc(w.noun)}</b>: There was ${esc(w.noun)} in the figure.`})),
+ cloze:()=>{const out=[];shuffle(LANG).forEach(w=>{if(out.length>=10)return;const key=(w.past||w.e).replace(/[,.]$/,'');const re=new RegExp('\\b'+key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/\s+/g,'\\s+')+'\\b','i');if(!re.test(w.x))return;out.push(ch({p:`<p class="small muted">أي تعبير يكمّل الجملة؟</p><div class="sent">${esc(w.x).replace(re,'<span class="blank">&nbsp;</span>')}</div>`,opts:opt4(key,LANG.filter(x=>x.g===w.g).map(x=>(x.past||x.e).replace(/[,.]$/,''))),ans:key,say:w.x,why:`<span class="en">${esc(w.x)}</span>`}))});return out},
+ speed:()=>Array.from({length:8},()=>{const a=pick([20,40,50,80,100,120,200,250]);const k=pick(['big','small','mid']);const f=k==='big'?1+(.6+Math.random()*.8):k==='small'?1+(.02+Math.random()*.05):1+(.2+Math.random()*.15);const up=Math.random()>.4;const b=Math.round(up?a*f:a/f);const ans=k==='big'?'dramatically':k==='small'?'slightly':'significantly';
+  return ch({p:`<p class="small muted">الرقم ${up?'زاد':'نقص'} من <b>${a}</b> إلى <b>${b}</b>. أي كلمة تناسب؟</p><div class="sent">The figure ${up?'rose':'fell'} ___ from ${a} to ${b}.</div>`,opts:['slightly','significantly','dramatically'],ans,why:`تغيّر ${Math.round(Math.abs(b-a)/a*100)}٪: أقل من ١٠٪ = slightly، حوالي ٢٠–٤٠٪ = significantly، أكثر من ٥٠٪ = dramatically.`})}),
+ frac:()=>{const F=[[25,'a quarter'],[33,'a third'],[50,'half'],[67,'two thirds'],[75,'three quarters']];return Array.from({length:8},()=>{const [v,name]=pick(F);const d=pick([-3,-2,2,3,0]);const n=v+d;const ans=d<0?'just under '+name:d>0?'just over '+name:'exactly '+name;return ch({p:`<p class="small muted">كيف تكتبين هذا الرقم بالكلمات؟</p><div class="big">${n}%</div>`,opts:shuffle([...new Set([ans,(d<0?'just over ':'just under ')+name,'just over '+pick(F.filter(x=>x[1]!==name))[1],'exactly '+name])]).slice(0,4).concat([]).filter((x,i,a)=>a.indexOf(x)===i),ans,why:`${n}% ${d<0?'أقل بقليل من':d>0?'أكثر بقليل من':'يساوي'} ${v}% = <b class="en">${ans}</b>`})})},
+ listen:()=>shuffle(LANG).slice(0,10).map(w=>ch({p:`<p class="small muted">اسمعي واختاري التعبير:</p><div class="row" style="justify-content:center"><button class="btn" data-say="${esc(w.e)}">🔊 استمعي</button></div>`,opts:opt4(w.e,LANG.filter(x=>x.g===w.g).map(x=>x.e)),ans:w.e,say:w.e,auto:1,why:`<b class="en">${esc(w.e)}</b> = ${esc(w.a)}`})),
+ spell:()=>shuffle(LANG.filter(w=>/^[a-z]+$/.test(w.e)&&w.e.length>=5)).slice(0,8).map(w=>({kind:'type',target:w.e,say:w.e,auto:1,a:w.a})),
+ build:()=>shuffle(LANG.filter(w=>{const c=w.x.split(/\s+/).length;return c>=6&&c<=12})).slice(0,6).map(w=>{const toks=w.x.replace(/[.]$/,'').split(/\s+/);return {kind:'build',toks,order:shuffle(toks.map((_,i)=>i)),built:[],full:w.x}}),
+ data:()=>{const out=[];const T=TASKS.filter(t=>t.kind==='time');for(let k=0;k<30&&out.length<8;k++){const t=pick(T);const tb=t.tables[0];const r=pick(tb.rows.filter(r=>!/^(total|all)/i.test(r.name)));const idx=r.vals.map((v,i)=>v==null?-1:i).filter(i=>i>=0);if(idx.length<2)continue;const i0=idx[0],i1=idx[idx.length-1];const a=r.vals[i0],b=r.vals[i1];if(a===b)continue;const up=b>a;const pc=Math.abs(b-a)/a;const adv=pc<.1?'slightly':pc<.3?'considerably':'sharply';const badv=pc<.1?'dramatically':'slightly';const s=x=>showV(tb.unit,x);const nm='the figure for '+r.name;const N=nm[0].toUpperCase()+nm.slice(1);
+  const right=`${N} ${up?'rose':'fell'} ${adv} from ${s(a)} in ${tb.cols[i0]} to ${s(b)} in ${tb.cols[i1]}.`;
+  const w1=`${N} ${up?'fell':'rose'} ${adv} from ${s(a)} in ${tb.cols[i0]} to ${s(b)} in ${tb.cols[i1]}.`;
+  const w2=`${N} ${up?'rose':'fell'} ${badv} from ${s(a)} in ${tb.cols[i0]} to ${s(b)} in ${tb.cols[i1]}.`;
+  const w3=`${N} ${up?'rose':'fell'} ${adv} from ${s(b)} in ${tb.cols[i0]} to ${s(a)} in ${tb.cols[i1]}.`;
+  out.push(ch({p:`<p class="small muted">من جدول «${esc(t.ar)}»: ${esc(r.name)} = <b>${s(a)}</b> (${tb.cols[i0]}) ← <b>${s(b)}</b> (${tb.cols[i1]}). أي جملة صحيحة؟</p>`,opts:shuffle([right,w1,w2,w3]),ans:right,list:1,say:right,why:`<span class="en">${esc(right)}</span><br>التغيّر ${Math.round(pc*100)}٪: أقل من ١٠٪ = slightly، ١٠–٣٠٪ = considerably، أكثر = sharply.`}))}return out}
+};
+let LG_S=null;let LG_FILTER='all';
+function langView(){
+ if(LG_S)return lgPlay();
+ const known=Object.keys(LP.known).length;const list=LANG.filter(w=>LG_FILTER==='all'||w.g===LG_FILTER);
+ return `<section class="hero2" style="background:linear-gradient(135deg,var(--grape),var(--skyc) 60%,var(--mint))"><span class="bubble" style="width:220px;height:220px;left:-60px;top:-90px"></span>
+ <div class="stack" style="position:relative"><span class="eyebrow">بنك اللغة · ${LANG.length} تعبير</span><h2>كلمات تخلي تقريرك Band 7+</h2><p style="opacity:.95">كل كلمة معها رسم صغير يوضّح معناها، ومثال من جداول كتابك. احفظيها بالـ١٣ لعبة تحت.</p>
+ <div class="row"><button class="btn sun" data-lplay="flash">ابدئي بالبطاقات ←</button><span>${known} / ${LANG.length} حفظتيها</span></div></div>
+ <div class="ring"><div class="in"><div><b>${known}</b><span style="font-size:13px;opacity:.9">كلمة</span></div></div>${ringSVG(known/LANG.length)}</div></section>
+ <section class="card stack"><div class="row" style="justify-content:space-between"><h3>١٣ لعبة على بنك اللغة</h3><span class="pill">${Object.keys(LP.best).length}/13 لعبتيها</span></div>
+ <div class="games">${LGAMES.map((g,i)=>{const b=LP.best[g.id];return `<button class="game" style="--gc:var(${COLS[i%6]})" data-lplay="${g.id}"><span class="gb"><span class="gi">${lic(g.ic)}</span>${b!=null?`<span class="best">أفضل ${b}%</span>`:`<span class="muted">${i+1}</span>`}</span><h4>${g.ar}</h4><p>${g.d}</p></button>`}).join('')}</div></section>
+ <section class="card stack"><div class="row" style="justify-content:space-between"><h3>الكلمات</h3><div class="row">${[['all','الكل','--accent'],...LG.map(g=>[g.k,g.g,g.c])].map(([k,l,c])=>`<button class="btn sm ${LG_FILTER===k?'':'ghost'}" style="${LG_FILTER===k?`background:var(${c})`:`border-color:var(${c});color:var(${c})`}" data-lfilter="${k}">${l}</button>`).join('')}</div></div>
+ ${LG.filter(g=>LG_FILTER==='all'||g.k===LG_FILTER).map(g=>{const ws=LANG.filter(w=>w.g===g.k);const kn=ws.filter(w=>LP.known[w.e]).length;return `<div class="stack" style="gap:8px"><h4 class="row" style="gap:8px;font-size:16px"><span style="width:12px;height:12px;border-radius:4px;background:var(${g.c})"></span>${g.g} <span class="small muted">${kn}/${ws.length}</span></h4><div class="wgrid">${ws.map((w)=>{const k=!!LP.known[w.e];return `<article class="wcard${k?' known':''}" style="--wc:var(${gcol(w.g)})"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><span class="w">${esc(w.e)}</span>${w.sh?shapeSVG(w.sh,gcol(w.g)):''}</div><div class="ar">${esc(w.a)}</div>${w.past||w.noun?`<div class="small en">${w.past?'past: <b>'+esc(w.past)+'</b>':''}${w.noun?' · noun: <b>'+esc(w.noun)+'</b>':''}${w.opp?' · ↔ '+esc(w.opp):''}</div>`:w.opp?`<div class="small en">↔ ${esc(w.opp)}</div>`:''}<div class="row" style="flex-wrap:nowrap;align-items:flex-start"><div class="ex" style="flex:1">${markLang(w.x)}</div><button class="icon-btn" data-say="${esc(w.x)}" aria-label="استمعي">🔊</button></div><button class="btn sm ${k?'soft':'ghost'}" data-lknow="${esc(w.e)}">${k?'حفظتها ✓':'حفظتها'}</button></article>`}).join('')}</div></div>`}).join('')}</section>`}
+function lgPlay(){const G=LG_S;const name=LGAMES.find(g=>g.id===G.id).ar;const n=G.R.length;
+ if(G.i>=n){const pct=Math.round(G.score/n*100);if(!G.saved){G.saved=1;LP.best[G.id]=Math.max(LP.best[G.id]||0,pct);saveL();addXP(10)}
+  return `<section class="card stack" style="align-items:center;text-align:center"><span class="eyebrow">${name}</span><b style="font-size:46px">${G.score} / ${n}</b><p>${pct>=80?'ممتاز! الكلمات صارت معك.':'كويس، جرّبي مرة ثانية بأسئلة جديدة.'}</p><div class="row"><button class="btn" data-lplay="${G.id}">مرة ثانية</button><button class="btn ghost" data-lback="1">بنك اللغة</button></div></section>`}
+ const R=G.R[G.i];const done=G.picked!=null;let h=`<section class="card play"><div class="row" style="justify-content:space-between"><button class="icon-btn" data-lback="1">→ رجوع</button><span class="eyebrow">${name}</span><span class="pill">${G.i+1} / ${n} · صح ${G.score}</span></div><div class="meter"><i style="width:${G.i/n*100}%"></i></div>`;
+ if(R.kind==='choice'){h+=`<div class="prompt">${R.p}</div><div class="opts"${R.list?' style="grid-template-columns:1fr"':''}>${R.opts.map((o,k)=>{let c='opt en';if(done){if(o===R.ans)c+=' right';else if(o===G.picked)c+=' wrong'}return `<button class="${c}" ${R.list?'style="text-align:left"':''} data-lpick="${k}" ${done?'disabled':''}>${esc(o)}</button>`}).join('')}</div>`;if(done)h+=lfb(G.picked===R.ans,R.why,R.say)}
+ if(R.kind==='flash'){const w=R.w;h+=`<div class="prompt flip" data-lflip="1" role="button" tabindex="0" style="text-align:center">${R.f?`<div class="stack" style="align-items:center"><div class="big">${esc(w.e)}</div>${w.sh?shapeSVG(w.sh,gcol(w.g),1):''}<div style="font-size:22px;font-weight:600;color:var(--accent)">${esc(w.a)}</div><div class="sent" style="text-align:center">${markLang(w.x)}</div></div>`:`<div class="stack" style="align-items:center"><div class="big">${esc(w.e)}</div><span class="small muted">تذكّري المعنى، ثم اضغطي البطاقة</span></div>`}</div><div class="row" style="justify-content:center"><button class="icon-btn" data-say="${esc(w.e)}">🔊 الكلمة</button><button class="icon-btn" data-say="${esc(w.x)}">🔊 المثال</button></div>${R.f?`<div class="row" style="justify-content:center"><button class="btn" data-lfk="1">عرفتها</button><button class="btn ghost" data-lfk="0">ما عرفتها</button></div>`:''}`}
+ if(R.kind==='type'){h+=`<div class="prompt"><p>اسمعي واكتبي الكلمة بالإنجليزي:</p><div class="row" style="margin-top:8px"><button class="btn" data-say="${esc(R.say)}">🔊 استمعي</button><button class="btn ghost" data-say="${esc(R.say)}" data-slow="1">أبطأ</button><span class="small muted">المعنى: ${esc(R.a)}</span></div></div><input id="ltin" class="input en" autocomplete="off" spellcheck="false" ${done?'disabled':''} value="${esc(R.typed||'')}">${done?lfb(G.picked==='ok',`التهجئة: <b class="en">${esc(R.target)}</b>`,R.say):`<div class="row"><button class="btn" data-ltcheck="1">تحقّقي</button></div>`}`}
+ if(R.kind==='build'){h+=`<div class="prompt"><p>رتّبي الكلمات عشان تطلع جملة صحيحة:</p></div><div class="slot">${R.built.map((ti,pos)=>`<button class="tile" data-lunb="${pos}" ${done?'disabled':''}>${esc(R.toks[ti])}</button>`).join('')}</div><div class="tiles">${R.order.map(ti=>`<button class="tile" data-ltile="${ti}" ${R.built.includes(ti)||done?'disabled':''}>${esc(R.toks[ti])}</button>`).join('')}</div>${done?lfb(G.picked==='ok',`<span class="en">${esc(R.full)}</span>`,R.full):`<div class="row"><button class="btn" data-lbcheck="1" ${R.built.length===R.toks.length?'':'disabled'}>تحقّقي</button><button class="icon-btn" data-lbreset="1">امسحي</button><button class="icon-btn" data-say="${esc(R.full)}">🔊 مساعدة</button></div>`}`}
+ return h+'</section>'}
+function lfb(ok,why,say){return `<div class="fb ${ok?'ok':'no'}"><b>${ok?'صح!':'تعلّمي منها:'}</b> ${why||''}</div><div class="row">${say?`<button class="icon-btn" data-say="${esc(say)}">🔊 اسمعي</button>`:''}<button class="btn" data-lnext2="1">التالي ←</button></div>`}
+function lAnswer(v){const G=LG_S;G.picked=v;const R=G.R[G.i];const ok=v==='ok'||v===R.ans;if(ok){G.score++;addXP(2)}render()}
+document.addEventListener('click',ev=>{const b=ev.target.closest('button,[data-lflip]');if(!b||S.room!=='lang')return;const d=b.dataset;
+ if(d.lplay){LG_S={id:d.lplay,R:LBUILD[d.lplay](),i:0,score:0,picked:null};render();scrollTo({top:0});setTimeout(lAuto,250);return}
+ if(d.lback){LG_S=null;render();return}
+ if(d.lfilter){LG_FILTER=d.lfilter;render();return}
+ if(d.lknow){if(LP.known[d.lknow])delete LP.known[d.lknow];else{LP.known[d.lknow]=1;addXP(1)}saveL();render();return}
+ const G=LG_S;if(!G||G.i>=G.R.length)return;const R=G.R[G.i];
+ if(d.lpick!=null&&G.picked==null){lAnswer(R.opts[+d.lpick]);return}
+ if(d.lnext2){G.i++;G.picked=null;render();setTimeout(lAuto,250);return}
+ if(d.lflip!=null){R.f=1;speak(R.w.e,.85);render();return}
+ if(d.lfk!=null){if(d.lfk==='1'){G.score++;LP.known[R.w.e]=1;saveL();addXP(1)}G.i++;render();return}
+ if(d.ltcheck){const v=(($('#ltin')||{}).value||'').trim().toLowerCase();R.typed=v;lAnswer(v===R.target.toLowerCase()?'ok':'no');return}
+ if(d.ltile!=null){R.built.push(+d.ltile);render();return}
+ if(d.lunb!=null){R.built.splice(+d.lunb,1);render();return}
+ if(d.lbreset){R.built=[];render();return}
+ if(d.lbcheck){lAnswer(R.built.map(i=>R.toks[i]).join(' ')===R.toks.join(' ')?'ok':'no');return}
+});
+document.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&ev.target.id==='ltin'){const b=document.querySelector('[data-ltcheck]');if(b)b.click()}});
+function lAuto(){const G=LG_S;if(!G||G.i>=G.R.length)return;const R=G.R[G.i];if(R.auto&&G.picked==null)speak(R.say,.85)}
+
+render();
+</script>
+
+</body></html>
