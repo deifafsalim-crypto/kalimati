@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>خطة كلماتي الدراسية</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Inter:wght@500;600&display=swap">
+<style>
+/* Layout: one column notebook — stage ribbon, week cards that open into 6 study days of 2–3 small tasks */
+:root{
+ --bg:#F1F7F9;--card:#FFFFFF;--ink:#1F2A44;--muted:#5C6B85;--line:#1F2A44;--soft:#D5E2EA;
+ --read:#C6EEE5;--listen:#FFF0BD;--speak:#DDF3F3;--write:#FFE6E1;--gram:#E6DEFF;--vocab:#E6F1FF;--rev:#F3F4F6;
+ --accent:#FFB938;--done:#2E9E6B;--doneSoft:#DDF5E8;
+ --ar:'Baloo Bhaijaan 2',system-ui,'Segoe UI',Tahoma,sans-serif;--en:'Inter',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141B2B;--card:#1D2639;--ink:#EEF2F8;--muted:#A9B4C8;--line:#8FA0BE;--soft:#2E3A52;--read:#1F4A42;--listen:#4A3F1C;--speak:#1E4446;--write:#4B2A26;--gram:#352C57;--vocab:#1E3550;--rev:#273149;--accent:#FFB938;--done:#53C690;--doneSoft:#1D3D30;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141B2B;--card:#1D2639;--ink:#EEF2F8;--muted:#A9B4C8;--line:#8FA0BE;--soft:#2E3A52;--read:#1F4A42;--listen:#4A3F1C;--speak:#1E4446;--write:#4B2A26;--gram:#352C57;--vocab:#1E3550;--rev:#273149;--accent:#FFB938;--done:#53C690;--doneSoft:#1D3D30;color-scheme:dark}
+*{box-sizing:border-box}
+body{direction:rtl;background:var(--bg);color:var(--ink);font-family:var(--ar);font-size:17px;line-height:1.6;margin:0}
+.wrap{max-width:920px;margin:0 auto;padding-block:28px 70px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{margin:0;text-wrap:balance;line-height:1.25}
+.en{font-family:var(--en);direction:ltr;unicode-bidi:isolate}
+.box{background:var(--card);border:3px solid var(--line);border-radius:26px;box-shadow:0 6px 0 var(--line);padding:20px}
+.hero{background:var(--accent);color:#1F2A44;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+.hero h1{font-size:clamp(28px,5vw,40px);font-weight:800}
+.hero p{margin:4px 0 0;max-width:52ch;font-weight:600}
+.prog{min-width:200px;flex:1 1 220px;max-width:280px;display:flex;flex-direction:column;gap:6px}
+.bar{height:16px;border-radius:99px;border:3px solid #1F2A44;background:#fff;overflow:hidden}
+.bar i{display:block;height:100%;background:#1F2A44;width:0;transition:width .3s}
+.prog b{font-size:26px;font-variant-numeric:tabular-nums}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.rule{display:flex;gap:10px;align-items:flex-start;background:var(--rev);border-radius:18px;padding:12px;min-width:0}
+.rule b{flex:none;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:16px}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+.tag{display:inline-flex;align-items:center;gap:4px;border:2px solid var(--line);border-radius:99px;padding:1px 10px;font-size:14px;font-weight:700;color:var(--ink)}
+.t-read{background:var(--read)}.t-listen{background:var(--listen)}.t-speak{background:var(--speak)}.t-write{background:var(--write)}.t-gram{background:var(--gram)}.t-vocab{background:var(--vocab)}.t-rev{background:var(--rev)}
+.stage{display:flex;flex-direction:column;gap:14px}
+.stage>header{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.stage>header h2{font-size:26px;font-weight:800}
+.stage>header span{color:var(--muted);font-weight:600}
+.week{padding:0;overflow:hidden}
+.week>button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:flex;gap:14px;align-items:center;padding:16px 20px}
+.week>button:focus-visible{outline:3px solid var(--accent);outline-offset:-6px;border-radius:22px}
+.wn{flex:none;width:52px;height:52px;border-radius:16px;border:3px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--rev);line-height:1}
+.wn small{font-size:11px;font-weight:700}.wn b{font-size:22px}
+.week.cur .wn{background:var(--accent);color:#1F2A44}
+.week.full .wn{background:var(--done);color:#fff;border-color:var(--done)}
+.wt{flex:1;min-width:0}.wt h3{font-size:20px}.wt p{margin:0;color:var(--muted);font-size:15px}
+.wp{flex:none;font-weight:800;font-variant-numeric:tabular-nums;font-size:15px;color:var(--muted)}
+.chev{flex:none;transition:transform .2s;font-size:20px}
+.week.open .chev{transform:rotate(180deg)}
+.days{display:none;border-top:3px solid var(--line);padding:16px;gap:12px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.week.open .days{display:grid}
+.day{border:2px solid var(--soft);border-radius:20px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0;background:var(--card)}
+.day.done{background:var(--doneSoft);border-color:var(--done)}
+.day h4{margin:0;font-size:17px;display:flex;justify-content:space-between;gap:8px}
+.day h4 small{color:var(--muted);font-weight:600;font-size:13px}
+.task{display:flex;gap:10px;align-items:flex-start}
+.task input{flex:none;width:22px;height:22px;margin-top:4px;accent-color:var(--done);cursor:pointer}
+.task .tx{min-width:0;display:flex;flex-direction:column;gap:2px}
+.task label{cursor:pointer;font-weight:600;line-height:1.45}
+.task.ok label{text-decoration:line-through;text-decoration-thickness:2px;opacity:.65}
+.task a{font-size:14px;font-weight:700;color:var(--ink);text-underline-offset:3px;width:fit-content}
+.task a:focus-visible{outline:2px solid var(--accent);border-radius:4px}
+.tip{font-size:14px;color:var(--muted);margin:0}
+.tools{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+.btn{font-family:var(--ar);font-size:15px;font-weight:700;border:3px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:6px 16px;cursor:pointer;box-shadow:0 3px 0 var(--line)}
+.btn:focus-visible{outline:3px solid var(--accent)}
+.confirm{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<nav aria-label="??????" style="max-width:1120px;margin:16px auto;display:flex;flex-wrap:wrap;gap:20px"><a href="./index.html" style="color:var(--accent);font-weight:700">? ?????? ??? ??????</a></nav>
+<div class="wrap" dir="rtl" lang="ar">
+ <section class="box hero">
+  <div><h1>خطتك في ١٢ أسبوع</h1><p>كل يوم ٤٥ دقيقة تقريبًا. كل أسبوع فيه شوية قراءة واستماع ومحادثة وكتابة وقواعد وكلمات، ونمشي من الأسهل للأصعب.</p></div>
+  <div class="prog"><span>إنجازك</span><b id="pct">0٪</b><div class="bar"><i id="pbar"></i></div><span id="pcount" style="font-size:14px"></span></div>
+ </section>
+ <section class="box" style="display:flex;flex-direction:column;gap:14px">
+  <h2 style="font-size:22px">كيف تمشين على الخطة؟</h2>
+  <div class="rules">
+   <div class="rule"><b>١</b><span>٦ أيام دراسة، واليوم السابع راحة.</span></div>
+   <div class="rule"><b>٢</b><span>كل يوم ٢ أو ٣ مهام صغيرة، كل مهمة ١٥–٢٠ دقيقة.</span></div>
+   <div class="rule"><b>٣</b><span>اضغطي على اسم المنصة يفتح لك القسم، وبعدها علّمي ✓.</span></div>
+   <div class="rule"><b>٤</b><span>فاتك يوم؟ عادي، كمّلي من وين وقفتي. لا تضاعفين.</span></div>
+  </div>
+  <div class="legend"><span class="tag t-read">قراءة</span><span class="tag t-listen">استماع</span><span class="tag t-speak">محادثة</span><span class="tag t-write">كتابة</span><span class="tag t-gram">قواعد</span><span class="tag t-vocab">كلمات</span><span class="tag t-rev">مراجعة</span></div>
+ </section>
+ <div id="plan" style="display:flex;flex-direction:column;gap:26px"></div>
+ <div class="tools"><span class="tip">تقدّمك ينحفظ في هذا الجهاز وهذا المتصفح بس.</span><span class="confirm" id="resetBox"><button class="btn" id="reset">ابدئي من جديد</button></span></div>
+</div>
+<script>
+const B='./';
+const P={V:['كلماتي','',"vocab"],PH:['مفتاح القراءة','phonics.html','read'],RA:['أكاديمية القراءة','reading-academy.html','read'],RC:['تحدّي القراءة ٣٠ يوم','reading-challenge.html','read'],ES:['مرسم المقالات','reading.html','write'],TB:['مختبر الجداول','tables-lab.html','write'],WR:['مختبر الكتابة','writing-lab.html','write'],GR:['مختبر القواعد','grammar-lab.html','gram'],LS:['مختبر الاستماع','listening-lab.html','listen'],SP:['مختبر المحادثة','speaking-lab.html','speak']};
+const SK={read:'قراءة',listen:'استماع',speak:'محادثة',write:'كتابة',gram:'قواعد',vocab:'كلمات',rev:'مراجعة'};
+const STAGES=[['المرحلة ١: الأساس','نتعرّف على الأقسام ونقوّي أصوات الحروف وأول القواعد',[0,1,2]],['المرحلة ٢: المهارات الأساسية','أول أنواع الأسئلة، والأزمنة، وأول Task 1',[3,4,5]],['المرحلة ٣: الأسئلة الأصعب','Part 2 في الاستماع، أسئلة القراءة الصعبة، الرسومات كاملة',[6,7,8]],['المرحلة ٤: جاهزة للامتحان','Task 2 والمقالات، Part 3 و 4، والاختبارات التجريبية',[9,10,11]]];
+// Each week: grammar A/B, listening lesson/practice, speaking lesson/practice, writing lesson/practice, reading 1/2, review
+const W=[
+ {t:'نبدأ من الصفر',g:['درس ١: أنواع الأفعال والمصدر','درس ٢: be و have'],L:'درس ١: تعرّفي على اختبار الاستماع',Lx:'غرفة الاستماع، المستوى ١: الأرقام',S:'درس ١: تعرّفي على امتحان المحادثة',Sx:'غرفة المحادثة: سؤال Part 1 سهل عن نفسك',Wr:['WR','درس ١: تعرّفي على امتحان الكتابة'],Wx:['WR','غرفة الكتابة: اقري نموذج Task 1 واحد بس'],R1:['PH','البداية والحروف الساكنة'],R2:['PH','حروف العلة القصيرة'],rev:'سوي «اختبار تحديد المستوى» في مختبر القواعد عشان تعرفين مستواك'},
+ {t:'الحروف والأسئلة',g:['درس ٣: الضمائر والملكية','درس ٤: أسئلة نعم/لا و WH'],L:'درس ٢: المشاكل الشائعة وحلولها',Lx:'غرفة الاستماع، المستوى ١: الأوقات والأسعار',S:'درس ٢: معايير التقييم الأربعة',Sx:'غرفة المحادثة: سؤالين Part 1',Wr:['WR','درس ٢: معايير التصحيح الأربعة'],Wx:['WR','غرفة الكتابة: اقري نموذج Task 2 واحد'],R1:['PH','حروف العلة الطويلة و magic e'],R2:['PH','حرفين علة مع بعض (Vowel teams)'],rev:'مراجعة المستوى الأول في غرفة التمارين (القواعد)'},
+ {t:'المضارع',g:['درس ٥: المضارع البسيط','درس ٦: ظروف التكرار'],L:'درس ٣: طريقة التدرب الصحيحة',Lx:'غرفة الاستماع، المستوى ١: التواريخ والأسماء بالحروف',S:'درس ٣: كيف تتدربين وتقيّمين نفسك',Sx:'غرفة المحادثة: Part 1 عن الهوايات',Wr:['WR','درس ٣: تنويع الجمل والقواعد'],Wx:['WR','لعبة «رتّبي الجملة» في مختبر الكتابة'],R1:['PH','الكلمات الطويلة: المقاطع والنبر'],R2:['RA','الوحدة ١: القراءة السريعة Skimming & Scanning'],rev:'دفتري ← أخطائي في مختبر القواعد والاستماع'},
+ {t:'المستمر والماضي',g:['درس ٧: المضارع المستمر','درس ٨: الماضي البسيط'],L:'درس ٤: أسئلة الاختيار من متعدد',Lx:'غرفة الاستماع، المستوى ٢: جمل قصيرة',S:'درس ٤: تنويع القواعد في الكلام',Sx:'غرفة المحادثة: Part 1 عن الدراسة أو الشغل',Wr:['WR','درس ٤: مفردات المواضيع (Collocations)'],Wx:['WR','اكتبي ٥ جمل بالكلمات اللي تعلمتيها'],R1:['RA','الوحدة ٢: الإجابة القصيرة'],R2:['RC','اليوم ١ و ٢ من التحدي'],rev:'مراجعة المستوى الثاني في غرفة التمارين (القواعد)'},
+ {t:'نبدأ Task 1',g:['درس ٩: used to','درس ١٠: الماضي المستمر'],L:'درس ٥: إكمال النماذج والجمل',Lx:'غرفة الاستماع، المستوى ٢: التشتيت',S:'درس ٥: كيف تبدئين وتطوّلين جوابك',Sx:'غرفة المحادثة: جاوبي ٣ أسئلة وطوّلي كل جواب',Wr:['WR','درس ٥: مقدمة Task 1 (إعادة الصياغة)'],Wx:['TB','المهمة ١ و ٢'],R1:['RA','الوحدة ٣: الاختيار من متعدد'],R2:['RC','اليوم ٣ و ٤'],rev:'مراجعة المستوى الثالث في غرفة التمارين (القواعد)'},
+ {t:'التام',g:['درس ١١: المضارع التام','درس ١٢: المضارع التام المستمر'],L:'درس ٦: أسئلة التوصيل (Matching)',Lx:'غرفة الاستماع، المستوى ٣: Part 1',S:'درس ٦: مفردات وقت الفراغ والهوايات',Sx:'غرفة المحادثة: Part 1 عن وقت الفراغ',Wr:['WR','درس ٦: الفكرة العامة (Overview)'],Wx:['TB','المهمة ٣ و ٤'],R1:['RA','الوحدة ٤: مطابقة عناوين الفقرات'],R2:['RC','اليوم ٥ و ٦'],rev:'دفتري ← أخطائي في كل المختبرات + اختبار التمكّن لدرس ما خلّصتيه'},
+ {t:'الاتجاهات والمستقبل',g:['درس ١٣: الماضي التام و wish','درس ١٤: will و going to'],L:'درس ٧: إكمال الملخص',Lx:'غرفة الاستماع، المستوى ٣: Part 1 ثاني',S:'درس ٧: مفردات العائلة والأصدقاء',Sx:'غرفة المحادثة: Part 1 عن العائلة',Wr:['WR','درس ٧ و ٨: لغة الاتجاهات وتحويل الجمل'],Wx:['TB','المهمة ٥ و ٦ و ٧'],R1:['RA','الوحدة ٥: صح / خطأ / غير مذكور'],R2:['RC','اليوم ٧ و ٨ و ٩'],rev:'مراجعة المستوى الرابع في غرفة التمارين (القواعد)'},
+ {t:'الأرقام والمقارنة',g:['درس ١٥: الأفعال الناقصة','درس ١٦: المقارنة والتفضيل'],L:'درس ٨: الرسم التوضيحي والمخطط',Lx:'غرفة الاستماع، المستوى ٤: Part 2',S:'درس ٨: مفردات العمل',Sx:'غرفة المحادثة: Part 1 عن الشغل',Wr:['WR','درس ٩ و ١٠: الأرقام والمقارنة وفقرات التفاصيل'],Wx:['TB','المهمة ٨ و ٩ و ١٠ (اكتبي تقرير كامل)'],R1:['RA','الوحدة ٦: نعم / لا / غير مذكور'],R2:['RC','اليوم ١٠ و ١١ و ١٢'],rev:'الاختبار الشامل في مختبر الكتابة'},
+ {t:'المراحل والخرائط',g:['درس ١٧: المبني للمجهول','درس ١٨: الجمل الشرطية'],L:'درس ٩: الأسئلة القصيرة',Lx:'غرفة الاستماع، المستوى ٤: Part 2 ثاني',S:'درس ٩ و ١٠: مفردات السكن والرياضة',Sx:'غرفة المحادثة: Part 1 عن مدينتك',Wr:['WR','درس ١١ و ١٢: وصف المراحل والخرائط'],Wx:['TB','المهمة ١١ إلى ١٤'],R1:['RA','الوحدة ٧ و ٨: إكمال الملخّص والجمل'],R2:['RC','اليوم ١٣ و ١٤ و ١٥'],rev:'مراجعة المستوى الخامس في غرفة التمارين (القواعد)'},
+ {t:'نبدأ Task 2',g:['درس ١٩: الكلام المنقول','درس ٢٠ و ٢١: ing ولا to، والصفات'],L:'درس ١٠ و ١١: الأرقام والأسماء والتهجئة',Lx:'غرفة الاستماع، المستوى ٥: Part 3',S:'درس ١١: Part 2، كيف تتكلمين دقيقتين',Sx:'غرفة المحادثة: بطاقة Part 2 وحدة',Wr:['WR','درس ١٣ و ١٤: فهم سؤال Task 2 ومقال الرأي'],Wx:['ES','اقري مقالين رأي (Agree or Disagree)'],R1:['RA','الوحدة ٩ و ١٠: أي فقرة فيها المعلومة، ومطابقة الخصائص'],R2:['RC','اليوم ١٦ إلى ١٩'],rev:'مراجعة المستوى السادس في غرفة التمارين (القواعد)'},
+ {t:'النقاش والمحاضرات',g:['درس ٢٢: جمل الوصل و some/any','درس ٢٣: أدوات الربط'],L:'درس ١٢ و ١٣: الخرائط وأكثر الكلمات تكرارًا',Lx:'غرفة الاستماع، المستوى ٦: Part 4',S:'درس ١٢: Part 3، النقاش والرأي',Sx:'غرفة المحادثة: Part 2 + أسئلة Part 3',Wr:['WR','درس ١٥ و ١٦: الإيجابيات والسلبيات، وناقش الرأيين'],Wx:['TB','المهمة ١٥ إلى ٢٠ (مهمة كل يوم)'],R1:['RA','الوحدة ١١ (تسمية الرسم) + اختبارات الوحدات الأربعة'],R2:['RC','اليوم ٢٠ إلى ٢٤'],rev:'مراجعة المستوى السابع في غرفة التمارين (القواعد)'},
+ {t:'أسبوع الامتحان التجريبي',g:['درس ٢٤: حروف الجر','درس ٢٥: المركّبات والتشبيهات والتعابير'],L:'الاختبار التجريبي (الأجزاء الأربعة)',Lx:'أعيدي أي تمرين جبتي فيه أقل من ٧٠٪',S:'اختبار تجريبي: Part 1 و 2 و 3',Sx:'أعيدي البطاقة اللي كانت أصعب عليك',Wr:['WR','درس ١٧: مقال المشكلة والحل'],Wx:['ES','اكتبي مقال كامل وخلّي المدرّبة تقيّمه'],R1:['RA','الاختبارات الكاملة ١ إلى ٤ (والباقي للمراجعة بعدين)'],R2:['RC','اليوم ٢٥ إلى ٣٠'],rev:'الاختبار الشامل في كل مختبر، وشوفي وين تحتاجين مراجعة'}
+];
+const T=(p,txt,sk)=>({p,txt,sk:sk||P[p][2]});
+function daysOf(w){return [
+ {n:'اليوم ١',m:'٤٥ د',t:[T('V','وحدة كلمات جديدة'),T('GR',w.g[0]),T(w.R1[0],w.R1[1])]},
+ {n:'اليوم ٢',m:'٤٠ د',t:[T('LS',w.L),T('SP',w.S)]},
+ {n:'اليوم ٣',m:'٤٥ د',t:[T('GR',w.g[1]+' + تمرينه في غرفة التمارين'),T(w.Wr[0],w.Wr[1])]},
+ {n:'اليوم ٤',m:'٤٥ د',t:[T('V','وحدة كلمات جديدة'),T('LS',w.Lx),T(w.R2[0],w.R2[1])]},
+ {n:'اليوم ٥',m:'٤٠ د',t:[T('SP',w.Sx),T(w.Wx[0],w.Wx[1])]},
+ {n:'اليوم ٦',m:'٣٠ د',t:[T('GR',w.rev,'rev'),T('V','اختبار قصير في كلماتي على كلمات الأسبوع','rev')]}]}
+let ST={};try{ST=JSON.parse(localStorage.getItem('kalimati_plan')||'{}')||{}}catch(e){ST={}}
+let OPEN=null;
+const save=()=>{try{localStorage.setItem('kalimati_plan',JSON.stringify(ST))}catch(e){}};
+const AR=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+const wTotal=wi=>daysOf(W[wi]).reduce((a,d)=>a+d.t.length,0);
+const wDone=wi=>daysOf(W[wi]).reduce((a,d,di)=>a+d.t.filter((_,ti)=>ST[wi+'-'+di+'-'+ti]).length,0);
+function curWeek(){for(let i=0;i<W.length;i++)if(wDone(i)<wTotal(i))return i;return W.length-1}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function render(){const cw=curWeek();if(OPEN===null)OPEN=cw;
+ document.getElementById('plan').innerHTML=STAGES.map(([h,s,ws])=>`<section class="stage"><header><h2>${h}</h2><span>${s}</span></header>${ws.map(wi=>{const w=W[wi];const dn=wDone(wi),tt=wTotal(wi);return `<article class="box week${wi===OPEN?' open':''}${wi===cw?' cur':''}${dn===tt?' full':''}"><button aria-expanded="${wi===OPEN}" data-w="${wi}"><span class="wn"><small>أسبوع</small><b>${AR(wi+1)}</b></span><span class="wt"><h3>${esc(w.t)}</h3><p>${esc(w.g[0].replace(/^درس [^:]+: /,''))} · ${esc(w.R1[1])}</p></span><span class="wp">${AR(dn)}/${AR(tt)}</span><span class="chev" aria-hidden="true">⌄</span></button>
+  <div class="days">${daysOf(w).map((d,di)=>{const all=d.t.every((_,ti)=>ST[wi+'-'+di+'-'+ti]);return `<div class="day${all?' done':''}"><h4>${d.n}${all?' ✓':''}<small>${d.m}</small></h4>${d.t.map((x,ti)=>{const id=wi+'-'+di+'-'+ti;const ok=!!ST[id];return `<div class="task${ok?' ok':''}"><input type="checkbox" id="c${id}" data-id="${id}"${ok?' checked':''}><div class="tx"><span class="tag t-${x.sk}" style="width:fit-content">${SK[x.sk]}</span><label for="c${id}">${esc(x.txt)}</label><a href="${B+P[x.p][1]}" target="_blank" rel="noopener">افتحي ${esc(P[x.p][0])} ↗</a></div></div>`}).join('')}</div>`}).join('')}</div></article>`}).join('')}</section>`).join('');
+ const all=W.reduce((a,_,i)=>a+wTotal(i),0),dn=W.reduce((a,_,i)=>a+wDone(i),0);const p=Math.round(dn/all*100);
+ document.getElementById('pct').textContent=AR(p)+'٪';document.getElementById('pbar').style.width=p+'%';document.getElementById('pcount').textContent=AR(dn)+' مهمة من '+AR(all)+' · الأسبوع الحالي: '+AR(cw+1)}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(b){const i=+b.dataset.w;OPEN=OPEN===i?-1:i;render();return}
+ if(e.target.id==='reset'){document.getElementById('resetBox').innerHTML='<span>متأكدة؟ بيمسح كل العلامات.</span><button class="btn" id="yes">إيه، امسحي</button><button class="btn" id="no">لا</button>';return}
+ if(e.target.id==='yes'){ST={};save();OPEN=null;render();document.getElementById('resetBox').innerHTML='<button class="btn" id="reset">ابدئي من جديد</button>';return}
+ if(e.target.id==='no'){document.getElementById('resetBox').innerHTML='<button class="btn" id="reset">ابدئي من جديد</button>'}});
+document.addEventListener('change',e=>{const id=e.target.dataset&&e.target.dataset.id;if(!id)return;if(e.target.checked)ST[id]=1;else delete ST[id];save();render()});
+render();
+</script>
+
+</body>
+</html>
